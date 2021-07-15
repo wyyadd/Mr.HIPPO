@@ -6,6 +6,7 @@ import com.hippo.fresh.dao.UserRepository;
 import com.hippo.fresh.entity.Receiver;
 import com.hippo.fresh.entity.User;
 import com.hippo.fresh.exception.UserHasExistException;
+import com.hippo.fresh.exception.UserNotExistException;
 import com.hippo.fresh.service.UserService;
 import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,32 +91,26 @@ public class UserServiceImpl implements UserService {
     }
 
     /** 用户主页 */
-    public Map<String,Object> information(Long userId){
-        Map<String, Object> res = new HashMap<>();
-        Map<String, Object> data = new HashMap<>();
+    public ResponseUtils information(Long userId){
+        JSONObject jsonObject = new JSONObject();
 
         Optional<User> user = userRepository.findById(userId);
 
         if(user.isPresent()) {
             List<Receiver> allReceiver = receiverRepository.findAllByUserId(userId);
 
-            data.put("id", user.get().getId());
-            data.put("username", user.get().getUsername());
-            data.put("email", user.get().getEmail());
-            data.put("avatar", user.get().getAvatar());
-            data.put("receiver", allReceiver);
-
-            res.put("code", 200);
-            res.put("msg", "用户信息返回成功");
-            res.put("date", data);
-
-            return res;
+            jsonObject.put("id", user.get().getId());
+            jsonObject.put("username", user.get().getUsername());
+            jsonObject.put("email", user.get().getEmail());
+            jsonObject.put("avatar", user.get().getAvatar());
+            jsonObject.put("receiver", allReceiver);
+            return ResponseUtils.success("用户信息返回成功",jsonObject);
         }
         else
         {
-            res.put("code", 404);
-            res.put("msg", "用户不存在");
-            return res;
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("id",userId);
+            throw new UserNotExistException(jsonObject1);
         }
     }
 

@@ -27,17 +27,9 @@ public class UserController {
         return userService.register(user.getUsername(), user.getPassword(), user.getEmail());
     }
 
-//    @PostMapping("/register")
-//    public Map<String,Object> register(@RequestBody HashMap<String,Object> map) {
-//        String username = (String) map.get("username");
-//        String password = (String) map.get("password");
-//        String email = (String) map.get("email");
-//        return userService.register(username, password, email);
-//    }
-
     //用户主页接口
     @GetMapping("/information")
-    public Map<String,Object> information(HttpServletRequest request) {
+    public ResponseUtils information(HttpServletRequest request) {
         //从token中获取id
         String token = request.getHeader(JWTConfig.tokenHeader);
         Long id = JWTTokenUtil.parseAccessToken(token).getId();
