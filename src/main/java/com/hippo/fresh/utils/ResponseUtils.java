@@ -78,6 +78,16 @@ public class ResponseUtils {
 		return ResponseUtils.response(200, "成功", data);
 	}
 
+	/**
+	 *
+	 * @param msg
+	 * @param data
+	 * @return json
+	 */
+	public static ResponseUtils success(String msg, Object data) {
+		return ResponseUtils.response(200, msg, data);
+	}
+
 
 	/**
 	 * 返回失败

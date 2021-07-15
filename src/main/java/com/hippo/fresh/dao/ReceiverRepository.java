@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ReceiverRepository extends JpaRepository<Receiver, Long> {
 
-    List<Receiver> findAllByUserId(Long aLong);
+    List<Receiver> findAllByUserId(Long id);
 
 }
