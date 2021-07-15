@@ -1,11 +1,9 @@
 package com.hippo.fresh.handler;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.security.utils.JWTTokenUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -25,9 +23,10 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
 			Authentication authentication) {
 		SysUserDetails sysUserDetails = (SysUserDetails) authentication.getPrincipal();
 		String token = JWTTokenUtil.createAccessToken(sysUserDetails);
-		Map<String, String> dataMap = new HashMap<>();
-		dataMap.put("username",sysUserDetails.getUsername());
-		dataMap.put("token", token);
-		ResponseUtils.responseJson(response, ResponseUtils.response(200, "登录成功", dataMap));
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("id",sysUserDetails.getId());
+		jsonObject.put("username",sysUserDetails.getUsername());
+		jsonObject.put("token", token);
+		ResponseUtils.responseJson(response, ResponseUtils.response(200, "登录成功", jsonObject));
 	}
 }
