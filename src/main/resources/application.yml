@@ -19,7 +19,7 @@ jwt:
    # 过期时间，单位秒, 86400代表一天
    expiration: 86400
    # 配置白名单（不需要认证）注意， 逗号之间不能有空格
-   antMatchers: /api/user/login,/api/user/register/**,/api/product/**
+   antMatchers: /api/user/login,/api/user/register/**,/api/product/**,/api/product-list,/api/product-recommend
    #springdata JPA配置
    jpa:
       database: MySQL
