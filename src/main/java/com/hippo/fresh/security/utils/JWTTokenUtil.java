@@ -2,12 +2,7 @@ package com.hippo.fresh.security.utils;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.hippo.fresh.security.config.JWTConfig;
 import com.hippo.fresh.security.entity.SysUserDetails;
 
@@ -48,8 +43,10 @@ public class JWTTokenUtil {
 	 */
 	public static SysUserDetails parseAccessToken(String token) {
 		SysUserDetails sysUserDetails = null;
-		if (StringUtils.isNotEmpty(token)) {
+		if(!token.isEmpty()){
+		//if (StringUtils.isNotEmpty(token)) {
 			try {
+//				System.out.println("not empty");
 				// 去除JWT前缀
 				token = token.substring(JWTConfig.tokenPrefix.length());
 

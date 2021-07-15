@@ -1,9 +1,11 @@
 package com.hippo.fresh.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.hippo.fresh.entity.User;
 import com.hippo.fresh.security.config.JWTConfig;
 import com.hippo.fresh.security.utils.JWTTokenUtil;
 import com.hippo.fresh.service.UserService;
+import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,8 @@ public class UserController {
 
 //    //用户注册接口
     @PostMapping("/register")
-    public Map<String,Object> register(@RequestBody User user) {
+    public ResponseUtils register(@RequestBody String jsonObject) {
+        User user = JSON.parseObject(jsonObject, User.class);
         return userService.register(user.getUsername(), user.getPassword(), user.getEmail());
     }
 

@@ -1,11 +1,13 @@
 package com.hippo.fresh.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.dao.ReceiverRepository;
 import com.hippo.fresh.dao.UserRepository;
 import com.hippo.fresh.entity.Receiver;
 import com.hippo.fresh.entity.User;
 import com.hippo.fresh.exception.UserHasExistException;
 import com.hippo.fresh.service.UserService;
+import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -60,8 +62,9 @@ public class UserServiceImpl implements UserService {
             return false;
     }
 
-    /** 用户注册 */
-    public Map<String,Object> register(String username, String password,String email) {
+    /** 用户注册
+     * @return*/
+    public ResponseUtils register(String username, String password, String email) {
 
 
         Map<String, Object> res = new HashMap<>();
@@ -73,58 +76,18 @@ public class UserServiceImpl implements UserService {
         if (!existsUser) {
 //            System.out.println("true");
             User newUser = userRepository.save(new User(username,bCryptPasswordEncoder.encode(password),email));
-            Map<String, Object> data = new HashMap<>();
-            data.put("id", newUser.getId());
-            data.put("username", newUser.getUsername());
-            data.put("email", newUser.getPassword());
-            res.put("code", 200);
-            res.put("msg", "注册成功");
-            res.put("data", data);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", newUser.getId());
+            jsonObject.put("username", newUser.getUsername());
+            jsonObject.put("email", newUser.getPassword());
+            return ResponseUtils.response(200,"注册成功", jsonObject);
         } else {
-            HashMap<String,String> dataMap = new HashMap<>();
-            dataMap.put("username",username);
-            dataMap.put("email",email);
-            throw new UserHasExistException(dataMap);
-//            res.put("code", 409);
-//            res.put("msg", "用户名已存在");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("username",username);
+            jsonObject.put("email",email);
+            throw new UserHasExistException(jsonObject);
         }
-        return res;
     }
-
-    /** 用户登录 */
-//    public Map<String,Object> login(String username, String password) {
-//
-//        Map<String, Object> res = new HashMap<>();
-//
-//        Optional<User> userForBase= userRepository.findByUsername(username);
-
-//        //该用户名用户不存在
-//        if(!userForBase.isPresent()){
-//            res.put("code","401");
-//            res.put("msg","用户名与密码不匹配");
-//            return res;
-//        }else {
-//            User user = userForBase.get();
-//            if (!user.getPassword().equals(password)){
-//                //用户密码错误
-//                res.put("code","401");
-//                res.put("msg","用户名与密码不匹配");
-//                return res;
-//            }else {
-//                //生成token
-//                //String token = tokenService.getToken(userForBase);
-//
-//                Map<String, Object> date = new HashMap<>();
-//                date.put("id", user.getId());
-//                date.put("username", user.getUsername());
-//                res.put("code","200");
-//                res.put("msg","用户登录成功");
-//                res.put("token", "xxx.yyy.zzz");
-//                res.put("date",date);
-//                return res;
-//            }
-//        }
-//    }
 
     /** 用户主页 */
     public Map<String,Object> information(Long userId){
