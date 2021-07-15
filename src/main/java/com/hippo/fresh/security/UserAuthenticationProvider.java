@@ -2,7 +2,6 @@ package com.hippo.fresh.security;
 
 import com.hippo.fresh.security.entity.SysUserDetails;
 import com.hippo.fresh.security.service.SysUserDetailsService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
  * 用户登录验证处理类
  */
 @Component
-@Slf4j
 public class UserAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
@@ -32,15 +30,9 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 		String password = (String) authentication.getCredentials(); // 获取密码
 		SysUserDetails sysUserDetails = (SysUserDetails) userDetailsService.loadUserByUsername(username);
 
-		if (sysUserDetails == null) {
-			throw new BadCredentialsException("用户不存在");
+		if (sysUserDetails == null || !new BCryptPasswordEncoder().matches(password, sysUserDetails.getPassword())) {
+			throw new BadCredentialsException(username);
 		}
-		if (!new BCryptPasswordEncoder().matches(password, sysUserDetails.getPassword())) {
-			throw new BadCredentialsException("用户名或密码错误");
-		}
-//		if (sysUserDetails.getStatus().equals("2")) {
-//			throw new LockedException("用户已禁用");
-//		}
 		return new UsernamePasswordAuthenticationToken(sysUserDetails, password, sysUserDetails.getAuthorities());
 	}
 

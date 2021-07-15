@@ -4,6 +4,7 @@ import com.hippo.fresh.dao.ReceiverRepository;
 import com.hippo.fresh.dao.UserRepository;
 import com.hippo.fresh.entity.Receiver;
 import com.hippo.fresh.entity.User;
+import com.hippo.fresh.exception.UserHasExistException;
 import com.hippo.fresh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -80,8 +81,12 @@ public class UserServiceImpl implements UserService {
             res.put("msg", "注册成功");
             res.put("data", data);
         } else {
-            res.put("code", 409);
-            res.put("msg", "用户名已存在");
+            HashMap<String,String> dataMap = new HashMap<>();
+            dataMap.put("username",username);
+            dataMap.put("email",email);
+            throw new UserHasExistException(dataMap);
+//            res.put("code", 409);
+//            res.put("msg", "用户名已存在");
         }
         return res;
     }
