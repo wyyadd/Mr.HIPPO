@@ -14,4 +14,7 @@ public interface ProductService {
     //根据商品id列表返回商品的信息
     public ResponseUtils findAllById(List<Long> ids);
 
+    //根据商品名商品类型排序方式返回商品列表
+
+    public ResponseUtils GetProductList(int page, int pageNum, String productName, int type, int sort, int order, int upperBound,  int lowerBound);
 }

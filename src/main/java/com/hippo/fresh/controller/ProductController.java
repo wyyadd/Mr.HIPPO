@@ -1,5 +1,6 @@
 package com.hippo.fresh.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.dao.ProductRepository;
 import com.hippo.fresh.exception.ServerInternalErrorException;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -45,5 +47,33 @@ public class ProductController {
             throw new ServerInternalErrorException(null);
         }
         return productService.findAllById(LongIds);
+    }
+
+    //商品列表显示接口
+    @GetMapping("/api/product-list")
+    public ResponseUtils ProductList(@RequestBody String jsStr){
+        //default paras
+        int page = 1; int pageNum = 10;
+        String productName = null; Integer type = 0; Integer sort = 1;
+        Integer order = 1; Integer upperBound = -1; Integer lowerBound = -1;
+        //获取相关参数
+        JSONObject jsonObject = JSON.parseObject(jsStr);
+        if(jsonObject.getInteger("page") != null)
+            page = jsonObject.getInteger("page");
+        if(jsonObject.getInteger("page-num") != null)
+            pageNum = jsonObject.getInteger("page-num");
+        if(jsonObject.getString("product-name") != null)
+            productName = jsonObject.getString("product-name");
+        if(jsonObject.getInteger("type") != null)
+            type = jsonObject.getInteger("type");
+        if(jsonObject.getInteger("sort") != null)
+            sort = jsonObject.getInteger("sort");
+        if(jsonObject.getInteger("order") != null)
+            order = jsonObject.getInteger("order");
+        if(jsonObject.getInteger("upper-bound") != null)
+            upperBound = jsonObject.getInteger("upper-bound");
+        if(jsonObject.getInteger("lower-bound") != null)
+            lowerBound = jsonObject.getInteger("lower-bound");
+        return productService.GetProductList(page,pageNum,productName,type,sort,order,upperBound,lowerBound);
     }
 }
