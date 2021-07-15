@@ -19,7 +19,7 @@ public class Cart {
 
     @Id // 主键
     @GeneratedValue(strategy = GenerationType.IDENTITY)//自增主键
-    private long id;//购物车id
+    private Long id;//购物车id
 
     @Column
     private Long userId;//用户id
