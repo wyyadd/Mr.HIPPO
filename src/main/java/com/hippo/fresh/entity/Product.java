@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 public class Product {
     @Id // 主键
     @GeneratedValue(strategy = GenerationType.IDENTITY)//自增主键
-    private int id;//商品id
+    private Long id;//商品id
 
     @Column
     private Long categoryId;//商品目录id

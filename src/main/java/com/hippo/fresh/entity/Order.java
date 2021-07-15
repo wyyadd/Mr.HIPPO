@@ -1,25 +1,28 @@
 package com.hippo.fresh.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "order") //@Table来指定和哪个数据表对应;
+@Table(name = "ord") //@Table来指定和哪个数据表对应;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Order {
 
     @Id // 主键
     @GeneratedValue(strategy = GenerationType.IDENTITY)//自增主键
-    private long id;//订单id
+    private Long id;//收货人id
 
     @Column
-    private Long userId;//用户id
+    private Long userId ;//用户Id
 
     @Column
     private Long receiverId ;//收件人Id
@@ -40,7 +43,7 @@ public class Order {
     private double paymentMoney;//实际支付金额
 
     @Column
-    private Long paymentType;//支付类型
+    private String paymentType;//支付类型
 
     @Column
     private Timestamp paymentTime;//支付时间
@@ -53,6 +56,4 @@ public class Order {
 
     @Column
     private Timestamp completeTime;//完成时间
-
-
 }
