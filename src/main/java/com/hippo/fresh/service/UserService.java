@@ -32,7 +32,7 @@ public interface UserService {
 //    public Map<String,Object> login(String username, String password);
 
     /** 用户主页 */
-    public Map<String,Object> information(Long userId);
+    public ResponseUtils information(Long userId);
 
 
 }
