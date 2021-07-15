@@ -1,6 +1,7 @@
 package com.hippo.fresh.service;
 
 import com.hippo.fresh.entity.User;
+import com.hippo.fresh.utils.ResponseUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -23,8 +24,9 @@ public interface UserService {
     /** 判断用户是否存在 */
     public boolean exitsUser(String username);
 
-    /** 用户注册 */
-    public Map<String,Object> register(String username, String password,String email);
+    /** 用户注册
+     * @return*/
+    public ResponseUtils register(String username, String password, String email);
 
     /** 用户登录 */
 //    public Map<String,Object> login(String username, String password);
