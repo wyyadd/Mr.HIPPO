@@ -11,6 +11,6 @@ public class ProductNotExistHandler {
     @ExceptionHandler(ProductNotExistException.class)
     @ResponseBody
     public ResponseUtils handle(ProductNotExistException productNotExistException){
-        return ResponseUtils.response(404,"商品查找失败", productNotExistException.getData());
+        return ResponseUtils.response(404,"找不到相关商品", productNotExistException.getData());
     }
 }

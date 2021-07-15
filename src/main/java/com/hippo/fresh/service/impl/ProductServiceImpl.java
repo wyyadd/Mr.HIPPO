@@ -1,18 +1,21 @@
 package com.hippo.fresh.service.impl;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.dao.ProductRepository;
+import com.hippo.fresh.entity.Product;
 import com.hippo.fresh.exception.ProductNotExistException;
 import com.hippo.fresh.service.ProductService;
 import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl  implements ProductService  {
 
     @Autowired
     private ProductRepository productRepository;
@@ -54,4 +57,25 @@ public class ProductServiceImpl implements ProductService{
     }
 
 
+    //根据参数获取商品列表
+    @Override
+    public ResponseUtils GetProductList(int page, int pageNum, String productName, int type, int sort, int order, int upperBound, int lowerBound) {
+//        List<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, type, sort, order, upperBound,lowerBound));
+        Page<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, type, sort, order, upperBound,lowerBound),PageRequest.of(page,pageNum));
+        if(!data.isEmpty()){
+            JSONArray jsonArray = new JSONArray();
+            for(Product it : data){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id",it.getId());
+                jsonObject.put("name",it.getName());
+                jsonObject.put("picture",it.getPictureUrl());
+                jsonObject.put("price",it.getPrice());
+                jsonObject.put("sales_amount",it.getSalesAmount());
+                jsonArray.add(jsonObject);
+            }
+            return ResponseUtils.success(" 查找成功",jsonArray);
+        }else {
+            throw new ProductNotExistException(null);
+        }
+    }
 }
