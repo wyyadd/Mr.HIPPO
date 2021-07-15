@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -30,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ReceiverRepository receiverRepository;
 
-
+    private JSONObject jsonObject;
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
@@ -57,18 +55,13 @@ public class UserServiceImpl implements UserService {
     {
         Optional<User> user = userRepository.findByUsername(username);
 
-        if( user.isPresent())
-            return true;
-        else
-            return false;
+        return user.isPresent();
     }
 
     /** 用户注册
-     * @return*/
+     * @return json
+     * */
     public ResponseUtils register(String username, String password, String email) {
-
-
-        Map<String, Object> res = new HashMap<>();
 
         Optional<User> user = userRepository.findByUsername(username);
 
@@ -77,13 +70,13 @@ public class UserServiceImpl implements UserService {
         if (!existsUser) {
 //            System.out.println("true");
             User newUser = userRepository.save(new User(username,bCryptPasswordEncoder.encode(password),email));
-            JSONObject jsonObject = new JSONObject();
+            jsonObject = new JSONObject();
             jsonObject.put("id", newUser.getId());
             jsonObject.put("username", newUser.getUsername());
             jsonObject.put("email", newUser.getPassword());
             return ResponseUtils.response(200,"注册成功", jsonObject);
         } else {
-            JSONObject jsonObject = new JSONObject();
+            jsonObject = new JSONObject();
             jsonObject.put("username",username);
             jsonObject.put("email",email);
             throw new UserHasExistException(jsonObject);
@@ -92,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
     /** 用户主页 */
     public ResponseUtils information(Long userId){
-        JSONObject jsonObject = new JSONObject();
+        jsonObject = new JSONObject();
 
         Optional<User> user = userRepository.findById(userId);
 
@@ -108,9 +101,8 @@ public class UserServiceImpl implements UserService {
         }
         else
         {
-            JSONObject jsonObject1 = new JSONObject();
-            jsonObject1.put("id",userId);
-            throw new UserNotExistException(jsonObject1);
+            jsonObject.put("id",userId);
+            throw new UserNotExistException(jsonObject);
         }
     }
 

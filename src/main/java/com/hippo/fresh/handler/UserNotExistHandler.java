@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @ControllerAdvice
-public class UserNotExsitHandler {
+public class UserNotExistHandler {
     @ExceptionHandler(UserNotExistException.class)
     @ResponseBody
-    public ResponseUtils handle(UserNotExistException userNotExistException){
-        return ResponseUtils.response(404,"用户不存在", userNotExistException.getDate());
+    public void handle(UserNotExistException userNotExistException){
+        ResponseUtils.response(404,"用户不存在", userNotExistException.getDate());
     }
 }
