@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserHasExistHandler {
     @ExceptionHandler(UserHasExistException.class)
     @ResponseBody
-    public void handle(UserHasExistException userHasExistException){
-        ResponseUtils.response(409,"用户名已存在", userHasExistException.getData());
+    public ResponseUtils handle(UserHasExistException userHasExistException){
+        return ResponseUtils.response(409,"用户名已存在", userHasExistException.getData());
     }
 }

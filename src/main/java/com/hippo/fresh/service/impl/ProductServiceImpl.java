@@ -1,14 +1,15 @@
 package com.hippo.fresh.service.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.dao.ProductRepository;
+import com.hippo.fresh.exception.ProductNotExistException;
 import com.hippo.fresh.service.ProductService;
+import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -16,53 +17,40 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     private ProductRepository productRepository;
 
+    private JSONObject jsonObject;
 
     //根据商品id返回商品的需要信息
-    public Map<String,Object> findSomeInformationById(Long id){
-
-        Map<String, Object> res = new HashMap<>();
+    public ResponseUtils findSomeInformationById(Long id){
 
         //判断商品是否存在
         if(productRepository.existsById(id)) {
-
-            res.put("code", 200);
-            res.put("msg", "商品查找成功");
-            res.put("data",productRepository.findSomeInformationById(id));
+            return ResponseUtils.success("商品查找成功",productRepository.findSomeInformationById(id));
         }
         else
         {
-            res.put("code", 404);
-            res.put("msg", "商品查找失败");
+            jsonObject = new JSONObject();
+            jsonObject.put("id", id);
+            throw new ProductNotExistException(jsonObject);
         }
-
-        return res;
     }
 
     //根据商品id列表返回商品信息
-    public Map<String,Object> findAllById(List<Long> ids){
-        Map<String, Object> res = new HashMap<>();
+    public ResponseUtils findAllById(List<Long> ids){
 
         //id列表为空
         if(ids.isEmpty()){
-            res.put("code", 404);
-            res.put("msg", "商品查找失败");
-            return res;
+            throw new ProductNotExistException(null);
         }
 
         //id列表中存在无效id
        for(Long id:ids) {
             if (!productRepository.existsById(id)) {
-                res.put("code", 404);
-                res.put("msg", "商品查找失败");
-                return res;
+                throw new ProductNotExistException(null);
             }
         }
 
         //id列表商品均符合条件
-        res.put("code", 200);
-        res.put("msg", "商品查找成功");
-        res.put("data", productRepository.findAllById(ids));
-        return res;
+        return ResponseUtils.success("商品查找成功",productRepository.findAllById(ids));
     }
 
 

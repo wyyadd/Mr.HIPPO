@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ProductNotExistHandler {
     @ExceptionHandler(ProductNotExistException.class)
     @ResponseBody
-    public void handle(ProductNotExistException productNotExistException){
-        ResponseUtils.response(404,"商品查找失败", productNotExistException.getData());
+    public ResponseUtils handle(ProductNotExistException productNotExistException){
+        return ResponseUtils.response(404,"商品查找失败", productNotExistException.getData());
     }
 }
