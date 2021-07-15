@@ -20,7 +20,6 @@ jwt:
    expiration: 86400
    # 配置白名单（不需要认证）注意， 逗号之间不能有空格
    antMatchers: /api/user/login,/api/user/register/**,/api/product/**
-#   antMatchers: /api/user/register
    #springdata JPA配置
    jpa:
       database: MySQL

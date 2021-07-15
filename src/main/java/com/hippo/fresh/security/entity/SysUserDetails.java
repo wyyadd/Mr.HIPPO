@@ -14,11 +14,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.Entity;
 
 /**
  * 系统用户详情
  */
 @Data
+@Component
 @EqualsAndHashCode(callSuper = false)
 public class SysUserDetails extends User implements UserDetails, Serializable {
 	private static final long serialVersionUID = 1L;
