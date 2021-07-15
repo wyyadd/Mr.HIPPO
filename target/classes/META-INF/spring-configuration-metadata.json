@@ -1,0 +1,11 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "com.hippo.fresh.security.config.JWTConfig",
+      "sourceType": "com.hippo.fresh.security.config.JWTConfig"
+    }
+  ],
+  "properties": [],
+  "hints": []
+}
