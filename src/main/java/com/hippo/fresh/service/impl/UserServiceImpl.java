@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
             jsonObject = new JSONObject();
             jsonObject.put("id", newUser.getId());
             jsonObject.put("username", newUser.getUsername());
-            jsonObject.put("email", newUser.getPassword());
+            jsonObject.put("email", newUser.getEmail());
             return ResponseUtils.response(200,"注册成功", jsonObject);
         } else {
             jsonObject = new JSONObject();

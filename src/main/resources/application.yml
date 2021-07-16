@@ -1,29 +1,36 @@
 server:
-   port: 8080
+  port: 8080
 
 spring:
-   datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://47.106.193.0:3306/fresh1?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-      username: hippo
-      password: 2021Hippo
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/fresh1?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: hippo
+    password: 2021Hippo
+
+  data:
+    #springdata JPA配置
+    jpa:
+      database: MySQL
+      hibernate:
+          ddl-auto: update
+          show-sql: true
+
+    #ES JPA配置
+    elasticsearch:
+      host: localhost
+      port: 9200
 
 # JWT配置
 jwt:
-   # 密匙Key
-   secret: 2021Hippo
-   # HeaderKey
-   tokenHeader: Authorization
-   # Token前缀
-   tokenPrefix: Bearer
-   # 过期时间，单位秒, 86400代表一天
-   expiration: 86400
-   # 配置白名单（不需要认证）注意， 逗号之间不能有空格
-   antMatchers: /api/user/login,/api/user/register/**,/api/product/**,/api/product-list,/api/product-recommend
-   #springdata JPA配置
-   jpa:
-      database: MySQL
-      hibernate:
-         ddl-auto: update
-      show-sql: true
+  # 密匙Key
+  secret: 2021Hippo
+  # HeaderKey
+  tokenHeader: Authorization
+  # Token前缀
+  tokenPrefix: Bearer
+  # 过期时间，单位秒, 86400代表一天， 604800七天
+  expiration: 604800
+  # 配置白名单（不需要认证）注意， 逗号之间不能有空格
+  antMatchers: /api/user/login,/api/user/register/**,/api/product/**,/api/product-list,/api/product-recommend,/api/search
 

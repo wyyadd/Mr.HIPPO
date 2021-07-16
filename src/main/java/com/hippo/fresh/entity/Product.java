@@ -19,7 +19,7 @@ public class Product {
     private Long id;//商品id
 
     @Column
-    private Long categoryId;//商品目录id
+    private Integer categoryId;//商品目录id
 
     @Column
     private String name;//商品名称
@@ -43,6 +43,7 @@ public class Product {
     private Integer status;//商品状态，1-在售 2-下架
 
     @Column
+//    @Field(type = FieldType.Long, name = "salesAmount")
     private Long salesAmount;//商品销售量
 
     @Column

@@ -26,7 +26,7 @@ public class UserController {
     }
 
     //用户主页接口
-    @GetMapping("/information")
+    @PostMapping("/information")
     public ResponseUtils information(HttpServletRequest request) {
         //从token中获取id
         String token = request.getHeader(JWTConfig.tokenHeader);

@@ -33,40 +33,40 @@ public class CartController {
     private JSONObject jsonObject = new JSONObject();
 
 
-   //测试接口
-    @GetMapping("/test")
-    public ResponseUtils test(HttpServletRequest request) {
-
-        //从token中获取用户id
-        String token = request.getHeader(JWTConfig.tokenHeader);
-        Long userId = JWTTokenUtil.parseAccessToken(token).getId();
-
-//        Optional<Cart> cart  = cartRepository.findByUserIdAndProductId(30L,5L);
-
-//        List<Cart> cartlist =cartRepository.findByUserId(1L);
+//   //测试接口
+//    @GetMapping("/test")
+//    public ResponseUtils test(HttpServletRequest request) {
 //
-//        for(Cart c:cartlist){
-//            cartRepository.delete(c);
-//        }
-
-//        List<Cart> carts =cartRepository.findByUserId(1L);
+//        //从token中获取用户id
+//        String token = request.getHeader(JWTConfig.tokenHeader);
+//        Long userId = JWTTokenUtil.parseAccessToken(token).getId();
 //
-//        for(Cart c:carts){
-//            System.out.println(c.getId());
-//        }
+////        Optional<Cart> cart  = cartRepository.findByUserIdAndProductId(30L,5L);
+//
+////        List<Cart> cartlist =cartRepository.findByUserId(1L);
+////
+////        for(Cart c:cartlist){
+////            cartRepository.delete(c);
+////        }
+//
+////        List<Cart> carts =cartRepository.findByUserId(1L);
+////
+////        for(Cart c:carts){
+////            System.out.println(c.getId());
+////        }
+//
+////        if(cart.isPresent()){
+////            System.out.println(cart.get().getId());
+//////            int a = cartRepository.setProductQuantity(1L,666L);
+////            cart.get().setQuantity(777L);
+////            cartRepository.save(cart.get());
+////        }
+//
+//        return ResponseUtils.response(200, "测试成功！！！", jsonObject);
+//    }
 
-//        if(cart.isPresent()){
-//            System.out.println(cart.get().getId());
-////            int a = cartRepository.setProductQuantity(1L,666L);
-//            cart.get().setQuantity(777L);
-//            cartRepository.save(cart.get());
-//        }
 
-        return ResponseUtils.response(200, "测试成功！！！", jsonObject);
-    }
-
-
-    @GetMapping("/find")
+    @PostMapping("/find")
     public ResponseUtils find(HttpServletRequest request) {
 
         //从token中获取用户id

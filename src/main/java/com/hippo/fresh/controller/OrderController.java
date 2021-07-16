@@ -48,7 +48,7 @@ public class OrderController {
     private OrderitemRepository orderItemRepository;
 
     //测试接口
-    @GetMapping("/a")
+    @PostMapping("/a")
     public Map<String,Object> test1() {
         Map<String, Object> res = new HashMap<>();
         Optional<Order> order = orderRepository.findById(1L);
@@ -56,7 +56,7 @@ public class OrderController {
     }
 
     //测试接口
-    @GetMapping("/b")
+    @PostMapping("/b")
     public Map<String,Object> test2() {
         Map<String, Object> res = new HashMap<>();
         Optional<Receiver> order = receiverRepository.findById(1L);
@@ -84,7 +84,7 @@ public class OrderController {
 
 
     //订单信息获取接口
-    @GetMapping("/information")
+    @PostMapping("/information")
     public ResponseUtils information(@RequestBody HashMap<String,Object> map,HttpServletRequest request) {
 
         JSONObject jsonObject = new JSONObject();
@@ -118,7 +118,7 @@ public class OrderController {
     }
 
     //订单号列表获取接口
-    @GetMapping("/ids")
+    @PostMapping("/ids")
     public ResponseUtils ids(HttpServletRequest request) {
 
         //从token中获取用户id

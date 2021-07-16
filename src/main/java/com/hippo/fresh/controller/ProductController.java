@@ -2,9 +2,10 @@ package com.hippo.fresh.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.hippo.fresh.dao.ProductRepository;
+import com.hippo.fresh.search.SearchProduct;
 import com.hippo.fresh.exception.ServerInternalErrorException;
 import com.hippo.fresh.service.ProductService;
+import com.hippo.fresh.search.SearchProductService;
 import com.hippo.fresh.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,22 +16,27 @@ import java.util.*;
 @Slf4j
 public class ProductController {
 
-    @Autowired
     private ProductService productService;
 
+    private SearchProductService searchProductService;
+
     @Autowired
-    private ProductRepository productRepository;
+    public ProductController(SearchProductService searchProductService, ProductService productService){
+        this.searchProductService = searchProductService;
+        this.productService = productService;
+    }
 
     private JSONObject jsonObject;
+
     //单个商品显示接口
-    @GetMapping("/api/product/getone")
+    @PostMapping("/api/product/getone")
     public ResponseUtils getSomeInformationById(@RequestBody String idStr) {
         Long id = Long.valueOf(idStr);//先转换为string,再转换为Long
         return productService.findSomeInformationById(id);
     }
 
     //所有商品显示接口
-    @GetMapping("/api/product/getall")
+    @PostMapping("/api/product/getall")
     public ResponseUtils findAllById(@RequestBody Map<String,Object> map) {
         List<Long> LongIds = null;
         try {
@@ -48,10 +54,10 @@ public class ProductController {
     }
 
     //商品列表显示接口
-    @GetMapping("/api/product-list")
+    @PostMapping("/api/product-list")
     public ResponseUtils ProductList(@RequestBody String jsStr){
         //default paras
-        int page = 1; int pageNum = 10;
+        int page = 0; int pageNum = 10;
         String productName = null; Integer type = 0; Integer sort = 1;
         Integer order = 1; Integer upperBound = -1; Integer lowerBound = -1;
         //获取相关参数
@@ -76,7 +82,7 @@ public class ProductController {
     }
 
     //推荐商品接口
-    @GetMapping("/api/product-recommend")
+    @PostMapping("/api/product-recommend")
     public ResponseUtils RecommendProductList(@RequestBody String jsStr){
         int page = 1;
         int pageNum = 10;
@@ -92,5 +98,20 @@ public class ProductController {
         if(jsonObject.getInteger("type") != null)
             type = jsonObject.getInteger("type");
         return productService.GetProductList(page,pageNum,productName,type,1,1,-1,-1);
+    }
+
+    //搜索框下方推荐接口
+    @PostMapping("/api/product/search")
+    public List<SearchProduct> SearchProducts(@RequestParam(value = "query", required = false) String query){
+        System.out.println(query);
+        List<SearchProduct> products = searchProductService.processSearch(query) ;
+        return products;
+    }
+
+    //搜索关键词预测接口
+    @PostMapping("/api/product/suggestion")
+    public List<String> SearchSuggestion(@RequestParam(value = "query", required = false) String query){
+        List<String> suggestions = searchProductService.fetchSuggestions(query);
+        return suggestions;
     }
 }
