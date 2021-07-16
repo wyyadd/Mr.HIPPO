@@ -36,13 +36,27 @@ public class Orderitem {
     private String productPictureUrl;//商品图片url
 
     @Column
-    private double currentPrice;//商品加入订单时价格
+    private Double currentPrice;//商品加入订单时价格
+
 
     @Column
     private Long quantity;//订单中该商品数量
 
     @Column
-    private double totalPrice;//商品总价格
+    private Double totalPrice;//商品总价格
 
+    @Column
+    private String productDetails;//商品详情
+
+    public Orderitem(Long orderId, Long productId, String productName, String productPictureUrl,
+                     Double currentPrice, Long quantity, Double totalPrice) {
+        this.orderId = orderId;
+        this.productId = productId;
+        this.productName = productName;
+        this.productPictureUrl = productPictureUrl;
+        this.currentPrice = currentPrice;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
+    }
 
 }

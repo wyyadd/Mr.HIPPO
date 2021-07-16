@@ -1,6 +1,7 @@
 package com.hippo.fresh.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,20 +41,29 @@ public class Order {
     private Integer status ;//订单状态：0-已取消，1-未付款，2-已付款，3-已发货
 
     @Column
-    private double paymentMoney;//实际支付金额
+    private Double paymentMoney;//实际支付金额
 
     @Column
     private String paymentType;//支付类型
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp paymentTime;//支付时间
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp sendTime;//发货时间
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createTime;//创建时间
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp completeTime;//完成时间
+
+    public Order(Long userId) {
+        this.userId = userId;
+    }
+
 }
