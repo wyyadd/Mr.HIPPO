@@ -66,6 +66,7 @@ public class ProductServiceImpl  implements ProductService  {
             x.put("name",product.getName());
             x.put("price",product.getPrice());
             x.put("details",product.getDetail());
+            x.put("id",product.getId());
             products.add(x);
         }
 

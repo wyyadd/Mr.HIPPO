@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,7 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public interface ProductRepository  extends JpaRepository<Product,Long>,JpaSpecificationExecutor<Product>,PagingAndSortingRepository<Product,Long> {
+@Repository
+public interface ProductRepository  extends JpaRepository<Product,Long>,JpaSpecificationExecutor<Product>,PagingAndSortingRepository<Product,Long>{
 
     //根据id判断商品是否存在
     @Override
