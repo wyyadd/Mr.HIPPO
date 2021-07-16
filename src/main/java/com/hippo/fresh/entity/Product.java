@@ -1,5 +1,6 @@
 package com.hippo.fresh.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,7 @@ public class Product {
     private String pictureUrl;//商品图片url
 
     @Column
-    private double price;//商品单价
+    private Double price;//商品单价
 
     @Column
     private Long stock;//商品库存
@@ -45,8 +46,10 @@ public class Product {
     private Long salesAmount;//商品销售量
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createTime;//商品创建时间
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp updateTime;//商品更新时间
 }

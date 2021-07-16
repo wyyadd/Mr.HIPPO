@@ -23,6 +23,4 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     //增加user
     public User save(User user);
 
-
-
 }
