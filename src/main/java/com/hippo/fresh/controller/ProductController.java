@@ -9,8 +9,6 @@ import com.hippo.fresh.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -23,7 +21,7 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-
+    private JSONObject jsonObject;
     //单个商品显示接口
     @GetMapping("/api/product/getone")
     public ResponseUtils getSomeInformationById(@RequestBody String idStr) {
@@ -57,7 +55,7 @@ public class ProductController {
         String productName = null; Integer type = 0; Integer sort = 1;
         Integer order = 1; Integer upperBound = -1; Integer lowerBound = -1;
         //获取相关参数
-        JSONObject jsonObject = JSON.parseObject(jsStr);
+        jsonObject = JSON.parseObject(jsStr);
         if(jsonObject.getInteger("page") != null)
             page = jsonObject.getInteger("page");
         if(jsonObject.getInteger("page-num") != null)
@@ -75,5 +73,24 @@ public class ProductController {
         if(jsonObject.getInteger("lower-bound") != null)
             lowerBound = jsonObject.getInteger("lower-bound");
         return productService.GetProductList(page,pageNum,productName,type,sort,order,upperBound,lowerBound);
+    }
+
+    //推荐商品接口
+    @GetMapping("/api/product-recommend")
+    public ResponseUtils RecommendProductList(@RequestBody String jsStr){
+        int page = 1;
+        int pageNum = 10;
+        String productName = null; Integer type = 0;
+        //获取相关参数
+        jsonObject = JSON.parseObject(jsStr);
+        if(jsonObject.getInteger("page") != null)
+            page = jsonObject.getInteger("page");
+        if(jsonObject.getInteger("page-num") != null)
+            pageNum = jsonObject.getInteger("page-num");
+        if(jsonObject.getString("product-name") != null)
+            productName = jsonObject.getString("product-name");
+        if(jsonObject.getInteger("type") != null)
+            type = jsonObject.getInteger("type");
+        return productService.GetProductList(page,pageNum,productName,type,1,1,-1,-1);
     }
 }
