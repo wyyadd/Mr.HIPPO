@@ -12,7 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl  implements ProductService  {
@@ -39,21 +43,48 @@ public class ProductServiceImpl  implements ProductService  {
 
     //根据商品id列表返回商品信息
     public ResponseUtils findAllById(List<Long> ids){
+        JSONObject jsonObject = new JSONObject();
 
         //id列表为空
         if(ids.isEmpty()){
-            throw new ProductNotExistException(null);
+            throw new ProductNotExistException(jsonObject);
         }
 
         //id列表中存在无效id
-       for(Long id:ids) {
+        for(Long id:ids) {
             if (!productRepository.existsById(id)) {
-                throw new ProductNotExistException(null);
+                throw new ProductNotExistException(jsonObject);
             }
         }
-
         //id列表商品均符合条件
-        return ResponseUtils.success("商品查找成功",productRepository.findAllById(ids));
+        List<Map<String,Object>> products = new ArrayList<>();
+
+        for(Long id:ids){
+            Product product = productRepository.findById(id).get();
+            Map<String, Object> x = new HashMap<>();
+            x.put("pictureUrl",product.getPictureUrl());
+            x.put("name",product.getName());
+            x.put("price",product.getPrice());
+            x.put("details",product.getDetail());
+            products.add(x);
+        }
+
+        jsonObject.put("products",products);
+        return ResponseUtils.response(200, "商品查找成功", jsonObject);
+//        //id列表为空
+//        if(ids.isEmpty()){
+//            throw new ProductNotExistException(null);
+//        }
+//
+//        //id列表中存在无效id
+//       for(Long id:ids) {
+//            if (!productRepository.existsById(id)) {
+//                throw new ProductNotExistException(null);
+//            }
+//        }
+//
+//        //id列表商品均符合条件
+//        return ResponseUtils.success("商品查找成功",productRepository.findAllById(ids));
     }
 
 
