@@ -48,6 +48,7 @@ public class FreshApplication {
 		searchProductRepository.deleteAll();
 		searchProductRepository.saveAll(ConvertProduct(productRepository.findAll()));
 	}
+
 	//将商品类转换成搜索商品类（放在ES中）
 	private List<SearchProduct> ConvertProduct(List<Product> products){
 		List<SearchProduct> searchProducts = new ArrayList<>();

@@ -23,7 +23,7 @@ public class ElasticsearchClientConfig extends AbstractElasticsearchConfiguratio
         final ClientConfiguration clientConfiguration =
                 ClientConfiguration
                         .builder()
-                        .connectedTo("localhost:9200")
+                        .connectedTo("47.106.193.0:9200")
                         .build();
 
         return RestClients
