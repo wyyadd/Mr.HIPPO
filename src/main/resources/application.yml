@@ -16,10 +16,10 @@ spring:
           ddl-auto: update
           show-sql: true
 
-    #ES JPA配置
-    elasticsearch:
-      host: localhost
-      port: 9200
+#    #ES JPA配置
+#    elasticsearch:
+#      host: 47.106.193.0
+#      port: 9200
 
 # JWT配置
 jwt:

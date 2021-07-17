@@ -100,7 +100,7 @@ public class ProductController {
         return productService.GetProductList(page,pageNum,productName,type,1,1,-1,-1);
     }
 
-    //搜索框下方推荐接口
+    //模糊搜索接口
     @PostMapping("/api/product/search")
     public List<SearchProduct> SearchProducts(@RequestParam(value = "query", required = false) String query){
         System.out.println(query);
@@ -108,7 +108,7 @@ public class ProductController {
         return products;
     }
 
-    //搜索关键词预测接口
+    //搜索框下方推荐接口
     @PostMapping("/api/product/suggestion")
     public List<String> SearchSuggestion(@RequestParam(value = "query", required = false) String query){
         List<String> suggestions = searchProductService.fetchSuggestions(query);
