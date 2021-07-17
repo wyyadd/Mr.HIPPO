@@ -42,13 +42,14 @@ public class SearchProductService {
         searchProductRepository.saveAll(products);
     }
 
-    //搜索推荐功能
+    //fuzz搜索功能
     public List<SearchProduct> processSearch(String query) {
         // 1. Create query on multiple fields enabling fuzzy search
         QueryBuilder queryBuilder =
                 QueryBuilders
                         .multiMatchQuery(query, "name", "detail")
                         .fuzziness(Fuzziness.AUTO);
+//                          .matchPhrasePrefixQuery("name",query);
 
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withFilter(queryBuilder)
@@ -68,11 +69,12 @@ public class SearchProductService {
         return productMatches;
     }
 
-    //自动填充功能
+    //搜索推荐function
     public List<String> fetchSuggestions(String query) {
         QueryBuilder queryBuilder = QueryBuilders
-                .wildcardQuery("name", query+"*");
-
+//                .wildcardQuery("name", query+"*");
+                //由通配符查询改为前缀查询
+                .matchPhrasePrefixQuery("name",query);
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withFilter(queryBuilder)
                 .withPageable(PageRequest.of(0, 5))
