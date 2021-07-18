@@ -81,39 +81,34 @@ public class ProductController {
         return productService.GetProductList(page,pageNum,productName,type,sort,order,upperBound,lowerBound);
     }
 
-//    //推荐商品接口
-//    @PostMapping("/api/product-recommend")
-//    public ResponseUtils RecommendProductList(@RequestBody String jsStr){
-//        int page = 1;
-//        int pageNum = 10;
-//        String productName = null; Integer type = 0;
-//        //获取相关参数
-//        jsonObject = JSON.parseObject(jsStr);
-//        if(jsonObject.getInteger("page") != null)
-//            page = jsonObject.getInteger("page");
-//        if(jsonObject.getInteger("page-num") != null)
-//            pageNum = jsonObject.getInteger("page-num");
-//        if(jsonObject.getString("product-name") != null)
-//            productName = jsonObject.getString("product-name");
-//        if(jsonObject.getInteger("type") != null)
-//            type = jsonObject.getInteger("type");
-//        return productService.GetProductList(page,pageNum,productName,type,1,1,-1,-1);
-//    }
-
-    //模糊搜索接口
-    @PostMapping("/api/product/search")
-    public List<SearchProduct> SearchTest(@RequestBody(required = false) String jsStr){
-        List<SearchProduct> products = searchProductService.processSearch(jsStr);
-        return products;
+    //推荐商品接口
+    @PostMapping("/api/product/recommend")
+    public ResponseUtils RecommendProductList(@RequestBody String jsStr){
+        //获取相关参数
+        JSONObject jsonObject = JSON.parseObject(jsStr);
+        int page = (jsonObject.getInteger("page") == null ? 0 : jsonObject.getInteger("page"));
+        int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
+        String productName = jsonObject.getString("product-name");
+        int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
+        List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,type,1,1,Integer.MAX_VALUE,0);
+        return ResponseUtils.success("查找成功",products);
     }
 
     //模糊搜索接口
-//    @PostMapping("/api/product/search")
-//    public List<SearchProduct> SearchProducts(@RequestParam(value = "query", required = false) String query){
-//        System.out.println(query);
-//        List<SearchProduct> products = searchProductService.processSearch(query) ;
-//        return products;
-//    }
+    @PostMapping("/api/product/search")
+    public ResponseUtils SearchTest(@RequestBody(required = false) String jsStr){
+        JSONObject jsonObject = JSON.parseObject(jsStr);
+        int page = (jsonObject.getInteger("page") == null ? 0 : jsonObject.getInteger("page"));
+        int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
+        String productName = jsonObject.getString("product-name");
+        int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
+        int sort = (jsonObject.getInteger("sort") == null ? 1 : jsonObject.getInteger("sort"));
+        int order = (jsonObject.getInteger("order") == null ? 1 : jsonObject.getInteger("order"));
+        int upperBound = (jsonObject.getInteger("upper-bound") == null ? Integer.MAX_VALUE : jsonObject.getInteger("upper-bound"));
+        int lowerBound = (jsonObject.getInteger("lower-bound") == null ? 0 : jsonObject.getInteger("lower-bound"));
+        List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,type,sort,order,upperBound,lowerBound);
+        return ResponseUtils.success("查找成功",products);
+    }
 
     //搜索框下方推荐接口
     @PostMapping("/api/product/suggestion")
