@@ -3,6 +3,7 @@ package com.hippo.fresh.search;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.hippo.fresh.exception.ProductNotExistException;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.common.unit.Fuzziness;
@@ -103,6 +104,8 @@ public class SearchProductService {
         productHits.forEach(searchHit->{
             productMatches.add(searchHit.getContent());
         });
+        if(productMatches.size() == 0)
+            throw new ProductNotExistException(null);
         return productMatches;
     }
 
