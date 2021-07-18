@@ -34,5 +34,10 @@ public interface UserService {
     /** 用户主页 */
     public ResponseUtils information(Long userId);
 
+    /** 修改用户密码 */
+    public ResponseUtils passwordModify(Long userId,String oldPassword,String newPassword);
+
+    /** 修改用户个人信息*/
+    public ResponseUtils informationModify(Long userId,String username,String email,String phone);
 
 }

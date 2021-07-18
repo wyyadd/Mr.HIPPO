@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +70,9 @@ public class UserServiceImpl implements UserService {
         //如果用户名不存在，成功创建用户
         if (!existsUser) {
 //            System.out.println("true");
-            User newUser = userRepository.save(new User(username,bCryptPasswordEncoder.encode(password),email));
+            Timestamp createTime = new Timestamp(System.currentTimeMillis());
+            User newUser = userRepository.save(new User(username,bCryptPasswordEncoder.encode(password),email,createTime));
+            System.out.println(createTime);
             jsonObject = new JSONObject();
             jsonObject.put("id", newUser.getId());
             jsonObject.put("username", newUser.getUsername());
@@ -103,6 +106,60 @@ public class UserServiceImpl implements UserService {
         {
             jsonObject.put("id",userId);
             throw new UserNotExistException(jsonObject);
+        }
+    }
+
+    /** 修改用户密码 */
+    public ResponseUtils passwordModify(Long userId,String oldPassword,String newPassword){
+
+        jsonObject = new JSONObject();
+
+        Optional<User> u = userRepository.findById(userId);
+        if(!u.isPresent()){
+            jsonObject.put("id",userId);
+            throw new UserNotExistException(jsonObject);
+        }
+        //用户存在
+        else {
+            User user = u.get();
+            String password = user.getPassword();
+            //用户输入原始密码与数据库保持一致
+            if(bCryptPasswordEncoder.matches(oldPassword,password)){
+                user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+                userRepository.save(user);
+                return ResponseUtils.response(200,"用户密码修改成功", jsonObject);
+            }
+            else{
+                return ResponseUtils.response(404,"用户密码修改失败", jsonObject);
+            }
+        }
+    }
+
+    /** 修改用户个人信息*/
+    public ResponseUtils informationModify(Long userId,String username,String email,String phone){
+        jsonObject = new JSONObject();
+
+        Optional<User> u = userRepository.findById(userId);
+        if(!u.isPresent()){
+            jsonObject.put("id",userId);
+            throw new UserNotExistException(jsonObject);
+        }
+        //用户id存在
+        else {
+            User user = u.get();
+            Optional<User> existsUser = userRepository.findByUsername(username);
+            //新修改的用户名和他人相同
+            if(existsUser.isPresent()){
+                return ResponseUtils.response(404,"用户名已存在", jsonObject);
+            }
+            else{
+                user.setUsername(username);
+                user.setEmail(email);
+                user.setPhone(phone);
+                userRepository.save(user);
+                return ResponseUtils.response(200,"用户个人信息修改成功", jsonObject);
+            }
+
         }
     }
 
