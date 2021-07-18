@@ -102,15 +102,22 @@ public class ProductController {
 
     //模糊搜索接口
     @PostMapping("/api/product/search")
-    public List<SearchProduct> SearchProducts(@RequestParam(value = "query", required = false) String query){
-        System.out.println(query);
-        List<SearchProduct> products = searchProductService.processSearch(query) ;
+    public List<SearchProduct> SearchTest(@RequestBody(required = false) String jsStr){
+        List<SearchProduct> products = searchProductService.processSearch(jsStr);
         return products;
     }
 
+    //模糊搜索接口
+//    @PostMapping("/api/product/search")
+//    public List<SearchProduct> SearchProducts(@RequestParam(value = "query", required = false) String query){
+//        System.out.println(query);
+//        List<SearchProduct> products = searchProductService.processSearch(query) ;
+//        return products;
+//    }
+
     //搜索框下方推荐接口
     @PostMapping("/api/product/suggestion")
-    public List<String> SearchSuggestion(@RequestParam(value = "query", required = false) String query){
+    public List<String> SearchSuggestion(@RequestParam(value = "query") String query){
         List<String> suggestions = searchProductService.fetchSuggestions(query);
         return suggestions;
     }
