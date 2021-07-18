@@ -20,4 +20,5 @@ public interface ReceiverRepository extends JpaRepository<Receiver, Long> {
 
     @Override
     Optional<Receiver> findById(Long aLong);
+
 }
