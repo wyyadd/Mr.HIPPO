@@ -47,4 +47,11 @@ public class User<name> {
         this.password = password;
         this.email = email;
     }
+
+    public User(String username, String password, String email, Timestamp createTime) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.createTime = createTime;
+    }
 }

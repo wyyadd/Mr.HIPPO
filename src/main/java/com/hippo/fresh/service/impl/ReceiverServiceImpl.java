@@ -39,6 +39,7 @@ public class ReceiverServiceImpl  implements ReceiverService {
 
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         Timestamp updateTime = new Timestamp(System.currentTimeMillis());
+        System.out.println(createTime);
 
         Receiver  receiver = receiverRepository.save(new Receiver(userId,name,phone,province,city,district,address,
                 createTime,updateTime));
@@ -53,7 +54,6 @@ public class ReceiverServiceImpl  implements ReceiverService {
         jsonObject.put("address",receiver.getAddress());
         return ResponseUtils.response(200, "收件人添加成功", jsonObject);
     }
-
 
     /**根据收件人id删除收件人*/
     public ResponseUtils delete(Long userId,Long receiverId){
