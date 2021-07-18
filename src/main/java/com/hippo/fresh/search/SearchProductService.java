@@ -55,18 +55,7 @@ public class SearchProductService {
         searchProductRepository.saveAll(products);
     }
     //fuzz搜索功能
-    public List<SearchProduct> processSearch(String jsStr) {
-        //获取相关参数
-        JSONObject jsonObject = JSON.parseObject(jsStr);
-        int page = (jsonObject.getInteger("page") == null ? 0 : jsonObject.getInteger("page"));
-        int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
-        String productName = jsonObject.getString("product-name");
-        int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
-        int sort = (jsonObject.getInteger("sort") == null ? 1 : jsonObject.getInteger("sort"));
-        int order = (jsonObject.getInteger("order") == null ? 1 : jsonObject.getInteger("order"));
-        int upperBound = (jsonObject.getInteger("upper-bound") == null ? Integer.MAX_VALUE : jsonObject.getInteger("upper-bound"));
-        int lowerBound = (jsonObject.getInteger("lower-bound") == null ? 0 : jsonObject.getInteger("lower-bound"));
-
+    public List<SearchProduct> processSearch(int page, int pageNum, String productName, int type, int sort, int order, int upperBound, int lowerBound) {
         // 1. Create query on multiple fields enabling fuzzy search
         BoolQueryBuilder boolQueryBuilder =
                 QueryBuilders.boolQuery()
