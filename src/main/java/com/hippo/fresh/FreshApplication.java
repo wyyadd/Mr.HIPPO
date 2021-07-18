@@ -52,10 +52,12 @@ public class FreshApplication {
 	//将商品类转换成搜索商品类（放在ES中）
 	private List<SearchProduct> ConvertProduct(List<Product> products){
 		List<SearchProduct> searchProducts = new ArrayList<>();
+		int i = 0;
 		for(Product p : products){
 			searchProducts.add(SearchProduct.builder()
-					.id(UUID.randomUUID().toString())
+					.id(String.valueOf(i++))
 					.productId(p.getId())
+					.categoryId(p.getCategoryId())
 					.name(p.getName())
 					.price(p.getPrice())
 					.detail(p.getDetail())
