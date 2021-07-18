@@ -10,9 +10,8 @@ import java.util.Optional;
 
 public interface ReceiverRepository extends JpaRepository<Receiver, Long> {
 
-    //根据用户id查找该用户所有收件人全部信息
-    List<Receiver> findAllByUserId(Long aLong);
-
+    //根据用户id查找该用户所有收件人信息
+    List<Receiver> findAllByUserIdOrderByUpdateTimeDesc(Long aLong);
 
     //根据用户id查找该用户所有收件人部分信息：id、name、address、phone
     @Query(value = "select id,name,address,phone from receiver x where x.user_id =?1 ",nativeQuery = true)
