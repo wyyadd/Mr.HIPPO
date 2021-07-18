@@ -1,14 +1,26 @@
 package com.hippo.fresh.search;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
+import org.elasticsearch.search.aggregations.metrics.Sum;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -41,18 +53,43 @@ public class SearchProductService {
     public void createProductIndexBulk(final List<SearchProduct> products) {
         searchProductRepository.saveAll(products);
     }
-
     //fuzz搜索功能
-    public List<SearchProduct> processSearch(String query) {
+    public List<SearchProduct> processSearch(String jsStr) {
+        //获取相关参数
+        JSONObject jsonObject = JSON.parseObject(jsStr);
+        int page = (jsonObject.getInteger("page") == null ? 0 : jsonObject.getInteger("page"));
+        int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
+        String productName = jsonObject.getString("product-name");
+        int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
+        int sort = (jsonObject.getInteger("sort") == null ? 1 : jsonObject.getInteger("sort"));
+        int order = (jsonObject.getInteger("order") == null ? 1 : jsonObject.getInteger("order"));
+        int upperBound = (jsonObject.getInteger("upper-bound") == null ? Integer.MAX_VALUE : jsonObject.getInteger("upper-bound"));
+        int lowerBound = (jsonObject.getInteger("lower-bound") == null ? 0 : jsonObject.getInteger("lower-bound"));
+
         // 1. Create query on multiple fields enabling fuzzy search
-        QueryBuilder queryBuilder =
-                QueryBuilders
-                        .multiMatchQuery(query, "name", "detail")
-                        .fuzziness(Fuzziness.AUTO);
-//                          .matchPhrasePrefixQuery("name",query);
+        BoolQueryBuilder boolQueryBuilder =
+                QueryBuilders.boolQuery()
+//                        .must(QueryBuilders.matchPhrasePrefixQuery(productName, "name"))
+                          .must(QueryBuilders.matchPhraseQuery("name",productName))
+                          .must(QueryBuilders.multiMatchQuery(productName, "name","detail").fuzziness(Fuzziness.AUTO))
+//                        .must(QueryBuilders.functionScoreQuery(QueryBuilders.matchPhraseQuery("name",productName),ScoreFunctionBuilders.weightFactorFunction(300)))
+//                        .must(QueryBuilders.functionScoreQuery(QueryBuilders.matchPhraseQuery("detail",productName),ScoreFunctionBuilders.weightFactorFunction(10)))
+//                        .must(QueryBuilders.functionScoreQuery(QueryBuilders.matchPhraseQuery("category_id",type),ScoreFunctionBuilders.weightFactorFunction(3000)))
+//                        .scoreMode(FunctionScoreQuery.ScoreMode.SUM).setMinScore(10))
+                        //价格区间匹配
+                        .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
+
+        if(type != 0)
+            //商品种类匹配
+            boolQueryBuilder.must(QueryBuilders.matchQuery("categoryId",type));
+
 
         Query searchQuery = new NativeSearchQueryBuilder()
-                .withFilter(queryBuilder)
+                .withFilter(boolQueryBuilder)
+                //排序方式匹配
+                .withSort(SortBuilders.fieldSort(sort == 1 ? "salesAmount" : "price").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
+                //分页匹配
+                .withPageable(PageRequest.of(page,pageNum))
                 .build();
 
         // 2. Execute search
@@ -74,10 +111,14 @@ public class SearchProductService {
         QueryBuilder queryBuilder = QueryBuilders
 //                .wildcardQuery("name", query+"*");
                 //由通配符查询改为前缀查询
+//                .prefixQuery()
                 .matchPhrasePrefixQuery("name",query);
+
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withFilter(queryBuilder)
-                .withPageable(PageRequest.of(0, 5))
+                //按照销售额降序
+                .withSort(SortBuilders.fieldSort("salesAmount").order(SortOrder.DESC))
+                .withPageable(PageRequest.of(0, 7))
                 .build();
 
         SearchHits<SearchProduct> searchSuggestions =
