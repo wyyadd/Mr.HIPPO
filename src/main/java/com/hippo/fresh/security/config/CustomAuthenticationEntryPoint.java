@@ -1,4 +1,5 @@
 package com.hippo.fresh.security.config;
+
 import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -8,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 
 @Component
 class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
