@@ -124,4 +124,10 @@ public class OrderServiceImpl  implements OrderService {
     }
 
 
+    /**根据订单id查找该用户所有订单*/
+    public List<Order> findAllByUserId(Long userId){
+        return orderRepository.findAllByUserId(userId);
+    }
+
+
 }
