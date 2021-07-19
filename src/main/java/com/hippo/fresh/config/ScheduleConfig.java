@@ -33,10 +33,9 @@ public class ScheduleConfig {
     //将商品类转换成搜索商品类（放在ES中）
     public static List<SearchProduct> ConvertProduct(List<Product> products){
         List<SearchProduct> searchProducts = new ArrayList<>();
-        int i = 0;
         for(Product p : products){
             searchProducts.add(SearchProduct.builder()
-                    .id(String.valueOf(i++))
+                    .id(String.valueOf(p.getId()))
                     .productId(p.getId())
                     .categoryId(p.getCategoryId())
                     .name(p.getName())

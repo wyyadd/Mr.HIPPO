@@ -103,6 +103,7 @@ public class SearchProductService {
             BoolQueryBuilder boolQueryBuilder =
                     QueryBuilders.boolQuery()
 //                        .must(QueryBuilders.matchPhrasePrefixQuery(productName, "name"))
+                          .must(QueryBuilders.termQuery("status",1))
                           .must(QueryBuilders.matchPhraseQuery("name",productName))
                           .must(QueryBuilders.multiMatchQuery(productName, "name","detail").fuzziness(Fuzziness.AUTO))
                             //价格区间匹配
