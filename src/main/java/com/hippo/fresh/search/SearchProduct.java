@@ -37,4 +37,11 @@ public class SearchProduct{
 
     @Field(type = FieldType.Long, name = "salesAmount")
     private Long salesAmount;//商品销售量
+
+    @Field(type = FieldType.Text, name = "pictureUrl")
+    private String pictureUrl;
+
+    @Field(type = FieldType.Integer, name = "status")
+    private Integer status;//商品目录id
+
 }
