@@ -1,10 +1,6 @@
 package com.hippo.fresh.search;
 
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.exception.ProductNotExistException;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -12,8 +8,6 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
-import org.elasticsearch.search.aggregations.metrics.Sum;
-import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -64,7 +57,7 @@ public class SearchProductService {
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
-                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(20)));
+                            QueryBuilders.matchPhraseQuery("name", productName).analyzer("ik_smart"), ScoreFunctionBuilders.weightFactorFunction(20)));
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
                             QueryBuilders.matchPhraseQuery("detail", productName), ScoreFunctionBuilders.weightFactorFunction(10)));
@@ -104,7 +97,7 @@ public class SearchProductService {
                     QueryBuilders.boolQuery()
 //                        .must(QueryBuilders.matchPhrasePrefixQuery(productName, "name"))
                           .must(QueryBuilders.termQuery("status",1))
-                          .must(QueryBuilders.matchPhraseQuery("name",productName))
+                          .must(QueryBuilders.matchPhraseQuery("name",productName).analyzer("ik_smart"))
                           .must(QueryBuilders.multiMatchQuery(productName, "name","detail").fuzziness(Fuzziness.AUTO))
                             //价格区间匹配
                             .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
