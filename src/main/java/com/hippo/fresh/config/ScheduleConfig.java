@@ -23,7 +23,9 @@ public class ScheduleConfig {
     ProductRepository productRepository;
 
     //every two hour to update index
-    @Scheduled(cron = "0 0 0/2 * * *")
+//    @Scheduled(cron = "0 0 0/2 * * *")
+    @Scheduled(cron = "0 0/5 * * * *")
+
     public void ElasticSearchSchedule(){
         searchProductRepository.saveAll(ConvertProduct(productRepository.findAll()));
     }
