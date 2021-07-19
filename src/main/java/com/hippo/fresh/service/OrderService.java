@@ -21,4 +21,7 @@ public interface OrderService {
     /**根据用户id查找该用户所有订单ids*/
     public List<Long> findIdsByUserId(Long userId);
 
+    /**删除订单*/
+    public boolean deleteOrder(Long userId,Long orderId);
+
 }

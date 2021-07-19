@@ -1,5 +1,6 @@
 package com.hippo.fresh.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.dao.OrderitemRepository;
 import com.hippo.fresh.dao.OrderRepository;
@@ -112,6 +113,7 @@ public class OrderController {
                 jsonObject.put("receiver",receiverService.findSomeInformationByUserId(userId));
                 jsonObject.put("orderStatus",order.get().getStatus());
                 jsonObject.put("orderPaymentMoney",order.get().getPaymentMoney());
+                jsonObject.put("orderId",order.get().getId());
                 return ResponseUtils.response(200, "订单信息获取成功",jsonObject);
             }
         }
@@ -129,6 +131,28 @@ public class OrderController {
         jsonObject.put("orderIds",orderService.findIdsByUserId(userId));
 
         return ResponseUtils.response(200, "订单号列表获取成功", jsonObject);
+    }
+
+
+    //订单删除接口
+    @PostMapping("/delete")
+    public ResponseUtils deleteOrder(HttpServletRequest request,@RequestBody String jsStr) {
+
+        //从token中获取用户id
+        String token = request.getHeader(JWTConfig.tokenHeader);
+        Long userId = JWTTokenUtil.parseAccessToken(token).getId();
+
+        //获取订单id
+        JSONObject jsonObject = JSON.parseObject(jsStr);
+        Long orederId = jsonObject.getLong("orderId");
+
+        if(orderService.deleteOrder(userId,orederId)){
+            return ResponseUtils.response(200, "订单删除成功", jsonObject);
+        }
+        else{
+            return ResponseUtils.response(404, "订单删除失败", jsonObject);
+        }
+
     }
 
 }

@@ -33,6 +33,7 @@ public class OrderitemServiceImpl implements OrderitemService {
             Map<String, Object> x = new HashMap<>();
             x.put("name",orderitem.getProductName());
             x.put("price",orderitem.getCurrentPrice());
+            x.put("quantity",orderitem.getQuantity());
             x.put("pictureUrl",orderitem.getProductPictureUrl());
             x.put("details",orderitem.getProductDetails());
             res.add(x);
