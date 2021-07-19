@@ -26,6 +26,8 @@ spring:
     properties:
       mail:
         smtp:
+          socketFactory:
+            port: 465
           ssl:
             enable: true
   data:
