@@ -21,9 +21,13 @@ public class UserController {
 
     //用户注册接口
     @PostMapping("/register")
-    public ResponseUtils register(@RequestBody String jsonObject) {
-        User user = JSON.parseObject(jsonObject, User.class);
-        return userService.register(user.getUsername(), user.getPassword(), user.getEmail());
+    public ResponseUtils register(@RequestBody JSONObject jsonObject) {
+        String username = jsonObject.getString("username");
+        String password = jsonObject.getString("password");
+        String email = jsonObject.getString("email");
+        String verCode = jsonObject.getString("verCode");
+        Long verCodeId = jsonObject.getLong("verCodeId");
+        return userService.register(username,password,email,verCode,verCodeId);
     }
 
     //用户主页接口
