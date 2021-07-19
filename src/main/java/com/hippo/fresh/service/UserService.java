@@ -26,7 +26,7 @@ public interface UserService {
 
     /** 用户注册
      * @return*/
-    public ResponseUtils register(String username, String password, String email);
+    public ResponseUtils register(String username, String password, String email,String verCode,Long verCodeId);
 
     /** 用户登录 */
 //    public Map<String,Object> login(String username, String password);

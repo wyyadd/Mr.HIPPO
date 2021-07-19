@@ -30,6 +30,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 开启方法权限注解
 public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	private  CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
 	/**
 	 * 无权限处理类
 	 */
@@ -122,6 +125,9 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 禁用session（使用Token认证）
 		http.headers().cacheControl(); // 禁用缓存
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager())); //// 添加JWT过滤器
+
+		http.exceptionHandling()
+				.authenticationEntryPoint(customAuthenticationEntryPoint);
 	}
 
 	@Bean

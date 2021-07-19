@@ -3,8 +3,10 @@ package com.hippo.fresh.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.dao.ReceiverRepository;
 import com.hippo.fresh.dao.UserRepository;
+import com.hippo.fresh.dao.VerificationRepository;
 import com.hippo.fresh.entity.Receiver;
 import com.hippo.fresh.entity.User;
+import com.hippo.fresh.entity.Verification;
 import com.hippo.fresh.exception.UserHasExistException;
 import com.hippo.fresh.exception.UserNotExistException;
 import com.hippo.fresh.service.UserService;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ReceiverRepository receiverRepository;
+
+    @Autowired
+    private VerificationRepository verificationRepository;
 
     private JSONObject jsonObject;
     @Override
@@ -59,30 +65,61 @@ public class UserServiceImpl implements UserService {
         return user.isPresent();
     }
 
+
+    /** 判断验证码是否过期：5分钟 */
+    public boolean verCodeInvalid(Timestamp createTime, Timestamp nowTime) {
+        SimpleDateFormat timeformat = new SimpleDateFormat("yyyy-MM-dd,HH:mm:ss");
+        long t1 = createTime.getTime();
+        long t2 = nowTime.getTime();
+        int hours=(int) ((t2 - t1)/(1000*60*60));
+        int minutes=(int) (((t2 - t1)/1000-hours*(60*60))/60);
+//        int second=(int) ((t2 - t1)/1000-hours*(60*60)-minutes*60);
+        if(minutes >= 5)
+            return true;
+        else
+            return false;
+    }
+
     /** 用户注册
      * @return json
      * */
-    public ResponseUtils register(String username, String password, String email) {
+    public ResponseUtils register(String username, String password,String email,String verCode,Long verCodeId) {
 
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<Verification> verification = verificationRepository.findById(verCodeId);
 
-        boolean existsUser = user.isPresent();
-        //如果用户名不存在，成功创建用户
-        if (!existsUser) {
-//            System.out.println("true");
-            Timestamp createTime = new Timestamp(System.currentTimeMillis());
-            User newUser = userRepository.save(new User(username,bCryptPasswordEncoder.encode(password),email,createTime));
-            System.out.println(createTime);
-            jsonObject = new JSONObject();
-            jsonObject.put("id", newUser.getId());
-            jsonObject.put("username", newUser.getUsername());
-            jsonObject.put("email", newUser.getEmail());
-            return ResponseUtils.response(200,"注册成功", jsonObject);
-        } else {
-            jsonObject = new JSONObject();
-            jsonObject.put("username",username);
-            jsonObject.put("email",email);
-            throw new UserHasExistException(jsonObject);
+        //用户没有点击获取验证码，前端传入的verCodeId = 0
+        if(!verification.isPresent()){
+            return ResponseUtils.response(401,"请获取验证码后再进行登录", jsonObject);
+        }
+        //用户已获取验证码
+        else{
+            if(verCodeInvalid(verification.get().getCreateTime(),new Timestamp(System.currentTimeMillis()))){
+                return ResponseUtils.response(402,"验证码过期，请重新获取验证码", jsonObject);
+            }
+            else{
+                //验证码错误
+                if(!verCode.equals(verification.get().getVerCode())){
+                    return ResponseUtils.response(403,"验证码错误，请重新输入验证码", jsonObject);
+                }
+                else{
+                    Optional<User> user = userRepository.findByUsername(username);
+
+                    boolean existsUser = user.isPresent();
+                    //用户名已存在
+                    if (existsUser) {
+                        jsonObject = new JSONObject();
+                        throw new UserHasExistException(jsonObject);
+                    }
+                    //验证码正确，用户名不存在，成功注册用户
+                    else {
+                        Timestamp createTime = new Timestamp(System.currentTimeMillis());
+                        User newUser = userRepository.save(new User(username,bCryptPasswordEncoder.encode(password),email,createTime));
+                        jsonObject = new JSONObject();
+                        return ResponseUtils.response(200,"注册成功", jsonObject);
+                    }
+                }
+
+            }
         }
     }
 
