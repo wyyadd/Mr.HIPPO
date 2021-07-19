@@ -66,6 +66,9 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserAuthenticationProvider userAuthenticationProvider;
 
+	@Autowired
+	private  CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
 //	/**
 //	 * 用户权限注解
 //	 */
@@ -111,10 +114,10 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(JWTConfig.antMatchers.split(",")).permitAll()// 获取白名单（不进行权限验证）
 				.anyRequest().authenticated() // 其他的需要登陆后才能访问
 				.and().httpBasic().authenticationEntryPoint(userNotLoginHandler) // 配置未登录处理类
-				.and().formLogin().loginProcessingUrl("/api/user/login")// 配置登录URL
+				.and().formLogin().loginProcessingUrl("/api/user/login")
 				.successHandler(userLoginSuccessHandler) // 配置登录成功处理类
 				.failureHandler(userLoginFailureHandler) // 配置登录失败处理类
-				.and().logout().logoutUrl("/api/logout/submit")// 配置登出地址
+				.and().logout().logoutUrl("/")// 配置登出地址
 				.logoutSuccessHandler(userLogoutSuccessHandler) // 配置用户登出处理类
 				.and().exceptionHandling().accessDeniedHandler(userAccessDeniedHandler)// 配置没有权限处理类
 				.and().cors() // 开启跨域
@@ -122,6 +125,8 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 禁用session（使用Token认证）
 		http.headers().cacheControl(); // 禁用缓存
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager())); //// 添加JWT过滤器
+		http.exceptionHandling()
+				.authenticationEntryPoint(customAuthenticationEntryPoint);
 	}
 
 	@Bean
@@ -134,5 +139,6 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
+
 
 }

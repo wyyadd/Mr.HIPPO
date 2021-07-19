@@ -57,7 +57,7 @@ public class SearchProductService {
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
-                            QueryBuilders.matchPhraseQuery("name", productName).analyzer("ik_smart"), ScoreFunctionBuilders.weightFactorFunction(20)));
+                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(20)));
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
                             QueryBuilders.matchPhraseQuery("detail", productName), ScoreFunctionBuilders.weightFactorFunction(10)));
@@ -97,7 +97,7 @@ public class SearchProductService {
                     QueryBuilders.boolQuery()
 //                        .must(QueryBuilders.matchPhrasePrefixQuery(productName, "name"))
                           .must(QueryBuilders.termQuery("status",1))
-                          .must(QueryBuilders.matchPhraseQuery("name",productName).analyzer("ik_smart"))
+                          .must(QueryBuilders.matchPhraseQuery("name",productName))
                           .must(QueryBuilders.multiMatchQuery(productName, "name","detail").fuzziness(Fuzziness.AUTO))
                             //价格区间匹配
                             .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
