@@ -3,12 +3,14 @@ package com.hippo.fresh.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.hippo.fresh.security.UserAuthenticationProvider;
@@ -18,9 +20,16 @@ import com.hippo.fresh.handler.UserLoginFailureHandler;
 import com.hippo.fresh.handler.UserLoginSuccessHandler;
 import com.hippo.fresh.handler.UserLogoutSuccessHandler;
 import com.hippo.fresh.handler.UserNotLoginHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 系统安全核心配置
@@ -107,14 +116,18 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.exceptionHandling()
+				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 		http.authorizeRequests() // 权限配置
 				.antMatchers(JWTConfig.antMatchers.split(",")).permitAll()// 获取白名单（不进行权限验证）
 				.anyRequest().authenticated() // 其他的需要登陆后才能访问
 				.and().httpBasic().authenticationEntryPoint(userNotLoginHandler) // 配置未登录处理类
-				.and().formLogin().loginProcessingUrl("/api/user/login")// 配置登录URL
+				.and().formLogin().loginProcessingUrl("/api/user/login")
+//				.and().formLogin()
 				.successHandler(userLoginSuccessHandler) // 配置登录成功处理类
 				.failureHandler(userLoginFailureHandler) // 配置登录失败处理类
-				.and().logout().logoutUrl("/api/logout/submit")// 配置登出地址
+				.and().logout().logoutUrl("/")// 配置登出地址
+//				.and().logout()
 				.logoutSuccessHandler(userLogoutSuccessHandler) // 配置用户登出处理类
 				.and().exceptionHandling().accessDeniedHandler(userAccessDeniedHandler)// 配置没有权限处理类
 				.and().cors() // 开启跨域
@@ -122,6 +135,7 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 禁用session（使用Token认证）
 		http.headers().cacheControl(); // 禁用缓存
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager())); //// 添加JWT过滤器
+
 	}
 
 	@Bean
@@ -134,5 +148,6 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
+
 
 }
