@@ -78,7 +78,7 @@ public class UserController {
         String phone = jsonObject.getString("phone");
         String email = jsonObject.getString("email");
 
-        return userService.informationModify(userId,username,phone,email);
+        return userService.informationModify(userId,username,email,phone);
     }
 
 }
