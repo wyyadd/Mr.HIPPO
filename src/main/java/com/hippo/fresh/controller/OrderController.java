@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/order")
@@ -154,5 +151,30 @@ public class OrderController {
         }
 
     }
+
+
+    //获取全部订单信息接口
+    @PostMapping("/all/information")
+    public ResponseUtils allInformation(HttpServletRequest request) {
+
+        JSONObject jsonObject = new JSONObject();
+
+        //从token中获取用户id
+        String token = request.getHeader(JWTConfig.tokenHeader);
+        Long userId = JWTTokenUtil.parseAccessToken(token).getId();
+
+        List<Map<String,Object>> res1 = new ArrayList<>();
+        List<Order> orders = orderService.findAllByUserId(userId);
+        for(Order order:orders) {
+            Map<String,Object> res2 = new HashMap<>();
+            res2.put("orderItem",orderItemService.findSomeInformationByOrderId(order.getId()));
+            res2.put("orderStatus",order.getStatus());
+            res2.put("orderPaymentMoney",order.getPaymentMoney());
+            res2.put("orderId",order.getId());
+            res1.add(res2);
+        }
+        jsonObject.put("orders",res1);
+        return ResponseUtils.response(200, "订单信息获取成功",jsonObject);
+            }
 
 }

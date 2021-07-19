@@ -25,9 +25,11 @@ spring:
     default-encoding: UTF-8
     properties:
       mail:
+        debug: true
         smtp:
+          auth: true
           socketFactory:
-            port: 465
+            port: 587
           ssl:
             enable: true
   data:
