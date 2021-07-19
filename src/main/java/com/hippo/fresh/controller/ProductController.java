@@ -2,6 +2,7 @@ package com.hippo.fresh.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.hippo.fresh.exception.ProductNotExistException;
 import com.hippo.fresh.search.SearchProduct;
 import com.hippo.fresh.exception.ServerInternalErrorException;
 import com.hippo.fresh.service.ProductService;
@@ -54,6 +55,8 @@ public class ProductController {
     }
 
     //商品列表显示接口
+    //接口弃用
+    @Deprecated
     @PostMapping("/api/product-list")
     public ResponseUtils ProductList(@RequestBody String jsStr){
         //default paras
@@ -84,36 +87,35 @@ public class ProductController {
     //推荐商品接口
     @PostMapping("/api/product/recommend")
     public ResponseUtils RecommendProductList(@RequestBody String jsStr){
+        if(jsStr == null){
+            throw new ProductNotExistException(null);
+        }
         //获取相关参数
         JSONObject jsonObject = JSON.parseObject(jsStr);
         int page = (jsonObject.getInteger("page") == null ? 0 : jsonObject.getInteger("page"));
         int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
         String productName = jsonObject.getString("product-name");
         int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
-        List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,type,1,1,Integer.MAX_VALUE,0);
+        List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,type,1,0,Integer.MAX_VALUE,0);
         return ResponseUtils.success("查找成功",products);
     }
 
     //模糊搜索接口
     @PostMapping("/api/product/search")
-    public ResponseUtils SearchTest(@RequestBody(required = false) String jsStr){
+    public ResponseUtils SearchTest(@RequestBody String jsStr){
+        if(jsStr == null){
+            throw new ProductNotExistException(null);
+        }
         JSONObject jsonObject = JSON.parseObject(jsStr);
         int page = (jsonObject.getInteger("page") == null ? 0 : jsonObject.getInteger("page"));
         int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
         String productName = jsonObject.getString("product-name");
         int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
         int sort = (jsonObject.getInteger("sort") == null ? 1 : jsonObject.getInteger("sort"));
-        int order = (jsonObject.getInteger("order") == null ? 1 : jsonObject.getInteger("order"));
+        int order = (jsonObject.getInteger("order") == null ? 0 : jsonObject.getInteger("order"));
         int upperBound = (jsonObject.getInteger("upper-bound") == null ? Integer.MAX_VALUE : jsonObject.getInteger("upper-bound"));
         int lowerBound = (jsonObject.getInteger("lower-bound") == null ? 0 : jsonObject.getInteger("lower-bound"));
         List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,type,sort,order,upperBound,lowerBound);
         return ResponseUtils.success("查找成功",products);
-    }
-
-    //搜索框下方推荐接口
-    @PostMapping("/api/product/suggestion")
-    public List<String> SearchSuggestion(@RequestParam(value = "query") String query){
-        List<String> suggestions = searchProductService.fetchSuggestions(query);
-        return suggestions;
     }
 }

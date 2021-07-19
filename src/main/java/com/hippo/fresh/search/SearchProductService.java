@@ -57,30 +57,70 @@ public class SearchProductService {
     //fuzz搜索功能
     public List<SearchProduct> processSearch(int page, int pageNum, String productName, int type, int sort, int order, int upperBound, int lowerBound) {
         // 1. Create query on multiple fields enabling fuzzy search
-        BoolQueryBuilder boolQueryBuilder =
-                QueryBuilders.boolQuery()
+        Query searchQuery;
+        //如果没有指定排序顺序，就按照权重排序
+        if(order != 0) {
+            //对商品名，商品详情， 商品id赋予不同的权值
+            List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
+            filterFunctionBuilders.add(
+                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(20)));
+            filterFunctionBuilders.add(
+                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                            QueryBuilders.matchPhraseQuery("detail", productName), ScoreFunctionBuilders.weightFactorFunction(10)));
+            filterFunctionBuilders.add(
+                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                            QueryBuilders.matchPhraseQuery("categoryId", type), ScoreFunctionBuilders.weightFactorFunction(5)));
+            FunctionScoreQueryBuilder.FilterFunctionBuilder[] builders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[filterFunctionBuilders.size()];
+            filterFunctionBuilders.toArray(builders);
+            FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(builders)
+                    .scoreMode(FunctionScoreQuery.ScoreMode.SUM)
+                    .setMinScore(2);
+
+
+            BoolQueryBuilder boolQueryBuilder =
+                    QueryBuilders.boolQuery()
+                            //商品状态匹配
+                            .must(QueryBuilders.termQuery("status",1))
+                            //价格区间匹配
+                            .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
+
+            if (type != 0)
+                //商品种类匹配
+                boolQueryBuilder.must(QueryBuilders.matchQuery("categoryId", type));
+
+            searchQuery = new NativeSearchQueryBuilder()
+                    .withQuery(functionScoreQueryBuilder)
+                    .withFilter(boolQueryBuilder)
+                    //排序方式匹配
+                    .withSort(SortBuilders.fieldSort(sort == 1 ? "salesAmount" : "price").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
+                    //分页匹配
+                    .withPageable(PageRequest.of(page, pageNum))
+                    .build();
+        }
+        else {
+            //否则按照给定顺序排序
+            BoolQueryBuilder boolQueryBuilder =
+                    QueryBuilders.boolQuery()
 //                        .must(QueryBuilders.matchPhrasePrefixQuery(productName, "name"))
                           .must(QueryBuilders.matchPhraseQuery("name",productName))
                           .must(QueryBuilders.multiMatchQuery(productName, "name","detail").fuzziness(Fuzziness.AUTO))
-//                        .must(QueryBuilders.functionScoreQuery(QueryBuilders.matchPhraseQuery("name",productName),ScoreFunctionBuilders.weightFactorFunction(300)))
-//                        .must(QueryBuilders.functionScoreQuery(QueryBuilders.matchPhraseQuery("detail",productName),ScoreFunctionBuilders.weightFactorFunction(10)))
-//                        .must(QueryBuilders.functionScoreQuery(QueryBuilders.matchPhraseQuery("category_id",type),ScoreFunctionBuilders.weightFactorFunction(3000)))
-//                        .scoreMode(FunctionScoreQuery.ScoreMode.SUM).setMinScore(10))
-                        //价格区间匹配
-                        .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
+                            //价格区间匹配
+                            .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
 
-        if(type != 0)
-            //商品种类匹配
-            boolQueryBuilder.must(QueryBuilders.matchQuery("categoryId",type));
+            if (type != 0)
+                //商品种类匹配
+                boolQueryBuilder.must(QueryBuilders.matchQuery("categoryId", type));
 
 
-        Query searchQuery = new NativeSearchQueryBuilder()
-                .withFilter(boolQueryBuilder)
-                //排序方式匹配
-                .withSort(SortBuilders.fieldSort(sort == 1 ? "salesAmount" : "price").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
-                //分页匹配
-                .withPageable(PageRequest.of(page,pageNum))
-                .build();
+            searchQuery = new NativeSearchQueryBuilder()
+                    .withFilter(boolQueryBuilder)
+                    //排序方式匹配
+                    .withSort(SortBuilders.fieldSort(sort == 1 ? "salesAmount" : "price").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
+                    //分页匹配
+                    .withPageable(PageRequest.of(page, pageNum))
+                    .build();
+        }
 
         // 2. Execute search
         SearchHits<SearchProduct> productHits =
