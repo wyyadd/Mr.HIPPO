@@ -37,7 +37,7 @@ public class ScheduleConfig {
             searchProducts.add(SearchProduct.builder()
                     .id(String.valueOf(p.getId()))
                     .productId(p.getId())
-                    .categoryId(p.getCategoryId())
+                    .categoryFirst(p.getCategoryFirst())
                     .name(p.getName())
                     .price(p.getPrice())
                     .detail(p.getDetail())

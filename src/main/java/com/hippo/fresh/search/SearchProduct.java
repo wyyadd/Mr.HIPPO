@@ -22,8 +22,11 @@ public class SearchProduct{
     @Field(type = FieldType.Long, name = "productId")
     private Long productId;//商品id
 
-    @Field(type = FieldType.Integer, name = "categoryId")
-    private Integer categoryId;//商品目录id
+    @Field(type = FieldType.Text, name = "categoryFirst")
+    private String categoryFirst;//商品一级目录
+
+    @Field(type = FieldType.Text, name = "categorySecond")
+    private String categorySecond;//商品二级目录
 
     @Field(type = FieldType.Text, name = "name", analyzer = "pinyin")
     private String name;//商品名

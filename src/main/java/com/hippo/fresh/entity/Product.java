@@ -19,7 +19,10 @@ public class Product {
     private Long id;//商品id
 
     @Column
-    private Integer categoryId;//商品目录id
+    private String categoryFirst;//商品一级目录
+
+    @Column
+    private String categorySecond;//商品二级目录
 
     @Column
     private String name;//商品名称
