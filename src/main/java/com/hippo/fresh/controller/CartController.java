@@ -97,7 +97,6 @@ public class CartController {
         //解析products
         List<Map<String,Object>> products = (List<Map<String,Object>>)map.get("products");
 
-
         //先删除该用户所有原有购物车信息
        List<Cart> carts =cartRepository.findByUserId(userId);
 

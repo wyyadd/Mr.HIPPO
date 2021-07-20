@@ -74,6 +74,7 @@ public class UpLoadController {
             String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/upload/" + directory + newFileName;
             jsonObject.put("url",url);
 
+            //修改用户头像
             User user = userRepository.findById(userId).get();
             user.setAvatar(url);
             userRepository.save(user);
