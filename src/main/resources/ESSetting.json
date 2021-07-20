@@ -1,0 +1,20 @@
+{
+  "index": {
+    "number_of_shards": "1",
+    "number_of_replicas": "0"
+  },
+  "analysis": {
+    "analyzer": {
+      "ik_pinyin_analyzer": {
+        "type": "custom",
+        "tokenizer": "ik_smart",
+        "filter": ["my_pinyin"]
+      }
+    },
+    "filter": {
+      "my_pinyin": {
+        "type": "pinyin"
+      }
+    }
+  }
+}

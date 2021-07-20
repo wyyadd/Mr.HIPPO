@@ -4,7 +4,7 @@
     <!-- 定义参数常量，便于后面直接用${name}来获取value值 -->
     <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %logger{50} - %msg%n"/>
     <!--<property name="log.filePath" value="${catalina.base}/logs/webapps"/>-->
-    <property name="log.filePath" value="/home/wyyadd/IdeaProjects/logs"/>
+    <property name="log.filePath" value="/freshLogs"/>
     <property name="log.maxHistory" value="30"/>
 
     <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
@@ -111,6 +111,36 @@
         </filter>
     </appender>
 
+    <!-- 4.打印warn级别日志的设置 -->
+    <appender name="warnAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- 当天生成的日志文件的路径 -->
+        <file>${log.filePath}/warn.log</file>
+        <!-- 设置基于时间(每天)的滚动策略，也就是将日志内容按照日期来写入到相应的文件中-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 当天之前的每天生成的日志文件的路径 -->
+            <fileNamePattern>${log.filePath}/warn/warn-%d{yyyy-MM-dd}.log.gz
+            </fileNamePattern>
+            <!-- 最大历史保存文件的数量，只保存最近30天的日志文件，超出的会被删除-->
+            <maxHistory>${log.maxHistory}</maxHistory>
+        </rollingPolicy>
+        <!-- 过去使用layout，现在都推荐使用encoder
+             作用一：将日志信息转换（格式化）为字符串
+             作用二：然后写入到文件中-->
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <!-- 过滤掉非info级别的信息 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>warn</level>
+            <onMatch>ACCEPT</onMatch>
+            <!-- 作用是拒绝写入所有与<level>不匹配的日志信息，
+            也就是非info级别的日志信息都不会被写入到日志文件中 -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
     <!-- 监听com.hippo.fresh包下所有类产生的日志信息
         不设置additivity属性，那么默认additivity = true,表示会继承父级（在这里它的父级只有root一个），
         也就是会将日志信息也输出在控制台，但级别会覆盖父级的级别，也就是在控制台会输出debug级别及以上的日志信息 -->
@@ -121,6 +151,8 @@
         <appender-ref ref="infoAppender"/>
         <!-- 表示按照errorAppender的设置去打印日志 -->
         <appender-ref ref="errorAppender"/>
+        <!-- 表示按照warnAppender的设置去打印日志 -->
+        <appender-ref ref="warnAppender"/>
     </logger>
 
     <!-- 也是一种<logger>,是所有<logger>的父级 -->

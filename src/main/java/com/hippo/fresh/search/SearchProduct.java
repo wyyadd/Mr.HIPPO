@@ -14,7 +14,7 @@ import org.springframework.data.elasticsearch.annotations.*;
 @NoArgsConstructor
 //指定ES中index名
 @Document(indexName = "productindex")
-//@Setting(settingPath = "ESSetting.json")
+@Setting(settingPath = "ESSetting.json")
 public class SearchProduct{
     @Id // 主键
     private String id;//id
@@ -28,13 +28,13 @@ public class SearchProduct{
     @Field(type = FieldType.Text, name = "categorySecond")
     private String categorySecond;//商品二级目录
 
-    @Field(type = FieldType.Text, name = "name", analyzer = "pinyin")
+    @Field(type = FieldType.Text, name = "name", analyzer = "ik_pinyin_analyzer")
     private String name;//商品名
 
     @Field(type = FieldType.Double, name = "price")
     private Double price;//商品单价
 
-    @Field(type = FieldType.Text, name = "detail", analyzer = "pinyin")
+    @Field(type = FieldType.Text, name = "detail")
     private String detail;//商品详细信息
 
     @Field(type = FieldType.Long, name = "salesAmount")
