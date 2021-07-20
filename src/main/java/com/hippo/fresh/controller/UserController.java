@@ -38,11 +38,11 @@ public class UserController {
     public ResponseUtils information(HttpServletRequest request) {
         //从token中获取id
         String token = request.getHeader(JWTConfig.tokenHeader);
-        log.info(token);
-        System.out.println(token==null);
-        System.out.println(token);
+//        log.info(token);
+//        System.out.println(token==null);
+//        System.out.println(token);
         Long id = JWTTokenUtil.parseAccessToken(token).getId();
-        System.out.println(id);
+//        System.out.println(id);
         return userService.information(id);
     }
 
