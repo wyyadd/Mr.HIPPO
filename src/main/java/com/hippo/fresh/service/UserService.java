@@ -26,7 +26,7 @@ public interface UserService {
 
     /** 用户注册
      * @return*/
-    public ResponseUtils register(String username, String password, String email);
+    public ResponseUtils register(String username, String password, String email,String verCode,Long verCodeId);
 
     /** 用户登录 */
 //    public Map<String,Object> login(String username, String password);
@@ -34,5 +34,10 @@ public interface UserService {
     /** 用户主页 */
     public ResponseUtils information(Long userId);
 
+    /** 修改用户密码 */
+    public ResponseUtils passwordModify(Long userId,String oldPassword,String newPassword);
+
+    /** 修改用户个人信息*/
+    public ResponseUtils informationModify(Long userId,String username,String email,String phone);
 
 }

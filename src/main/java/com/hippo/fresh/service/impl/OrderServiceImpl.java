@@ -4,9 +4,11 @@ package com.hippo.fresh.service.impl;
 import com.hippo.fresh.dao.OrderRepository;
 import com.hippo.fresh.dao.OrderitemRepository;
 import com.hippo.fresh.dao.ProductRepository;
+import com.hippo.fresh.dao.UserRepository;
 import com.hippo.fresh.entity.Order;
 import com.hippo.fresh.entity.Orderitem;
 import com.hippo.fresh.entity.Product;
+import com.hippo.fresh.entity.User;
 import com.hippo.fresh.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,9 @@ public class OrderServiceImpl  implements OrderService {
 
     @Autowired
     private OrderitemRepository orderitemRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /** 判断订单id查找用户id */
     public Optional<Order> findById(Long id){
@@ -84,6 +89,44 @@ public class OrderServiceImpl  implements OrderService {
             ids.add(order.getId());
         }
         return ids;
+    }
+
+
+    /**删除订单*/
+    public boolean deleteOrder(Long userId,Long orderId){
+        Optional<User> user = userRepository.findById(userId);
+        //用户不存在
+        if(!user.isPresent()){
+            return false;
+        }
+        //用户存在
+        else{
+            Optional<Order> order = orderRepository.findById(orderId);
+            //订单不存在
+            if(!order.isPresent()){
+                return false;
+            }
+            else{
+                //订单中用户id 与 token中解析出不一致
+                if(!order.get().getUserId().equals(userId)){
+                    return false;
+                }
+                //成功删除
+                else{
+                    Order newOrder = order.get();
+                    newOrder.setStatus(0);
+                    orderRepository.save(newOrder);
+                    return true;
+                }
+            }
+
+        }
+    }
+
+
+    /**根据订单id查找该用户所有订单*/
+    public List<Order> findAllByUserId(Long userId){
+        return orderRepository.findAllByUserId(userId);
     }
 
 

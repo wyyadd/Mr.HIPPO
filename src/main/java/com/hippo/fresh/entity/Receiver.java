@@ -50,4 +50,16 @@ public class Receiver {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp updateTime;//收件人信息更新时间
 
+    public Receiver(Long userId, String name, String phone, String province, String city, String district, String address, Timestamp createTime, Timestamp updateTime) {
+        this.userId = userId;
+        this.name = name;
+        this.phone = phone;
+        this.province = province;
+        this.city = city;
+        this.district = district;
+        this.address = address;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
+
 }

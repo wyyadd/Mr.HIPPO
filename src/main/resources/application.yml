@@ -1,13 +1,37 @@
+#上传文件保存位置，必须保留最后的 /
+file-save-path: D:/upload/
+
 server:
   port: 8080
 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/fresh1?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://47.106.193.0:3306/fresh1?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: hippo
     password: 2021Hippo
 
+  #上传文件相关配置
+  servlet:
+    multipart:
+      max-request-size: 3GB  # 上传文件总的最大值 默认10MB
+      max-file-size: 1GB #单个文件最大值 默认10MB
+
+  #email相关配置
+  mail:
+    host: smtp.qq.com
+    username: 459155106@qq.com #邮箱账号
+    password: qbkfeghgrpfybgge  #注意：POP3/SMTP服务授权码，不是密码
+    default-encoding: UTF-8
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          socketFactory:
+            port: 587
+          ssl:
+            enable: true
   data:
     #springdata JPA配置
     jpa:
@@ -32,5 +56,6 @@ jwt:
   # 过期时间，单位秒, 86400代表一天， 604800七天
   expiration: 604800
   # 配置白名单（不需要认证）注意， 逗号之间不能有空格
-  antMatchers: /api/user/login,/api/user/register/**,/api/product/**,/api/product-list,/api/product-recommend,/api/search
+  antMatchers: /api/user/login,/api/user/register/**,/api/product/**,/api/product-list,/api/product-recommend,/api/search,/upload/**,/api/verification/**
+
 

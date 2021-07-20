@@ -20,7 +20,5 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     public Optional<User> findByUsername(String username);
 
-    //增加user
-    public User save(User user);
 
 }
