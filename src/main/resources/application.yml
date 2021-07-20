@@ -1,5 +1,9 @@
-#上传文件保存位置，必须保留最后的 /
-file-save-path: D:/upload/
+#文件上传地址配置
+file:
+  #服务器地址
+  uploadurl: "/upload/"
+  #本地地址
+  localurl: "D:/upload/"
 
 server:
   port: 8080
