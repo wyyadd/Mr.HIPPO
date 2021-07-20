@@ -4,7 +4,6 @@ import com.hippo.fresh.exception.ProductNotExistException;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
@@ -25,7 +24,7 @@ import java.util.List;
 @Service
 public class SearchProductService {
     static final String PRODUCT_INDEX = "productindex";
-////    public List<IndexedObjectInformation> createProductIndexBulk(final List<SearchProduct> searchProducts);
+    ////    public List<IndexedObjectInformation> createProductIndexBulk(final List<SearchProduct> searchProducts);
 ////    public String createProductIndex(SearchProduct searchProduct);
 //    public void createProductIndexBulk(final List<SearchProduct> products);
 ////    public void createProductIndex(final SearchProduct product);
@@ -47,34 +46,34 @@ public class SearchProductService {
     public void createProductIndexBulk(final List<SearchProduct> products) {
         searchProductRepository.saveAll(products);
     }
+
     //fuzz搜索功能
     public List<SearchProduct> processSearch(int page, int pageNum, String productName, int type, int sort, int order, int upperBound, int lowerBound) {
         // 1. Create query on multiple fields enabling fuzzy search
         Query searchQuery;
         //如果没有指定排序顺序，就按照权重排序
-        if(order != 0) {
-            //对商品名，商品详情， 商品id赋予不同的权值
+        if (order == 0) {
+//            //对商品名，商品详情， 商品id赋予不同的权值
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
-                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(20)));
+                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(30)));
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
-                            QueryBuilders.matchPhraseQuery("detail", productName), ScoreFunctionBuilders.weightFactorFunction(10)));
-            filterFunctionBuilders.add(
-                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(
-                            QueryBuilders.matchPhraseQuery("categoryId", type), ScoreFunctionBuilders.weightFactorFunction(5)));
+                            QueryBuilders.matchPhraseQuery("detail", productName), ScoreFunctionBuilders.weightFactorFunction(5)));
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] builders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[filterFunctionBuilders.size()];
             filterFunctionBuilders.toArray(builders);
             FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(builders)
                     .scoreMode(FunctionScoreQuery.ScoreMode.SUM)
                     .setMinScore(2);
 
-
             BoolQueryBuilder boolQueryBuilder =
                     QueryBuilders.boolQuery()
                             //商品状态匹配
-                            .must(QueryBuilders.termQuery("status",1))
+                            .must(QueryBuilders.termQuery("status", 1))
+                            //对商品名，商品详情， 商品id赋予不同的权值
+//                            .must(QueryBuilders.matchPhraseQuery("name",productName).boost(4))
+//                            .must(QueryBuilders.matchPhraseQuery("detail",productName).boost(2))
                             //价格区间匹配
                             .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
 
@@ -90,15 +89,14 @@ public class SearchProductService {
                     //分页匹配
                     .withPageable(PageRequest.of(page, pageNum))
                     .build();
-        }
-        else {
+        } else {
             //否则按照给定顺序排序
             BoolQueryBuilder boolQueryBuilder =
                     QueryBuilders.boolQuery()
 //                        .must(QueryBuilders.matchPhrasePrefixQuery(productName, "name"))
-                          .must(QueryBuilders.termQuery("status",1))
-                          .must(QueryBuilders.matchPhraseQuery("name",productName))
-                          .must(QueryBuilders.multiMatchQuery(productName, "name","detail").fuzziness(Fuzziness.AUTO))
+                            .must(QueryBuilders.termQuery("status", 1))
+                            .must(QueryBuilders.matchPhraseQuery("name", productName))
+                            .must(QueryBuilders.multiMatchQuery(productName, "name", "detail").fuzziness(Fuzziness.AUTO))
                             //价格区间匹配
                             .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
 
@@ -124,40 +122,39 @@ public class SearchProductService {
 
         // 3. Map searchHits to product list
         List<SearchProduct> productMatches = new ArrayList<SearchProduct>();
-        productHits.forEach(searchHit->{
+        productHits.forEach(searchHit -> {
             productMatches.add(searchHit.getContent());
         });
-        if(productMatches.size() == 0)
+        if (productMatches.size() == 0)
             throw new ProductNotExistException(null);
         return productMatches;
     }
+}
 
     //搜索推荐function
-    public List<String> fetchSuggestions(String query) {
-        QueryBuilder queryBuilder = QueryBuilders
-//                .wildcardQuery("name", query+"*");
-                //由通配符查询改为前缀查询
-//                .prefixQuery()
-                .matchPhrasePrefixQuery("name",query);
-
-        Query searchQuery = new NativeSearchQueryBuilder()
-                .withFilter(queryBuilder)
-                //按照销售额降序
-                .withSort(SortBuilders.fieldSort("salesAmount").order(SortOrder.DESC))
-                .withPageable(PageRequest.of(0, 7))
-                .build();
-
-        SearchHits<SearchProduct> searchSuggestions =
-                elasticsearchOperations.search(searchQuery,
-                        SearchProduct.class,
-                        IndexCoordinates.of(PRODUCT_INDEX));
-
-        List<String> suggestions = new ArrayList<String>();
-
-        searchSuggestions.getSearchHits().forEach(searchHit->{
-            suggestions.add(searchHit.getContent().getName());
-        });
-        return suggestions;
-    }
-
-}
+//    public List<String> fetchSuggestions(String query) {
+//        QueryBuilder queryBuilder = QueryBuilders
+////                .wildcardQuery("name", query+"*");
+//                //由通配符查询改为前缀查询
+////                .prefixQuery()
+//                .matchPhrasePrefixQuery("name",query);
+//
+//        Query searchQuery = new NativeSearchQueryBuilder()
+//                .withFilter(queryBuilder)
+//                //按照销售额降序
+//                .withSort(SortBuilders.fieldSort("salesAmount").order(SortOrder.DESC))
+//                .withPageable(PageRequest.of(0, 7))
+//                .build();
+//
+//        SearchHits<SearchProduct> searchSuggestions =
+//                elasticsearchOperations.search(searchQuery,
+//                        SearchProduct.class,
+//                        IndexCoordinates.of(PRODUCT_INDEX));
+//
+//        List<String> suggestions = new ArrayList<String>();
+//
+//        searchSuggestions.getSearchHits().forEach(searchHit->{
+//            suggestions.add(searchHit.getContent().getName());
+//        });
+//        return suggestions;
+//    }

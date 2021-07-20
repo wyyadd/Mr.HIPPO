@@ -45,23 +45,6 @@ public class OrderController {
     @Autowired
     private OrderitemRepository orderItemRepository;
 
-    //测试接口
-    @PostMapping("/a")
-    public Map<String,Object> test1() {
-        Map<String, Object> res = new HashMap<>();
-        Optional<Order> order = orderRepository.findById(1L);
-        return res;
-    }
-
-    //测试接口
-    @PostMapping("/b")
-    public Map<String,Object> test2() {
-        Map<String, Object> res = new HashMap<>();
-        Optional<Receiver> order = receiverRepository.findById(1L);
-        res.put("1",order.get());
-        return res;
-    }
-
     //订单创建接口
     @PostMapping("/generation")
     public ResponseUtils generation(@RequestBody Map<String,Object> map, HttpServletRequest request) {
