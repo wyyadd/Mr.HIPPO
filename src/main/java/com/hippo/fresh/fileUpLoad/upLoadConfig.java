@@ -11,8 +11,13 @@ public class upLoadConfig implements WebMvcConfigurer {
      * 图片保存路径，自动从yml文件中获取数据
      *   示例： D:/upload/
      */
-    @Value("${file-save-path}")
-    private String fileSavePath;
+    //本地地址
+    @Value("${file.localurl}")
+    private String localPath;
+
+    //服务器地址
+    @Value("${file.uploadurl}")
+    private String uploadPath;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -23,6 +28,6 @@ public class upLoadConfig implements WebMvcConfigurer {
          * 注意：D:/upload/ 后面的 “/”一定要带上
          */
         registry.addResourceHandler("/upload/**")
-                .addResourceLocations("file:"+fileSavePath);
+                .addResourceLocations("file:"+uploadPath);
     }
 }

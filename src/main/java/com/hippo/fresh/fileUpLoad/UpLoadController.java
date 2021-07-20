@@ -18,10 +18,17 @@ public class UpLoadController {
     //时间格式化
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd/");
 
-    //图片保存路径，自动从yml文件中获取数据
-    //示例： D:/upload/
-    @Value("${file-save-path}")
-    private String fileSavePath;
+   //图片保存路径，自动从yml文件中获取数据
+   //示例： D:/upload/
+
+    //本地地址
+    @Value("${file.localurl}")
+    private String localPath;
+
+    //服务器地址
+    @Value("${file.uploadurl}")
+    private String uploadPath;
+
 
 
     @PostMapping("/upload")
@@ -30,7 +37,7 @@ public class UpLoadController {
         String directory = simpleDateFormat.format(new Date());
 
         //2.文件保存目录  D:/upload/2021/07/18/   如果目录不存在，则创建
-        File dir = new File(fileSavePath + directory);
+        File dir = new File(uploadPath + directory);
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -40,7 +47,7 @@ public class UpLoadController {
         String newFileName= UUID.randomUUID().toString().replaceAll("-", "")+suffix;
 
         //4.创建这个新文件
-        File newFile = new File(fileSavePath + directory + newFileName);
+        File newFile = new File(uploadPath + directory + newFileName);
 
         //5.文件上传
         try {
