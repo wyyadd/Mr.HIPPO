@@ -38,10 +38,10 @@ public class FreshApplication {
 //		elasticsearchOperations.indexOps(SearchProduct.class).delete();
 //	}
 
-	//从数据库中读出商品信息写到ES中
+//	从数据库中读出商品信息写到ES中
 	@PostConstruct
 	public void buildIndex() {
-		elasticsearchOperations.indexOps(SearchProduct.class).refresh();
+//		elasticsearchOperations.indexOps(SearchProduct.class).refresh();
 //		searchProductRepository.deleteAll();
 		searchProductRepository.saveAll(ScheduleConfig.ConvertProduct(productRepository.findAll()));
 	}

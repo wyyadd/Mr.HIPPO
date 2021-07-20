@@ -91,7 +91,6 @@ public class UserServiceImpl implements UserService {
 
         if(user.isPresent()) {
             List<Receiver> allReceiver = receiverRepository.findAllByUserId(userId);
-
             jsonObject.put("id", user.get().getId());
             jsonObject.put("username", user.get().getUsername());
             jsonObject.put("email", user.get().getEmail());
