@@ -13,6 +13,8 @@ public class FreshApplicationTests {
 	private SearchProductRepository searchProductRepository;
 
 	@Test
-	public void contextLoads() {}
+	public void contextLoads() {
+		searchProductRepository.deleteAll();
+	}
 
 }

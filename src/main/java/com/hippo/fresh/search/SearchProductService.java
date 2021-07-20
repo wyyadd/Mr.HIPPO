@@ -57,7 +57,8 @@ public class SearchProductService {
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
-                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(40)));
+                              QueryBuilders.matchPhrasePrefixQuery("name",productName), ScoreFunctionBuilders.weightFactorFunction(50)));
+//                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(50)));
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
                             QueryBuilders.matchPhraseQuery("detail", productName), ScoreFunctionBuilders.weightFactorFunction(5)));
@@ -66,7 +67,7 @@ public class SearchProductService {
                             QueryBuilders.matchPhraseQuery("categoryFirst", productName), ScoreFunctionBuilders.weightFactorFunction(10)));
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
-                            QueryBuilders.matchPhraseQuery("categorySecond", productName), ScoreFunctionBuilders.weightFactorFunction(20)));
+                            QueryBuilders.matchPhraseQuery("categorySecond", productName), ScoreFunctionBuilders.weightFactorFunction(15)));
 
             //Combine
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] builders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[filterFunctionBuilders.size()];
@@ -99,9 +100,9 @@ public class SearchProductService {
                     QueryBuilders.boolQuery()
 //                        .must(QueryBuilders.matchPhrasePrefixQuery(productName, "name"))
                             .must(QueryBuilders.termQuery("status", 1))
-                            .must(QueryBuilders.matchPhraseQuery("name", productName))
-                            .must(QueryBuilders.multiMatchQuery(productName, "name", "detail","categoryFirst","categorySecond")
-                                    .fuzziness(Fuzziness.AUTO))
+                            .must(QueryBuilders.matchPhrasePrefixQuery("name", productName))
+//                            .must(QueryBuilders.multiMatchQuery(productName, "name", "detail","categoryFirst","categorySecond")
+//                                    .fuzziness(Fuzziness.AUTO))
                             //价格区间匹配
                             .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
 
