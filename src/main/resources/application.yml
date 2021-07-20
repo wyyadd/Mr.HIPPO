@@ -44,6 +44,9 @@ spring:
           ddl-auto: update
           show-sql: true
 
+
+
+
 #    #ES JPA配置
 #    elasticsearch:
 #      host: 47.106.193.0
@@ -62,4 +65,6 @@ jwt:
   # 配置白名单（不需要认证）注意， 逗号之间不能有空格
   antMatchers: /api/user/login,/api/user/register/**,/api/product/**,/api/product-list,/api/product-recommend,/api/search,/upload/**,/api/verification/**
 
-
+  #logging setting
+logging:
+  config: classpath:logback-spring.xml

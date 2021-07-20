@@ -95,8 +95,8 @@ public class ProductController {
         int page = (jsonObject.getInteger("page") == null ? 0 : jsonObject.getInteger("page"));
         int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
         String productName = jsonObject.getString("product-name");
-        int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
-        List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,type,1,0,Integer.MAX_VALUE,0);
+//        int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
+        List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,1,0,Integer.MAX_VALUE,0);
         return ResponseUtils.success("查找成功",products);
     }
 
@@ -110,12 +110,12 @@ public class ProductController {
         int page = (jsonObject.getInteger("page") == null ? 0 : jsonObject.getInteger("page"));
         int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
         String productName = jsonObject.getString("product-name");
-        int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
+//        int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
         int sort = (jsonObject.getInteger("sort") == null ? 1 : jsonObject.getInteger("sort"));
         int order = (jsonObject.getInteger("order") == null ? 0 : jsonObject.getInteger("order"));
         int upperBound = (jsonObject.getInteger("upper-bound") == null ? Integer.MAX_VALUE : jsonObject.getInteger("upper-bound"));
         int lowerBound = (jsonObject.getInteger("lower-bound") == null ? 0 : jsonObject.getInteger("lower-bound"));
-        List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,type,sort,order,upperBound,lowerBound);
+        List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,sort,order,upperBound,lowerBound);
         return ResponseUtils.success("查找成功",products);
     }
 }
