@@ -38,6 +38,7 @@ public class ScheduleConfig {
                     .id(String.valueOf(p.getId()))
                     .productId(p.getId())
                     .categoryFirst(p.getCategoryFirst())
+                    .categorySecond(p.getCategorySecond())
                     .name(p.getName())
                     .price(p.getPrice())
                     .detail(p.getDetail())

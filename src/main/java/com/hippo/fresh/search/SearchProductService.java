@@ -48,7 +48,7 @@ public class SearchProductService {
     }
 
     //fuzz搜索功能
-    public List<SearchProduct> processSearch(int page, int pageNum, String productName, int type, int sort, int order, int upperBound, int lowerBound) {
+    public List<SearchProduct> processSearch(int page, int pageNum, String productName,int sort, int order, int upperBound, int lowerBound) {
         // 1. Create query on multiple fields enabling fuzzy search
         Query searchQuery;
         //如果没有指定排序顺序，就按照权重排序
@@ -57,10 +57,18 @@ public class SearchProductService {
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
-                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(30)));
+                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(40)));
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
                             QueryBuilders.matchPhraseQuery("detail", productName), ScoreFunctionBuilders.weightFactorFunction(5)));
+            filterFunctionBuilders.add(
+                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                            QueryBuilders.matchPhraseQuery("categoryFirst", productName), ScoreFunctionBuilders.weightFactorFunction(10)));
+            filterFunctionBuilders.add(
+                    new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                            QueryBuilders.matchPhraseQuery("categorySecond", productName), ScoreFunctionBuilders.weightFactorFunction(20)));
+
+            //Combine
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] builders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[filterFunctionBuilders.size()];
             filterFunctionBuilders.toArray(builders);
             FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(builders)
@@ -77,10 +85,6 @@ public class SearchProductService {
                             //价格区间匹配
                             .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
 
-            if (type != 0)
-                //商品种类匹配
-                boolQueryBuilder.must(QueryBuilders.matchQuery("categoryId", type));
-
             searchQuery = new NativeSearchQueryBuilder()
                     .withQuery(functionScoreQueryBuilder)
                     .withFilter(boolQueryBuilder)
@@ -96,14 +100,10 @@ public class SearchProductService {
 //                        .must(QueryBuilders.matchPhrasePrefixQuery(productName, "name"))
                             .must(QueryBuilders.termQuery("status", 1))
                             .must(QueryBuilders.matchPhraseQuery("name", productName))
-                            .must(QueryBuilders.multiMatchQuery(productName, "name", "detail").fuzziness(Fuzziness.AUTO))
+                            .must(QueryBuilders.multiMatchQuery(productName, "name", "detail","categoryFirst","categorySecond")
+                                    .fuzziness(Fuzziness.AUTO))
                             //价格区间匹配
                             .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
-
-            if (type != 0)
-                //商品种类匹配
-                boolQueryBuilder.must(QueryBuilders.matchQuery("categoryId", type));
-
 
             searchQuery = new NativeSearchQueryBuilder()
                     .withFilter(boolQueryBuilder)
