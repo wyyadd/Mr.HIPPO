@@ -1,5 +1,7 @@
 package com.hippo.fresh.fileUpLoad;
 
+import com.alibaba.fastjson.JSONObject;
+import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +34,9 @@ public class UpLoadController {
 
 
     @PostMapping("/upload")
-    public Object upload(MultipartFile file, HttpServletRequest request){
+    public ResponseUtils upload(MultipartFile file, HttpServletRequest request){
+        JSONObject jsonObject = new JSONObject();
+
         //1.文件保存地址的后半段目录：  2021/07/18/
         String directory = simpleDateFormat.format(new Date());
 
@@ -54,11 +58,12 @@ public class UpLoadController {
             file.transferTo(newFile);
             //可访问url格式：  协议 :// ip地址 ：端口号 / 文件目录(/images/2020/03/15/xxx.jpg)
             String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/upload/" + directory + newFileName;
-            return url;
+            jsonObject.put("url",url);
+            return ResponseUtils.response(200, "文件上传成功",jsonObject);
         } catch (IOException e) {
             e.printStackTrace();
+            return ResponseUtils.response(404, "文件上传失败",jsonObject);
         }
-        return "false";
     }
 
 }
