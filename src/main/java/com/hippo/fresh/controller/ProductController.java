@@ -32,7 +32,8 @@ public class ProductController {
     //单个商品显示接口
     @PostMapping("/api/product/getone")
     public ResponseUtils getSomeInformationById(@RequestBody String idStr) {
-        Long id = Long.valueOf(idStr);//先转换为string,再转换为Long
+        jsonObject = JSON.parseObject(idStr);
+        Long id = jsonObject.getLong("id");//先转换为string,再转换为Long
         return productService.findSomeInformationById(id);
     }
 
@@ -101,11 +102,11 @@ public class ProductController {
 
     //模糊搜索接口
     @PostMapping("/api/product/search")
-    public ResponseUtils SearchTest(@RequestBody String jsStr){
+    public ResponseUtils Search(@RequestBody String jsStr){
         if(jsStr == null){
             throw new ProductNotExistException(null);
         }
-        JSONObject jsonObject = JSON.parseObject(jsStr);
+        jsonObject = JSON.parseObject(jsStr);
         int page = (jsonObject.getInteger("page") == null ? 0 : jsonObject.getInteger("page"));
         int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
         String productName = jsonObject.getString("product-name");
@@ -116,5 +117,11 @@ public class ProductController {
         int lowerBound = (jsonObject.getInteger("lower-bound") == null ? 0 : jsonObject.getInteger("lower-bound"));
         List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,sort,order,upperBound,lowerBound);
         return ResponseUtils.success("查找成功",products);
+    }
+
+    @PostMapping("/api/product/comment")
+    public ResponseUtils GetComments(@RequestBody String jsonStr){
+        jsonObject = JSON.parseObject(jsonStr);
+        return productService.findCommentByProductId(jsonObject.getLong("productId"));
     }
 }

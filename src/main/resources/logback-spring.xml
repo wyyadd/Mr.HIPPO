@@ -4,10 +4,10 @@
     <!-- 定义参数常量，便于后面直接用${name}来获取value值 -->
     <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %logger{50} - %msg%n"/>
     <!--<property name="log.filePath" value="${catalina.base}/logs/webapps"/>-->
-    <property name="log.filePath" value="/freshLogs"/>
+    <property name="log.filePath" value="/home/wyyadd/IdeaProjects"/>
     <property name="log.maxHistory" value="30"/>
 
-    <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
+    <!-- ch.qos.logback.core.ConsoleAppender 控制台输出   /home/wyyadd/IdeaProjects-->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!-- 过去使用layout，现在都推荐使用encoder
              作用一：将日志信息转换（格式化）为字符串

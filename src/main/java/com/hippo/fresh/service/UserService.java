@@ -40,4 +40,6 @@ public interface UserService {
     /** 修改用户个人信息*/
     public ResponseUtils informationModify(Long userId,String username,String email,String phone);
 
+    public ResponseUtils findCommentByUserId(Long userId);
+
 }
