@@ -109,7 +109,8 @@ public class ProductServiceImpl  implements ProductService  {
             num++;
         //get random page
         Page<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, categoryFirst, categorySecond, sort, order, upperBound,lowerBound),
-                PageRequest.of(new Random().nextInt(num) - 1 ,pageNum));
+                    PageRequest.of(new Random().nextInt(num),pageNum));
+
         //get json array
         if(!data.isEmpty()){
             JSONArray jsonArray = new JSONArray();
