@@ -147,14 +147,15 @@ public class OrderController {
         Long userId = JWTTokenUtil.parseAccessToken(token).getId();
 
         List<Map<String,Object>> res1 = new ArrayList<>();
-        List<Order> orders = orderService.findAllByUserId(userId);
+        List<Order> orders = orderService.findAllByUserIdOrderByCreateTimeDesc(userId);
         for(Order order:orders) {
             Map<String,Object> res2 = new HashMap<>();
             res2.put("orderItem",orderItemService.findSomeInformationByOrderId(order.getId()));
             res2.put("orderStatus",order.getStatus());
             res2.put("orderPaymentMoney",order.getPaymentMoney());
             res2.put("orderId",order.getId());
-            res1.add(res2);
+            if(order.getStatus() != 0)
+                res1.add(res2);
         }
         jsonObject.put("orders",res1);
         return ResponseUtils.response(200, "订单信息获取成功",jsonObject);
