@@ -18,4 +18,7 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
 
     //根据用户id查找该用户所有订单
     List<Order> findAllByUserId(Long userId);
+
+    //根据用户id查找用户订单，并按照创建时间倒叙排序
+    List<Order> findAllByUserIdOrderByCreateTimeDesc(Long userId);
 }

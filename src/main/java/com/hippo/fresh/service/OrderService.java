@@ -26,4 +26,7 @@ public interface OrderService {
 
     /**根据订单id查找该用户所有订单*/
     public List<Order> findAllByUserId(Long userId);
+
+    /**根据用户id查找用户订单，并按照创建时间倒叙排序*/
+    public List<Order> findAllByUserIdOrderByCreateTimeDesc(Long userId);
 }
