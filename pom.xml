@@ -80,6 +80,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+
 		<!-- Alipay -->
 		<dependency>
 			<groupId>com.alipay.sdk</groupId>
