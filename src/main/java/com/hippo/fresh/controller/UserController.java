@@ -81,4 +81,11 @@ public class UserController {
         return userService.informationModify(userId,username,email,phone);
     }
 
+    @PostMapping("/comment/")
+    public ResponseUtils GetUserComment(HttpServletRequest request){
+        //从token中获取id
+        String token = request.getHeader(JWTConfig.tokenHeader);
+        Long userId = JWTTokenUtil.parseAccessToken(token).getId();
+        return userService.findCommentByUserId(userId);
+    }
 }

@@ -1,12 +1,15 @@
 package com.hippo.fresh.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hippo.fresh.dao.CommentRepository;
 import com.hippo.fresh.dao.ReceiverRepository;
 import com.hippo.fresh.dao.UserRepository;
 import com.hippo.fresh.dao.VerificationRepository;
+import com.hippo.fresh.entity.Comment;
 import com.hippo.fresh.entity.Receiver;
 import com.hippo.fresh.entity.User;
 import com.hippo.fresh.entity.Verification;
+import com.hippo.fresh.exception.CommentNotExistException;
 import com.hippo.fresh.exception.UserHasExistException;
 import com.hippo.fresh.exception.UserNotExistException;
 import com.hippo.fresh.service.UserService;
@@ -34,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private VerificationRepository verificationRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     private JSONObject jsonObject;
     @Override
@@ -199,4 +205,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public ResponseUtils findCommentByUserId(Long userId) {
+        List<Comment> comments = commentRepository.findByUserId(userId);
+        if(!comments.isEmpty()){
+            return ResponseUtils.success("查找成功", comments);
+        }
+        else {
+            jsonObject.put("userId", userId);
+            throw new CommentNotExistException(jsonObject);
+        }
+    }
 }
