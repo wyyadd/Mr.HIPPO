@@ -55,33 +55,34 @@ public class ProductController {
     }
 
     //商品列表显示接口
-    //接口弃用
-    @Deprecated
-    @PostMapping("/api/product-list")
+    @PostMapping("/api/product")
     public ResponseUtils ProductList(@RequestBody String jsStr){
         //default paras
-        int page = 0; int pageNum = 10;
-        String productName = null; Integer type = 0; Integer sort = 1;
-        Integer order = 1; Integer upperBound = -1; Integer lowerBound = -1;
+        int page = 0; int pageNum = 6;
+//        String productName = null; Integer sort = 1;
+//        Integer order = 1; Integer upperBound = -1; Integer lowerBound = -1;
+        String categoryFirst = null; String categorySecond = null;
         //获取相关参数
         jsonObject = JSON.parseObject(jsStr);
         if(jsonObject.getInteger("page") != null)
             page = jsonObject.getInteger("page");
         if(jsonObject.getInteger("page-num") != null)
             pageNum = jsonObject.getInteger("page-num");
-        if(jsonObject.getString("product-name") != null)
-            productName = jsonObject.getString("product-name");
-        if(jsonObject.getInteger("type") != null)
-            type = jsonObject.getInteger("type");
-        if(jsonObject.getInteger("sort") != null)
-            sort = jsonObject.getInteger("sort");
-        if(jsonObject.getInteger("order") != null)
-            order = jsonObject.getInteger("order");
-        if(jsonObject.getInteger("upper-bound") != null)
-            upperBound = jsonObject.getInteger("upper-bound");
-        if(jsonObject.getInteger("lower-bound") != null)
-            lowerBound = jsonObject.getInteger("lower-bound");
-        return productService.GetProductList(page,pageNum,productName,type,sort,order,upperBound,lowerBound);
+//        if(jsonObject.getString("product-name") != null)
+//            productName = jsonObject.getString("product-name");
+        if(jsonObject.getString("category-first") != null)
+            categoryFirst = jsonObject.getString("category-first");
+        if(jsonObject.getString("category-second") != null)
+            categorySecond = jsonObject.getString("category-second");
+//        if(jsonObject.getInteger("sort") != null)
+//            sort = jsonObject.getInteger("sort");
+//        if(jsonObject.getInteger("order") != null)
+//            order = jsonObject.getInteger("order");
+//        if(jsonObject.getInteger("upper-bound") != null)
+//            upperBound = jsonObject.getInteger("upper-bound");
+//        if(jsonObject.getInteger("lower-bound") != null)
+//            lowerBound = jsonObject.getInteger("lower-bound");
+        return productService.GetProductList(page,pageNum,null,categoryFirst, categorySecond,1,1,-1,-1);
     }
 
     //推荐商品接口
