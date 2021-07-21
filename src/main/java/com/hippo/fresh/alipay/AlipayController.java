@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -52,9 +53,7 @@ public class AlipayController {
 
         String paymentMoney = order.getPaymentMoney().toString();
 
-        String form = alipayService.toPay(orderId.toString(),paymentMoney);
-
-        return form;
+        return alipayService.toPay(orderId.toString(),paymentMoney);
     }
 
     @PostMapping("/callback")
@@ -80,6 +79,14 @@ public class AlipayController {
             // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "gbk");
             params.put(name, valueStr);
         }
+
+        System.out.println(params);
+
+        Order order = orderRepository.findById(Long.valueOf(params.get("out_trade_no"))).get();
+        Timestamp  PaymentTime= new Timestamp(System.currentTimeMillis());
+        order.setStatus(2);
+        order.setPaymentTime(PaymentTime);
+        orderRepository.save(order);
 
         // 新版 SDK 不用移除 sign_type
         // params.remove("sign_type");

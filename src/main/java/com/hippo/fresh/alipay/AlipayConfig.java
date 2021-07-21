@@ -40,7 +40,7 @@ public class AlipayConfig {
         config.alipayPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArSlzV7QZKVTMLWdQdfydC4Uaw6YIIUOvts4CSnGwXw3SC+G2id1WX1iK760BbFsKmdxtV31az2UdGjdOKPjE0VxX04a1cAo3a8j7GZhni925yY2uXvKSoRnwVGNRLAd0Naw+m+STU0CAhovxlFuvab0gpnaglJzpg62Z+ROlbKws2yMH1ILz4AV5EubrOQat46K4xkAOE7aX4/jxoOQtfdhx2moW9KUN8rneYogRg6GWSKvySTHCjZUITYqEuTgDepggd3E4tQOyqM/Ftamdhf8dtZ6CJNqBUrM9L29Nw8Amx4Jq5xL/n8WfQHjoxsS1WIEUUZMP8aJTlEeZtbYQgQIDAQAB";
 
         //可设置异步通知接收服务地址（可选）
-        config.notifyUrl = "https://www.baidu.com";
+        config.notifyUrl = "http://47.106.193.0:8080/api/alipay/callback";
 
         return config;
     }

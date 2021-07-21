@@ -7,13 +7,11 @@ import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
 import com.hippo.fresh.alipay.util.JSONUtils;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Service
 public class AlipayService {
+
 
     /**
      * Payment（支付能力） Page（电脑网站）	 pay（生成交易表单，渲染后自动跳转支付宝网站引导用户完成支付）
@@ -25,30 +23,34 @@ public class AlipayService {
      * returnUrl：|string| 支付成功后同步跳转的页面，是一个http/https开头的字符串
      */
 
+
     public String toPay(String orderId,String paymentMoney) throws Exception {
 
-        System.out.println("到达这里啦！！！！");
+        System.out.println("到这里啦111");
         AlipayTradePagePayResponse pay = Factory.Payment.Page().pay("河马生鲜购物平台订单",orderId,
                 paymentMoney,"https://www.baidu.com");
 
+        System.out.println("到这里啦222");
         String payForm = null;
         if (ResponseChecker.success(pay)) {
             payForm = pay.getBody();
+            System.out.println("到这里啦333");
         }
         return payForm;
     }
 
-    /**
-     * 通过时间生成外部订单号 out_trade_no
-     * @return
-     */
-    private String generateTradeNo() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
-        String tradeNo = LocalDateTime.now(ZoneOffset.of("+8")).format(formatter);
-        System.out.println(tradeNo);
-        return tradeNo;
-    }
 
+//    /**
+//     * 通过时间生成外部订单号 out_trade_no
+//     * @return
+//     */
+//    private String generateTradeNo() {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+//        String tradeNo = LocalDateTime.now(ZoneOffset.of("+8")).format(formatter);
+//        System.out.println(tradeNo);
+//        return tradeNo;
+//    }
+//
     /**
      * 查询交易状态
      * @param outTradeNo 生成的外部订单号 out_trade_no
