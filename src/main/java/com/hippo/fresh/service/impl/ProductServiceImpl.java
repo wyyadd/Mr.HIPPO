@@ -9,8 +9,10 @@ import com.hippo.fresh.entity.Comment;
 import com.hippo.fresh.entity.Product;
 import com.hippo.fresh.exception.CommentNotExistException;
 import com.hippo.fresh.exception.ProductNotExistException;
+import com.hippo.fresh.exception.ServerInternalErrorException;
 import com.hippo.fresh.service.ProductService;
 import com.hippo.fresh.utils.ResponseUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.tool.schema.spi.CommandAcceptanceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+@Slf4j
 public class ProductServiceImpl  implements ProductService  {
 
     @Autowired
@@ -134,6 +137,16 @@ public class ProductServiceImpl  implements ProductService  {
         else{
             jsonObject.put("productId",productId);
             throw new CommentNotExistException(jsonObject);
+        }
+    }
+
+    @Override
+    public ResponseUtils CreateComment(Comment comment) {
+        try{
+            commentRepository.save(comment);
+            return ResponseUtils.success("保存评论成功", null);
+        }catch (Exception e){
+            throw new ServerInternalErrorException(null);
         }
     }
 }

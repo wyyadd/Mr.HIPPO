@@ -2,15 +2,26 @@ package com.hippo.fresh.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.hippo.fresh.dao.CommentRepository;
+import com.hippo.fresh.dao.ProductRepository;
+import com.hippo.fresh.dao.UserRepository;
+import com.hippo.fresh.entity.Comment;
+import com.hippo.fresh.entity.Product;
+import com.hippo.fresh.entity.User;
 import com.hippo.fresh.exception.ProductNotExistException;
 import com.hippo.fresh.search.SearchProduct;
 import com.hippo.fresh.exception.ServerInternalErrorException;
+import com.hippo.fresh.security.config.JWTConfig;
+import com.hippo.fresh.security.utils.JWTTokenUtil;
 import com.hippo.fresh.service.ProductService;
 import com.hippo.fresh.search.SearchProductService;
 import com.hippo.fresh.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.*;
 
 @RestController
@@ -26,6 +37,12 @@ public class ProductController {
         this.searchProductService = searchProductService;
         this.productService = productService;
     }
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     private JSONObject jsonObject;
 
@@ -119,9 +136,35 @@ public class ProductController {
         return ResponseUtils.success("查找成功",products);
     }
 
+    //通过产品id获得评论接口
     @PostMapping("/api/product/comment")
     public ResponseUtils GetComments(@RequestBody String jsonStr){
         jsonObject = JSON.parseObject(jsonStr);
         return productService.findCommentByProductId(jsonObject.getLong("productId"));
+    }
+
+    //写评论接口
+    @PostMapping("/api/product/makecomment")
+    public ResponseUtils MakeComments(@RequestBody String jsonStr, HttpServletRequest request){
+        jsonObject = JSON.parseObject(jsonStr);
+        //获取用户相关信息
+//        String token = request.getHeader(JWTConfig.tokenHeader);
+//        Long userId = JWTTokenUtil.parseAccessToken(token).getId();
+        Long userId = jsonObject.getLong("userId");
+        User user = userRepository.findById(userId).get();
+        String username = user.getUsername();
+        String userAvatar = user.getAvatar();
+        //获取商品相关信息
+
+        String comment = jsonObject.getString("comment");
+        Long productId = jsonObject.getLong("productId");
+        Product product = productRepository.getById(productId);
+        String productUrl = product.getPictureUrl();
+        String productName = product.getName();
+        Comment comments = Comment.builder()
+                .comment(comment).createTime(new Timestamp(System.currentTimeMillis()))
+                .productId(productId).productUrl(productUrl).productName(productName)
+                .userId(userId).username(username).userAvatar(userAvatar).build();
+        return productService.CreateComment(comments);
     }
 }

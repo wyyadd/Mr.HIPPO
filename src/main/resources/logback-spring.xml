@@ -7,7 +7,7 @@
     <property name="log.filePath" value="/home/wyyadd/IdeaProjects"/>
     <property name="log.maxHistory" value="30"/>
 
-    <!-- ch.qos.logback.core.ConsoleAppender 控制台输出   /home/wyyadd/IdeaProjects-->
+    <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 /home/wyyadd/IdeaProjects-->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!-- 过去使用layout，现在都推荐使用encoder
              作用一：将日志信息转换（格式化）为字符串
