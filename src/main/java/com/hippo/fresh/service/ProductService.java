@@ -1,5 +1,6 @@
 package com.hippo.fresh.service;
 
+import com.hippo.fresh.entity.Comment;
 import com.hippo.fresh.utils.ResponseUtils;
 
 import java.util.List;
@@ -18,5 +19,9 @@ public interface ProductService {
     public ResponseUtils GetProductList(int pageNum, String productName, String categoryFirst, String categorySecond, int sort, int order, int upperBound,  int lowerBound);
 
     public ResponseUtils findCommentByProductId(Long productId);
+
+    public ResponseUtils CreateComment(Comment comment);
+
+
 
 }
