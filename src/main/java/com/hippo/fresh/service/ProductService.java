@@ -16,5 +16,5 @@ public interface ProductService {
 
     //根据商品名商品类型排序方式返回商品列表
 
-    public ResponseUtils GetProductList(int page, int pageNum, String productName, String categoryFirst, String categorySecond, int sort, int order, int upperBound,  int lowerBound);
+    public ResponseUtils GetProductList(int pageNum, String productName, String categoryFirst, String categorySecond, int sort, int order, int upperBound,  int lowerBound);
 }

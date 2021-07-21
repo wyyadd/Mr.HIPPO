@@ -13,10 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl  implements ProductService  {
@@ -91,13 +88,14 @@ public class ProductServiceImpl  implements ProductService  {
 
     //根据参数获取商品列表
     @Override
-    public ResponseUtils GetProductList(int page, int pageNum, String productName, String categoryFirst, String categorySecond, int sort, int order, int upperBound, int lowerBound) {
+    public ResponseUtils GetProductList(int pageNum, String productName, String categoryFirst, String categorySecond, int sort, int order, int upperBound, int lowerBound) {
 //        List<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, type, sort, order, upperBound,lowerBound));
-        Page<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, categoryFirst, categorySecond, sort, order, upperBound,lowerBound)
-                ,PageRequest.of(page,pageNum));
+        List<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, categoryFirst, categorySecond, sort, order, upperBound,lowerBound));
         if(!data.isEmpty()){
             JSONArray jsonArray = new JSONArray();
-            for(Product it : data){
+
+            for(int i = 0; i < pageNum; ++i){
+                Product it = data.get(new Random().nextInt(data.size()));
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("id",it.getId());
                 jsonObject.put("name",it.getName());
