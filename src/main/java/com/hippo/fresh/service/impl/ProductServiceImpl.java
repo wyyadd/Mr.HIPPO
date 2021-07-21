@@ -3,14 +3,19 @@ package com.hippo.fresh.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.hippo.fresh.dao.CommentRepository;
 import com.hippo.fresh.dao.ProductRepository;
+import com.hippo.fresh.entity.Comment;
 import com.hippo.fresh.entity.Product;
+import com.hippo.fresh.exception.CommentNotExistException;
 import com.hippo.fresh.exception.ProductNotExistException;
 import com.hippo.fresh.service.ProductService;
 import com.hippo.fresh.utils.ResponseUtils;
+import org.hibernate.tool.schema.spi.CommandAcceptanceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,6 +27,9 @@ public class ProductServiceImpl  implements ProductService  {
     private ProductRepository productRepository;
 
     private JSONObject jsonObject;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     //根据商品id返回商品的需要信息
     public ResponseUtils findSomeInformationById(Long id){
@@ -90,13 +98,20 @@ public class ProductServiceImpl  implements ProductService  {
     @Override
     public ResponseUtils GetProductList(int pageNum, String productName, String categoryFirst, String categorySecond, int sort, int order, int upperBound, int lowerBound) {
 //        List<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, type, sort, order, upperBound,lowerBound));
-        List<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, categoryFirst, categorySecond, sort, order, upperBound,lowerBound));
+        Page<Product> rawData = productRepository.findAll(ProductRepository.getSpec(productName, categoryFirst, categorySecond, sort, order, upperBound,lowerBound),
+                PageRequest.of(0,pageNum));
+        //get num of page
+        int num = rawData.getTotalPages();
+        if(num == 0)
+            num++;
+        //get random page
+        Page<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, categoryFirst, categorySecond, sort, order, upperBound,lowerBound),
+                PageRequest.of(new Random().nextInt(num) - 1 ,pageNum));
+        //get json array
         if(!data.isEmpty()){
             JSONArray jsonArray = new JSONArray();
-
-            for(int i = 0; i < pageNum; ++i){
-                Product it = data.get(new Random().nextInt(data.size()));
-                JSONObject jsonObject = new JSONObject();
+            for(Product it : data){
+                jsonObject = new JSONObject();
                 jsonObject.put("id",it.getId());
                 jsonObject.put("name",it.getName());
                 jsonObject.put("pictureUrl",it.getPictureUrl());
@@ -104,9 +119,21 @@ public class ProductServiceImpl  implements ProductService  {
                 jsonObject.put("sales_amount",it.getSalesAmount());
                 jsonArray.add(jsonObject);
             }
-            return ResponseUtils.success(" 查找成功",jsonArray);
+            return ResponseUtils.success("查找成功",jsonArray);
         }else {
             throw new ProductNotExistException(null);
+        }
+    }
+
+    @Override
+    public ResponseUtils findCommentByProductId(Long productId) {
+        List<Comment> comments = commentRepository.findByProductId(productId);
+        if(!comments.isEmpty()){
+            return ResponseUtils.success("查找成功", comments);
+        }
+        else{
+            jsonObject.put("productId",productId);
+            throw new CommentNotExistException(jsonObject);
         }
     }
 }

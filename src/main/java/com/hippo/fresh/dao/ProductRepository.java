@@ -34,7 +34,7 @@ public interface ProductRepository  extends JpaRepository<Product,Long>,JpaSpeci
 
     //根据参数获取商品列表
    // @Query(value = "select id,name,picture,price,stock,salesAmount from Product")
-    List<Product> findAll(Specification<Product> specification);
+    Page<Product> findAll(Specification<Product> specification, Pageable pageable);
 
 
 //自定义过滤信息
@@ -53,27 +53,27 @@ public interface ProductRepository  extends JpaRepository<Product,Long>,JpaSpeci
                 if(productName != null)
                     predicates.add(criteriaBuilder.like(root.get("name").as(String.class),"%"+productName+"%"));
                 //排序类型，排序方式信息指定
-                switch (sort){
-                    case 1:{
-                        if(order == 1)
-                            query.orderBy(criteriaBuilder.desc(root.get("salesAmount")));
-                        else
-                            query.orderBy(criteriaBuilder.asc(root.get("salesAmount")));
-                    } break;
-                    case 2:{
-                        if(order == 1)
-                            query.orderBy(criteriaBuilder.desc(root.get("price")));
-                        else
-                            query.orderBy(criteriaBuilder.asc(root.get("price")));
-                    }break;
-                    case 3:{
-                        if(order == 1)
-                            query.orderBy(criteriaBuilder.desc(root.get("stock")));
-                        else
-                            query.orderBy(criteriaBuilder.asc(root.get("stock")));
-                    }break;
-                    default:query.orderBy(criteriaBuilder.desc(root.get("salesAmount")));
-                }
+//                switch (sort){
+//                    case 1:{
+//                        if(order == 1)
+//                            query.orderBy(criteriaBuilder.desc(root.get("salesAmount")));
+//                        else
+//                            query.orderBy(criteriaBuilder.asc(root.get("salesAmount")));
+//                    } break;
+//                    case 2:{
+//                        if(order == 1)
+//                            query.orderBy(criteriaBuilder.desc(root.get("price")));
+//                        else
+//                            query.orderBy(criteriaBuilder.asc(root.get("price")));
+//                    }break;
+//                    case 3:{
+//                        if(order == 1)
+//                            query.orderBy(criteriaBuilder.desc(root.get("stock")));
+//                        else
+//                            query.orderBy(criteriaBuilder.asc(root.get("stock")));
+//                    }break;
+//                    default:query.orderBy(criteriaBuilder.desc(root.get("salesAmount")));
+//                }
                 //价格上下界指定
                 if(upperBound != -1)
                     predicates.add(criteriaBuilder.lessThan(root.get("price"),upperBound));
