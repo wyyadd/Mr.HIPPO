@@ -15,4 +15,5 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
 
     //根据userId查找评论
     public List<Comment> findByUserId(Long userId);
+
 }
