@@ -35,16 +35,20 @@ public interface ProductRepository  extends JpaRepository<Product,Long>,JpaSpeci
     //根据参数获取商品列表
    // @Query(value = "select id,name,picture,price,stock,salesAmount from Product")
     Page<Product> findAll(Specification<Product> specification, Pageable pageable);
+
+
 //自定义过滤信息
-    public static Specification<Product> getSpec(String productName, int type, int sort, int order, int upperBound, int lowerBound){
+    public static Specification<Product> getSpec(String productName, String categoryFirst, String categorySecond, int sort, int order, int upperBound, int lowerBound){
         return new Specification<Product>() {
             @Override
             public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 //                Root<OrderImpl> order = criteria.from(OrderImpl.class);
                 List<Predicate> predicates = new ArrayList<Predicate>();
                 //种类信息过滤
-                if(type != 0)
-                    predicates.add(criteriaBuilder.equal(root.get("categoryId").as(Integer.class),type));
+                if(categoryFirst != null)
+                    predicates.add(criteriaBuilder.equal(root.get("categoryFirst").as(String.class),categoryFirst));
+                if(categorySecond != null)
+                    predicates.add(criteriaBuilder.equal(root.get("categorySecond").as(String.class),categorySecond));
                 //商品名信息过滤
                 if(productName != null)
                     predicates.add(criteriaBuilder.like(root.get("name").as(String.class),"%"+productName+"%"));
