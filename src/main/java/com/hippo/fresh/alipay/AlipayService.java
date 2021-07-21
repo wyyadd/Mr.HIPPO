@@ -28,7 +28,7 @@ public class AlipayService {
 
         System.out.println("到这里啦111");
         AlipayTradePagePayResponse pay = Factory.Payment.Page().pay("河马生鲜购物平台订单",orderId,
-                paymentMoney,"http://39.101.199.242/");
+                paymentMoney,"http://39.101.199.242/finalhome");
 
         System.out.println("到这里啦222");
         String payForm = null;
