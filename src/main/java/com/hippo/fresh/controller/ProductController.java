@@ -143,28 +143,5 @@ public class ProductController {
         return productService.findCommentByProductId(jsonObject.getLong("productId"));
     }
 
-    //写评论接口
-    @PostMapping("/api/product/makecomment")
-    public ResponseUtils MakeComments(@RequestBody String jsonStr, HttpServletRequest request){
-        jsonObject = JSON.parseObject(jsonStr);
-        //获取用户相关信息
-//        String token = request.getHeader(JWTConfig.tokenHeader);
-//        Long userId = JWTTokenUtil.parseAccessToken(token).getId();
-        Long userId = jsonObject.getLong("userId");
-        User user = userRepository.findById(userId).get();
-        String username = user.getUsername();
-        String userAvatar = user.getAvatar();
-        //获取商品相关信息
 
-        String comment = jsonObject.getString("comment");
-        Long productId = jsonObject.getLong("productId");
-        Product product = productRepository.getById(productId);
-        String productUrl = product.getPictureUrl();
-        String productName = product.getName();
-        Comment comments = Comment.builder()
-                .comment(comment).createTime(new Timestamp(System.currentTimeMillis()))
-                .productId(productId).productUrl(productUrl).productName(productName)
-                .userId(userId).username(username).userAvatar(userAvatar).build();
-        return productService.CreateComment(comments);
-    }
 }
