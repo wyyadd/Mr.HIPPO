@@ -91,16 +91,17 @@ public class ProductServiceImpl  implements ProductService  {
 
     //根据参数获取商品列表
     @Override
-    public ResponseUtils GetProductList(int page, int pageNum, String productName, int type, int sort, int order, int upperBound, int lowerBound) {
+    public ResponseUtils GetProductList(int page, int pageNum, String productName, String categoryFirst, String categorySecond, int sort, int order, int upperBound, int lowerBound) {
 //        List<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, type, sort, order, upperBound,lowerBound));
-        Page<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, type, sort, order, upperBound,lowerBound),PageRequest.of(page,pageNum));
+        Page<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, categoryFirst, categorySecond, sort, order, upperBound,lowerBound)
+                ,PageRequest.of(page,pageNum));
         if(!data.isEmpty()){
             JSONArray jsonArray = new JSONArray();
             for(Product it : data){
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("id",it.getId());
                 jsonObject.put("name",it.getName());
-                jsonObject.put("picture",it.getPictureUrl());
+                jsonObject.put("pictureUrl",it.getPictureUrl());
                 jsonObject.put("price",it.getPrice());
                 jsonObject.put("sales_amount",it.getSalesAmount());
                 jsonArray.add(jsonObject);
