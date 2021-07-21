@@ -32,7 +32,8 @@ public class ProductController {
     //单个商品显示接口
     @PostMapping("/api/product/getone")
     public ResponseUtils getSomeInformationById(@RequestBody String idStr) {
-        Long id = Long.valueOf(idStr);//先转换为string,再转换为Long
+        jsonObject = JSON.parseObject(idStr);
+        Long id = jsonObject.getLong("id");//先转换为string,再转换为Long
         return productService.findSomeInformationById(id);
     }
 
@@ -58,22 +59,20 @@ public class ProductController {
     @PostMapping("/api/product")
     public ResponseUtils ProductList(@RequestBody String jsStr){
         //default paras
-        int page = 0; int pageNum = 6;
+        int pageNum = 6;
 //        String productName = null; Integer sort = 1;
 //        Integer order = 1; Integer upperBound = -1; Integer lowerBound = -1;
         String categoryFirst = null; String categorySecond = null;
         //获取相关参数
         jsonObject = JSON.parseObject(jsStr);
-        if(jsonObject.getInteger("page") != null)
-            page = jsonObject.getInteger("page");
-        if(jsonObject.getInteger("page-num") != null)
-            pageNum = jsonObject.getInteger("page-num");
+        if(jsonObject.getInteger("pageNum") != null)
+            pageNum = jsonObject.getInteger("pageNum");
 //        if(jsonObject.getString("product-name") != null)
 //            productName = jsonObject.getString("product-name");
-        if(jsonObject.getString("category-first") != null)
-            categoryFirst = jsonObject.getString("category-first");
-        if(jsonObject.getString("category-second") != null)
-            categorySecond = jsonObject.getString("category-second");
+        if(jsonObject.getString("categoryFirst") != null)
+            categoryFirst = jsonObject.getString("categoryFirst");
+        if(jsonObject.getString("categorySecond") != null)
+            categorySecond = jsonObject.getString("categorySecond");
 //        if(jsonObject.getInteger("sort") != null)
 //            sort = jsonObject.getInteger("sort");
 //        if(jsonObject.getInteger("order") != null)
@@ -82,7 +81,7 @@ public class ProductController {
 //            upperBound = jsonObject.getInteger("upper-bound");
 //        if(jsonObject.getInteger("lower-bound") != null)
 //            lowerBound = jsonObject.getInteger("lower-bound");
-        return productService.GetProductList(page,pageNum,null,categoryFirst, categorySecond,1,1,-1,-1);
+        return productService.GetProductList(pageNum,null,categoryFirst, categorySecond,1,1,-1,-1);
     }
 
     //推荐商品接口
@@ -103,11 +102,11 @@ public class ProductController {
 
     //模糊搜索接口
     @PostMapping("/api/product/search")
-    public ResponseUtils SearchTest(@RequestBody String jsStr){
+    public ResponseUtils Search(@RequestBody String jsStr){
         if(jsStr == null){
             throw new ProductNotExistException(null);
         }
-        JSONObject jsonObject = JSON.parseObject(jsStr);
+        jsonObject = JSON.parseObject(jsStr);
         int page = (jsonObject.getInteger("page") == null ? 0 : jsonObject.getInteger("page"));
         int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
         String productName = jsonObject.getString("product-name");
@@ -118,5 +117,11 @@ public class ProductController {
         int lowerBound = (jsonObject.getInteger("lower-bound") == null ? 0 : jsonObject.getInteger("lower-bound"));
         List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,sort,order,upperBound,lowerBound);
         return ResponseUtils.success("查找成功",products);
+    }
+
+    @PostMapping("/api/product/comment")
+    public ResponseUtils GetComments(@RequestBody String jsonStr){
+        jsonObject = JSON.parseObject(jsonStr);
+        return productService.findCommentByProductId(jsonObject.getLong("productId"));
     }
 }

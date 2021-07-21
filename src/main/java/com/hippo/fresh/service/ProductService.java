@@ -1,6 +1,5 @@
 package com.hippo.fresh.service;
 
-import com.hippo.fresh.entity.Product;
 import com.hippo.fresh.utils.ResponseUtils;
 
 import java.util.List;
@@ -16,6 +15,8 @@ public interface ProductService {
     public ResponseUtils findAllById(List<Long> ids);
 
     //根据商品名商品类型排序方式返回商品列表
-    public ResponseUtils GetProductList(int page, int pageNum, String productName, String categoryFirst, String categorySecond, int sort, int order, int upperBound,  int lowerBound);
+    public ResponseUtils GetProductList(int pageNum, String productName, String categoryFirst, String categorySecond, int sort, int order, int upperBound,  int lowerBound);
+
+    public ResponseUtils findCommentByProductId(Long productId);
 
 }
