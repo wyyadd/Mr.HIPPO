@@ -34,7 +34,7 @@ public interface ProductRepository  extends JpaRepository<Product,Long>,JpaSpeci
 
     //根据参数获取商品列表
    // @Query(value = "select id,name,picture,price,stock,salesAmount from Product")
-    Page<Product> findAll(Specification<Product> specification, Pageable pageable);
+    List<Product> findAll(Specification<Product> specification);
 
 
 //自定义过滤信息
