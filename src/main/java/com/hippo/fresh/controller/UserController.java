@@ -124,13 +124,13 @@ public class UserController {
         String productName = product.getName();
         int star = jsonObject.getInteger("star") == null ? 5 : jsonObject.getInteger("star");
         //重新计算商品评分，并保存
-        int commentNUm = product.getCommentNum();
+        long commentNUm = product.getCommentNum();
         ++commentNUm;
-        int commentScore = product.getCommentScore();
+        long commentScore = product.getCommentScore();
         commentScore += star;
         product.setCommentNum(commentNUm);
         product.setCommentScore(commentScore);
-        product.setScore(commentScore/commentNUm);
+        product.setScore((double) (commentScore/commentNUm));
         productRepository.save(product);
         //创建评论
         Comment comments = Comment.builder()

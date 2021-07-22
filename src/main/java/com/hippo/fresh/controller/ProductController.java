@@ -98,7 +98,7 @@ public class ProductController {
 //        if(jsonObject.getInteger("lower-bound") != null)
 //            lowerBound = jsonObject.getInteger("lower-bound");
         log.info(categoryFirst);
-        log.info(categorySecond);
+        log.info(String.valueOf(pageNum));
         return productService.GetProductList(pageNum,null,categoryFirst, categorySecond,1,1,-1,-1);
     }
 

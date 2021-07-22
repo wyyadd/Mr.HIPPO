@@ -52,7 +52,7 @@ public class SearchProductService {
         // 1. Create query on multiple fields enabling fuzzy search
         Query searchQuery;
         //如果没有指定排序顺序，就按照权重排序
-        if (order == 0) {
+        if (sort == 0) {
 //            //对商品名，商品详情， 商品id赋予不同的权值
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(
