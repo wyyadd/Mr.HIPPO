@@ -57,7 +57,7 @@ public class SearchProductService {
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
-                              QueryBuilders.matchPhrasePrefixQuery("name",productName), ScoreFunctionBuilders.weightFactorFunction(50)));
+                              QueryBuilders.matchPhrasePrefixQuery("name",productName), ScoreFunctionBuilders.weightFactorFunction(80)));
 //                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(50)));
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
@@ -89,8 +89,6 @@ public class SearchProductService {
             searchQuery = new NativeSearchQueryBuilder()
                     .withQuery(functionScoreQueryBuilder)
                     .withFilter(boolQueryBuilder)
-                    //排序方式匹配
-                    .withSort(SortBuilders.fieldSort(sort == 1 ? "salesAmount" : "price").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
                     //分页匹配
                     .withPageable(PageRequest.of(page, pageNum))
                     .build();
