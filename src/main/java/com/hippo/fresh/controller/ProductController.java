@@ -142,5 +142,16 @@ public class ProductController {
         return productService.findCommentByProductId(jsonObject.getLong("productId"));
     }
 
+    //测试接口
+    @GetMapping("/api/product/test")
+    public ResponseUtils GetComments(@RequestBody JSONObject jsonObject){
+        Long id = jsonObject.getLong("id");
+        Double price = jsonObject.getDouble("price");
+        Product p = productRepository.getById(id);
+        p.setPrice(price);
+        productRepository.save(p);
+        return ResponseUtils.response(200,"修改价格成功",jsonObject);
+    }
+
 
 }

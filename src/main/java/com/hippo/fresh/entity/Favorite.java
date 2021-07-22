@@ -24,16 +24,6 @@ public class Favorite {
     @Column
     private Long userId;//用户id
 
-    public Favorite(Long userId, Long productId, String productName, String productPicture, Double productPrice, Integer status, Timestamp createTime) {
-        this.userId = userId;
-        this.productId = productId;
-        this.productName = productName;
-        this.productPicture = productPicture;
-        this.productPrice = productPrice;
-        this.status = status;
-        this.createTime = createTime;
-    }
-
     @Column
     private Long productId;//商品id
 
@@ -44,14 +34,26 @@ public class Favorite {
     private String productPicture;//商品图片
 
     @Column
-    private Double productPrice;//商品价格
+    private Double productPrice;//商品加入购物车价格
+
+    @Column
+    private Double currentPrice;//商品当前价格
 
     @Column
     private Integer status;//商品状态
 
-
     @Column
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createTime;//商品创建时间
+
+    public Favorite(Long userId, Long productId, String productName, String productPicture, Double productPrice, Integer status, Timestamp createTime) {
+        this.userId = userId;
+        this.productId = productId;
+        this.productName = productName;
+        this.productPicture = productPicture;
+        this.productPrice = productPrice;
+        this.status = status;
+        this.createTime = createTime;
+    }
 
 }

@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CartServiceImpl  implements CartService{
@@ -22,8 +20,22 @@ public class CartServiceImpl  implements CartService{
     @Autowired
     private ProductRepository productRepository;
 
-    public List<Map<String,Object>> findCartInformationByUserId(Long id){
-        return cartRepository.findCartInformationByUserId(id);
+    /**根据用户id查找购物车*/
+    public List<Map<String,Object>> findCartInformationByUserId(Long userId){
+        List<Map<String,Object>> res = new ArrayList<>();
+        List<Cart> carts = cartRepository.findByUserIdOrderByUpdateTimeDesc(userId);
+        for(Cart cart:carts){
+            Map<String,Object> map = new HashMap<>();
+            map.put("productId",cart.getProductId());
+            map.put("productName",cart.getProductName());
+            map.put("productPicture",cart.getProductPicture());
+            map.put("OldPrice",cart.getProductPrice());
+            map.put("currentPrice",cart.getCurrentPrice());
+            map.put("productQuantity",cart.getQuantity());
+            map.put("productStatus",cart.getStatus());
+            res.add(map);
+        }
+        return res;
     }
 
 

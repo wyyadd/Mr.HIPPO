@@ -35,7 +35,10 @@ public class Cart {
     private String productPicture;//商品图片
 
     @Column
-    private Double productPrice;//商品价格
+    private Double productPrice;//商品加入购物车价格
+
+    @Column
+    private Double currentPrice;//商品当前价格
 
     @Column
     private Long quantity;//商品数量
