@@ -23,7 +23,6 @@ public class AlipayService {
      * returnUrl：|string| 支付成功后同步跳转的页面，是一个http/https开头的字符串
      */
 
-
     public String toPay(String orderId,String paymentMoney) throws Exception {
 
         System.out.println("到这里啦111");

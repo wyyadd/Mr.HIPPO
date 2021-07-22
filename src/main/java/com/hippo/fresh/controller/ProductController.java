@@ -48,9 +48,8 @@ public class ProductController {
 
     //单个商品显示接口
     @PostMapping("/api/product/getone")
-    public ResponseUtils getSomeInformationById(@RequestBody String idStr) {
-        jsonObject = JSON.parseObject(idStr);
-        Long id = jsonObject.getLong("id");//先转换为string,再转换为Long
+    public ResponseUtils getSomeInformationById(@RequestBody JSONObject jsonObject) {
+        Long id = jsonObject.getLong("id");
         return productService.findSomeInformationById(id);
     }
 
