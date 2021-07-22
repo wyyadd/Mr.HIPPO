@@ -36,14 +36,28 @@ public class ProductServiceImpl  implements ProductService  {
 
     //根据商品id返回商品的需要信息
     public ResponseUtils findSomeInformationById(Long id){
-
+        jsonObject = new JSONObject();
+        System.out.println(id);
         //判断商品是否存在
-        if(productRepository.existsById(id)) {
-            return ResponseUtils.success("商品查找成功",productRepository.findSomeInformationById(id));
+        if(productRepository.findById(id).isPresent()) {
+            Product product = productRepository.findById(id).get();
+            jsonObject.put("id",product.getId());
+            jsonObject.put("categoryFirst",product.getCategoryFirst());
+            jsonObject.put("categorySecond",product.getCategorySecond());
+            jsonObject.put("name",product.getName());
+            jsonObject.put("pictureUrlOne",product.getPictureUrl());
+            jsonObject.put("pictureUrlTwo",product.getPictureUrlTwo());
+            jsonObject.put("pictureUrlThree",product.getPictureUrlThree());
+            jsonObject.put("pictureUrlFour",product.getPictureUrlFour());
+            jsonObject.put("originPlace",product.getOriginPlace());
+            jsonObject.put("price",product.getPrice());
+            jsonObject.put("stock",product.getStock());
+            jsonObject.put("detail",product.getDetail());
+            jsonObject.put("status",product.getStatus());
+            jsonObject.put("salesAmount",product.getSalesAmount());
+            return ResponseUtils.response(200,"商品信息查询成功",jsonObject);
         }
-        else
-        {
-            jsonObject = new JSONObject();
+        else {
             jsonObject.put("id", id);
             throw new ProductNotExistException(jsonObject);
         }

@@ -34,6 +34,18 @@ public class Product {
     private String pictureUrl;//商品图片url
 
     @Column
+    private String pictureUrlTwo;//商品图片url2
+
+    @Column
+    private String pictureUrlThree;//商品图片url3
+
+    @Column
+    private String pictureUrlFour;//商品图片url4
+
+    @Column
+    private String originPlace;//商品产地
+
+    @Column
     private Double price;//商品单价
 
     @Column
