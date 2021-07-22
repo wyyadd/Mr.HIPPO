@@ -26,7 +26,7 @@ public interface ProductRepository  extends JpaRepository<Product,Long>,JpaSpeci
     boolean existsById(Long aLong);
 
     //根据单个商品id返回商品的需要信息
-    @Query(value = "select id,name,picture,picture_url,category_first,category_second,price,stock,detail,status,sales_amount from product x where x.id =?1 ",nativeQuery = true)
+    @Query(value = "select id,name,picture,picture_url,category_first,category_second,price,stock,detail,status,sales_amount,score from product x where x.id =?1 ",nativeQuery = true)
     Map<String,Object> findSomeInformationById(Long id);
 
     @Override

@@ -68,4 +68,13 @@ public class Product {
     @Column
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp updateTime;//商品更新时间
+
+    @Column
+    private int commentNum;//评论数
+
+    @Column
+    private int  commentScore;//总评分
+
+    @Column
+    private double score;//评分
 }

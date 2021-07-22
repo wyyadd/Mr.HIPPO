@@ -18,17 +18,6 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)//自增主键
     private Long id;//评论id
 
-    public Comment(String comment, Long userId, String username, String userAvatar, Long productId, String productName, String productUrl, Timestamp createTime) {
-        this.comment = comment;
-        this.userId = userId;
-        this.username = username;
-        this.userAvatar = userAvatar;
-        this.productId = productId;
-        this.productName = productName;
-        this.productUrl = productUrl;
-        this.createTime = createTime;
-    }
-
     @Column
     private String comment;//评论
 
@@ -53,4 +42,7 @@ public class Comment {
     @Column
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createTime;//商品更新时间
+
+    @Column
+    private int star;//商品评分
 }
