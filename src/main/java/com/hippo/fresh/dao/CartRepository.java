@@ -11,10 +11,8 @@ import java.util.Optional;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-    //根据用户id查找该用户购物车所有商品的id、quantity
-    @Query(value = "select id,quantity from cart x where x.user_id =?1 ",nativeQuery = true)
-    List<Map<String,Object>> findCartInformationByUserId(Long id);
-
+    //根据用户id查找该用户购物车信息，并按时间倒序排序
+    List<Cart> findByUserIdOrderByUpdateTimeDesc(Long userId);
 
     //根据用户id和商品id查找购物车
     Optional<Cart> findByUserIdAndProductId(Long userId,Long productId);

@@ -30,44 +30,10 @@ public class CartController {
     @Autowired
     private CartRepository cartRepository;
 
-    private JSONObject jsonObject = new JSONObject();
-
-
-//   //测试接口
-//    @GetMapping("/test")
-//    public ResponseUtils test(HttpServletRequest request) {
-//
-//        //从token中获取用户id
-//        String token = request.getHeader(JWTConfig.tokenHeader);
-//        Long userId = JWTTokenUtil.parseAccessToken(token).getId();
-//
-////        Optional<Cart> cart  = cartRepository.findByUserIdAndProductId(30L,5L);
-//
-////        List<Cart> cartlist =cartRepository.findByUserId(1L);
-////
-////        for(Cart c:cartlist){
-////            cartRepository.delete(c);
-////        }
-//
-////        List<Cart> carts =cartRepository.findByUserId(1L);
-////
-////        for(Cart c:carts){
-////            System.out.println(c.getId());
-////        }
-//
-////        if(cart.isPresent()){
-////            System.out.println(cart.get().getId());
-//////            int a = cartRepository.setProductQuantity(1L,666L);
-////            cart.get().setQuantity(777L);
-////            cartRepository.save(cart.get());
-////        }
-//
-//        return ResponseUtils.response(200, "测试成功！！！", jsonObject);
-//    }
-
 
     @PostMapping("/find")
     public ResponseUtils find(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
 
         //从token中获取用户id
         String token = request.getHeader(JWTConfig.tokenHeader);
@@ -75,12 +41,11 @@ public class CartController {
 
         Optional<User> user = userService.findById(userId);
         if(user.isPresent()) {
-            jsonObject.put("product", cartService.findCartInformationByUserId(userId));
+            jsonObject.put("products", cartService.findCartInformationByUserId(userId));
             return ResponseUtils.response(200, "购物车商品信息查询成功", jsonObject);
         }
         else{
-            jsonObject = new JSONObject();
-            throw new UserNotExistException(null);
+            throw new UserNotExistException(jsonObject);
         }
     }
 

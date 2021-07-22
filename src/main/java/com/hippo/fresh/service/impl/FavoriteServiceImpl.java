@@ -79,8 +79,9 @@ public class FavoriteServiceImpl implements FavoriteService {
             map.put("productId",favorite.getProductId());
             map.put("productName",favorite.getProductName());
             map.put("productPicture",favorite.getProductPicture());
-            map.put("productPrice",favorite.getProductPrice());
+            map.put("oldPrice",favorite.getProductPrice());
             map.put("productStatus",favorite.getStatus());
+            map.put("currentPrice",favorite.getCurrentPrice());
             res.add(map);
         }
         jsonObject.put("products",res);
