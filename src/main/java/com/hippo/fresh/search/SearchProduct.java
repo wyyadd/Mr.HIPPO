@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
+import java.sql.Timestamp;
+
 
 @Data
 @Builder
@@ -48,4 +50,7 @@ public class SearchProduct{
 
     @Field(type = FieldType.Double, name = "score")
     private Double score;
+
+    @Field(type = FieldType.Date, name = "updateTime")
+    private Timestamp updateTime;
 }
