@@ -45,4 +45,7 @@ public class SearchProduct{
 
     @Field(type = FieldType.Integer, name = "status")
     private Integer status;//商品目录id
+
+    @Field(type = FieldType.Double, name = "score")
+    private Double score;
 }

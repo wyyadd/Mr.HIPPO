@@ -44,6 +44,7 @@ public class ScheduleConfig {
                     .detail(p.getDetail())
                     .status(p.getStatus())
                     .pictureUrl(p.getPictureUrl())
+//                    .score(p.getScore())
                     .salesAmount(p.getSalesAmount()).build());
         }
         return searchProducts;
