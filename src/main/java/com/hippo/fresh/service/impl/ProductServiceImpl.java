@@ -89,6 +89,7 @@ public class ProductServiceImpl  implements ProductService  {
             x.put("price",product.getPrice());
             x.put("details",product.getDetail());
             x.put("id",product.getId());
+            x.put("score",product.getScore());
             products.add(x);
         }
 
@@ -118,13 +119,18 @@ public class ProductServiceImpl  implements ProductService  {
         Page<Product> rawData = productRepository.findAll(ProductRepository.getSpec(productName, categoryFirst, categorySecond, sort, order, upperBound,lowerBound),
                 PageRequest.of(0,pageNum));
         //get num of page
+        Page<Product> data;
         int num = rawData.getTotalPages();
-        if(num == 0)
-            num++;
         //get random page
-        Page<Product> data = productRepository.findAll(ProductRepository.getSpec(productName, categoryFirst, categorySecond, sort, order, upperBound,lowerBound),
-                    PageRequest.of(new Random().nextInt(num),pageNum));
-
+        if(num == 0){
+            log.error("num = 0, error, none");
+            throw new ProductNotExistException(null);
+        }
+        if(num == 1)
+            data = rawData;
+        else
+            data = productRepository.findAll(ProductRepository.getSpec(productName, categoryFirst, categorySecond, sort, order, upperBound,lowerBound),
+                    PageRequest.of(new Random().nextInt(num-1),pageNum));
         //get json array
         if(!data.isEmpty()){
             JSONArray jsonArray = new JSONArray();
@@ -135,6 +141,7 @@ public class ProductServiceImpl  implements ProductService  {
                 jsonObject.put("pictureUrl",it.getPictureUrl());
                 jsonObject.put("price",it.getPrice());
                 jsonObject.put("sales_amount",it.getSalesAmount());
+                jsonObject.put("score",it.getScore());
                 jsonArray.add(jsonObject);
             }
             return ResponseUtils.success("查找成功",jsonArray);

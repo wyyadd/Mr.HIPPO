@@ -117,16 +117,27 @@ public class UserController {
         String username = user.getUsername();
         String userAvatar = user.getAvatar();
         //获取商品相关信息
-
         String comment = jsonObject.getString("comment");
         Long productId = jsonObject.getLong("productId");
         Product product = productRepository.getById(productId);
         String productUrl = product.getPictureUrl();
         String productName = product.getName();
+        int star = jsonObject.getInteger("star") == null ? 5 : jsonObject.getInteger("star");
+        //重新计算商品评分，并保存
+        int commentNUm = product.getCommentNum();
+        ++commentNUm;
+        int commentScore = product.getCommentScore();
+        commentScore += star;
+        product.setCommentNum(commentNUm);
+        product.setCommentScore(commentScore);
+        product.setScore(commentScore/commentNUm);
+        productRepository.save(product);
+        //创建评论
         Comment comments = Comment.builder()
                 .comment(comment).createTime(new Timestamp(System.currentTimeMillis()))
                 .productId(productId).productUrl(productUrl).productName(productName)
-                .userId(userId).username(username).userAvatar(userAvatar).build();
+                .userId(userId).username(username).userAvatar(userAvatar).star(star)
+                        .build();
         return productService.CreateComment(comments);
     }
 }
