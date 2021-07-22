@@ -105,14 +105,41 @@ public class SearchProductService {
 //                                    .fuzziness(Fuzziness.AUTO))
                             //价格区间匹配
                             .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
-
-            searchQuery = new NativeSearchQueryBuilder()
-                    .withFilter(boolQueryBuilder)
-                    //排序方式匹配
-                    .withSort(SortBuilders.fieldSort(sort == 1 ? "salesAmount" : "price").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
-                    //分页匹配
-                    .withPageable(PageRequest.of(page, pageNum))
-                    .build();
+            //排序
+            switch (sort){
+                case 1:searchQuery = new NativeSearchQueryBuilder()
+                        .withFilter(boolQueryBuilder)
+                        //排序方式匹配
+                        //按照销量排序
+                        .withSort(SortBuilders.fieldSort("salesAmount").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
+                        //分页匹配
+                        .withPageable(PageRequest.of(page, pageNum))
+                        .build();
+                break;
+                case 2:searchQuery = new NativeSearchQueryBuilder()
+                        .withFilter(boolQueryBuilder)
+                        //排序方式匹配
+                        //按照价格排序
+                        .withSort(SortBuilders.fieldSort("price").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
+                        //分页匹配
+                        .withPageable(PageRequest.of(page, pageNum))
+                        .build();
+                break;
+                case 3:searchQuery = new NativeSearchQueryBuilder()
+                        .withFilter(boolQueryBuilder)
+                        //排序方式匹配
+                        //按照评分排序
+                        .withSort(SortBuilders.fieldSort("score").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
+                        //分页匹配
+                        .withPageable(PageRequest.of(page, pageNum))
+                        .build();
+                break;
+                default:searchQuery = new NativeSearchQueryBuilder()
+                        .withFilter(boolQueryBuilder)
+                        //分页匹配
+                        .withPageable(PageRequest.of(page, pageNum))
+                        .build();
+            }
         }
 
         // 2. Execute search
