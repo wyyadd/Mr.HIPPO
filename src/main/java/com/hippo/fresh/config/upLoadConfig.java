@@ -1,4 +1,4 @@
-package com.hippo.fresh.fileUpLoad;
+package com.hippo.fresh.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
