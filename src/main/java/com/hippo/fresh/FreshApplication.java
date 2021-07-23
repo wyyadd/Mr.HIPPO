@@ -31,7 +31,6 @@ public class FreshApplication {
 
 		SpringApplication.run(FreshApplication.class, args);
 	}
-
 ////	将elasticsearch中的内容全部清空
 //	@PreDestroy
 //	public void deleteIndex() {

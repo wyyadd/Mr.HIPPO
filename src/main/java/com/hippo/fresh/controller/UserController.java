@@ -98,7 +98,7 @@ public class UserController {
         return userService.informationModify(userId,username,email,phone);
     }
 
-    @PostMapping("/comment/")
+    @PostMapping("/comment")
     public ResponseUtils GetUserComment(HttpServletRequest request){
         //从token中获取id
         String token = request.getHeader(JWTConfig.tokenHeader);
