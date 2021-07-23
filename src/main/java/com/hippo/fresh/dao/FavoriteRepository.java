@@ -16,4 +16,5 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
     //根据用户id查找该用户收藏夹所有商品
     List<Favorite> findAllByUserIdOrderByCreateTimeDesc(Long userId);
+
 }

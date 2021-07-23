@@ -14,4 +14,16 @@ public interface FavoriteService {
     /**查找收藏夹商品*/
     public ResponseUtils find(Long userId);
 
+    /**收藏夹商品降价10%提醒*/
+    public boolean priceDrop10Reminder(Favorite favorite);
+
+    /**收藏夹商品降价20%提醒*/
+    public boolean priceDrop20Reminder(Favorite favorite);
+
+    /**收藏夹商品降价30%提醒*/
+    public boolean priceDrop30Reminder(Favorite favorite);
+
+    /**收藏夹商品最低价格提醒*/
+    public boolean priceLowestReminder(Favorite favorite);
+
 }

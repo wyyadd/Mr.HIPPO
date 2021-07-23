@@ -3,6 +3,7 @@ package com.hippo.fresh.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.dao.CartRepository;
 import com.hippo.fresh.entity.Cart;
+import com.hippo.fresh.entity.Favorite;
 import com.hippo.fresh.entity.User;
 import com.hippo.fresh.exception.UserHasExistException;
 import com.hippo.fresh.exception.UserNotExistException;
@@ -12,6 +13,7 @@ import com.hippo.fresh.service.CartService;
 import com.hippo.fresh.service.UserService;
 import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,11 +64,21 @@ public class CartController {
         //解析products
         List<Map<String,Object>> products = (List<Map<String,Object>>)map.get("products");
 
-        //先删除该用户所有原有购物车信息
+        //先删除该用户新购物车中不存在的商品
        List<Cart> carts =cartRepository.findByUserId(userId);
+        for(Cart cart:carts){
+            int number = 0;
+            for(Map<String,Object> product:products){
+                Long productId = Long.valueOf(product.get("id").toString());
 
-        for(Cart c:carts){
-            cartRepository.delete(c);
+                if(cart.getProductId().equals(productId))
+                    break;
+                else
+                    number++;
+
+                if(number == products.size())
+                    cartRepository.delete(cart);
+            }
         }
 
         //更新该用户所有新的购物车信息
@@ -78,5 +90,20 @@ public class CartController {
         }
 
         return ResponseUtils.response(200, "购物车更新成功", jsonObject);
+    }
+
+    //商品降价提醒
+    @Scheduled(fixedRate = 1000 * 60 * 30)
+    public void priceDropReminder() {
+        List<Cart> carts = cartRepository.findAll();
+        for(Cart cart:carts){
+            if(!cartService.priceLowestReminder(cart)){
+                if(!cartService.priceDrop30Reminder(cart)){
+                    if(!cartService.priceDrop20Reminder(cart)){
+                        cartService.priceDrop10Reminder(cart);
+                    }
+                }
+            }
+        }
     }
 }
