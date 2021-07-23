@@ -41,16 +41,8 @@ spring:
     jpa:
       database: MySQL
       hibernate:
-          ddl-auto: update
-          show-sql: true
-
-
-
-
-#    #ES JPA配置
-#    elasticsearch:
-#      host: 47.106.193.0
-#      port: 9200
+        ddl-auto: update
+        show-sql: true
 
 # JWT配置
 jwt:
