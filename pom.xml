@@ -90,18 +90,11 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 			<version>2.5.2</version>
 		</dependency>
-
 		<!-- Alipay -->
 		<dependency>
 			<groupId>com.alipay.sdk</groupId>
 			<artifactId>alipay-easysdk</artifactId>
 			<version>2.2.0</version>
-		</dependency>
-		<!--test-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-test</artifactId>
-			<version>2.5.2</version>
 		</dependency>
 	</dependencies>
 
