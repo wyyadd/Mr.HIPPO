@@ -11,6 +11,7 @@ import com.hippo.fresh.entity.User;
 import com.hippo.fresh.exception.ProductNotExistException;
 import com.hippo.fresh.search.SearchProduct;
 import com.hippo.fresh.exception.ServerInternalErrorException;
+import com.hippo.fresh.search.SearchSuggestionService;
 import com.hippo.fresh.service.ProductService;
 import com.hippo.fresh.search.SearchProductService;
 import com.hippo.fresh.utils.ResponseUtils;
@@ -30,10 +31,14 @@ public class ProductController {
 
     private SearchProductService searchProductService;
 
+    private SearchSuggestionService searchSuggestionService;
+
     @Autowired
-    public ProductController(SearchProductService searchProductService, ProductService productService){
+    public ProductController(SearchProductService searchProductService, ProductService productService,
+                             SearchSuggestionService searchSuggestionService){
         this.searchProductService = searchProductService;
         this.productService = productService;
+        this.searchSuggestionService = searchSuggestionService;
     }
 
     @Autowired
@@ -41,6 +46,7 @@ public class ProductController {
 
     @Autowired
     private ProductRepository productRepository;
+
 
     private JSONObject jsonObject;
 
@@ -140,16 +146,11 @@ public class ProductController {
         return productService.findCommentByProductId(jsonObject.getLong("productId"));
     }
 
-    //测试接口
-    @GetMapping("/api/product/test")
-    public ResponseUtils GetComments(@RequestBody JSONObject jsonObject){
-        Long id = jsonObject.getLong("id");
-        Double price = jsonObject.getDouble("price");
-        Product p = productRepository.getById(id);
-        p.setPrice(price);
-        productRepository.save(p);
-        return ResponseUtils.response(200,"修改价格成功",jsonObject);
+    //搜索建议接口
+    @PostMapping("/api/product/suggestion")
+    public ResponseUtils Suggestion(@RequestBody String jsonStr){
+        jsonObject = JSON.parseObject(jsonStr);
+        return searchSuggestionService.fetchSuggestions(jsonObject.getString("search"));
     }
-
 
 }
