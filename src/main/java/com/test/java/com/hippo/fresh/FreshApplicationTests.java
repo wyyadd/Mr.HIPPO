@@ -9,12 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class FreshApplicationTests {
 
-	@Autowired
-	private SearchProductRepository searchProductRepository;
-
 	@Test
 	public void contextLoads() {
-		searchProductRepository.deleteAll();
+
 	}
 
 }

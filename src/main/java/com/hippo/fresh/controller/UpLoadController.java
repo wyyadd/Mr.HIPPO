@@ -1,4 +1,4 @@
-package com.hippo.fresh.fileUpLoad;
+package com.hippo.fresh.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.dao.UserRepository;
@@ -6,9 +6,13 @@ import com.hippo.fresh.entity.User;
 import com.hippo.fresh.security.config.JWTConfig;
 import com.hippo.fresh.security.utils.JWTTokenUtil;
 import com.hippo.fresh.utils.ResponseUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +25,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@Slf4j
 public class UpLoadController {
 
 
@@ -41,15 +46,14 @@ public class UpLoadController {
     @Value("${file.uploadurl}")
     private String uploadPath;
 
-
-
-    @PostMapping("/upload")
-    public ResponseUtils upload(MultipartFile file, HttpServletRequest request){
+    @PostMapping("/api/user/upload")
+    public ResponseUtils upload(@RequestParam("file") MultipartFile file, HttpServletRequest request){
         JSONObject jsonObject = new JSONObject();
 
         //从token中获取id
         String token = request.getHeader(JWTConfig.tokenHeader);
         Long userId = JWTTokenUtil.parseAccessToken(token).getId();
+
 
         //1.文件保存地址的后半段目录：  2021/07/18/
         String directory = simpleDateFormat.format(new Date());
@@ -85,5 +89,4 @@ public class UpLoadController {
             return ResponseUtils.response(404, "文件上传失败",jsonObject);
         }
     }
-
 }

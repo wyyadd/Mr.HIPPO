@@ -98,7 +98,7 @@ public class UserController {
         return userService.informationModify(userId,username,email,phone);
     }
 
-    @PostMapping("/comment/")
+    @PostMapping("/comment")
     public ResponseUtils GetUserComment(HttpServletRequest request){
         //从token中获取id
         String token = request.getHeader(JWTConfig.tokenHeader);
@@ -124,9 +124,9 @@ public class UserController {
         String productName = product.getName();
         int star = jsonObject.getInteger("star") == null ? 5 : jsonObject.getInteger("star");
         //重新计算商品评分，并保存
-        long commentNUm = product.getCommentNum();
+        long commentNUm = product.getCommentNum() == null ? 0 : product.getCommentNum();
         ++commentNUm;
-        long commentScore = product.getCommentScore();
+        long commentScore = product.getCommentScore() == null ? 0 : product.getCommentScore();
         commentScore += star;
         product.setCommentNum(commentNUm);
         product.setCommentScore(commentScore);

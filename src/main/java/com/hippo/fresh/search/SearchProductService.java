@@ -1,15 +1,23 @@
 package com.hippo.fresh.search;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.hippo.fresh.entity.Product;
 import com.hippo.fresh.exception.ProductNotExistException;
+import com.hippo.fresh.utils.ResponseUtils;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -48,16 +56,17 @@ public class SearchProductService {
     }
 
     //fuzz搜索功能
-    public List<SearchProduct> processSearch(int page, int pageNum, String productName,int sort, int order, int upperBound, int lowerBound) {
+    public ResponseUtils processSearch(int page, int pageNum, String productName, int sort, int order, int upperBound, int lowerBound) {
         // 1. Create query on multiple fields enabling fuzzy search
         Query searchQuery;
+
         //如果没有指定排序顺序，就按照权重排序
         if (sort == 0) {
 //            //对商品名，商品详情， 商品id赋予不同的权值
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
-                              QueryBuilders.matchPhrasePrefixQuery("name",productName), ScoreFunctionBuilders.weightFactorFunction(50)));
+                            QueryBuilders.matchPhrasePrefixQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(80)));
 //                            QueryBuilders.matchPhraseQuery("name", productName), ScoreFunctionBuilders.weightFactorFunction(50)));
             filterFunctionBuilders.add(
                     new FunctionScoreQueryBuilder.FilterFunctionBuilder(
@@ -89,8 +98,6 @@ public class SearchProductService {
             searchQuery = new NativeSearchQueryBuilder()
                     .withQuery(functionScoreQueryBuilder)
                     .withFilter(boolQueryBuilder)
-                    //排序方式匹配
-                    .withSort(SortBuilders.fieldSort(sort == 1 ? "salesAmount" : "price").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
                     //分页匹配
                     .withPageable(PageRequest.of(page, pageNum))
                     .build();
@@ -106,42 +113,45 @@ public class SearchProductService {
                             //价格区间匹配
                             .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
             //排序
-            switch (sort){
-                case 1:searchQuery = new NativeSearchQueryBuilder()
-                        .withFilter(boolQueryBuilder)
-                        //排序方式匹配
-                        //按照销量排序
-                        .withSort(SortBuilders.fieldSort("salesAmount").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
-                        //分页匹配
-                        .withPageable(PageRequest.of(page, pageNum))
-                        .build();
-                break;
-                case 2:searchQuery = new NativeSearchQueryBuilder()
-                        .withFilter(boolQueryBuilder)
-                        //排序方式匹配
-                        //按照价格排序
-                        .withSort(SortBuilders.fieldSort("price").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
-                        //分页匹配
-                        .withPageable(PageRequest.of(page, pageNum))
-                        .build();
-                break;
-                case 3:searchQuery = new NativeSearchQueryBuilder()
-                        .withFilter(boolQueryBuilder)
-                        //排序方式匹配
-                        //按照评分排序
-                        .withSort(SortBuilders.fieldSort("score").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
-                        //分页匹配
-                        .withPageable(PageRequest.of(page, pageNum))
-                        .build();
-                break;
-                default:searchQuery = new NativeSearchQueryBuilder()
-                        .withFilter(boolQueryBuilder)
-                        //分页匹配
-                        .withPageable(PageRequest.of(page, pageNum))
-                        .build();
+            switch (sort) {
+                case 1:
+                    searchQuery = new NativeSearchQueryBuilder()
+                            .withFilter(boolQueryBuilder)
+                            //排序方式匹配
+                            //按照销量排序
+                            .withSort(SortBuilders.fieldSort("salesAmount").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
+                            //分页匹配
+                            .withPageable(PageRequest.of(page, pageNum))
+                            .build();
+                    break;
+                case 2:
+                    searchQuery = new NativeSearchQueryBuilder()
+                            .withFilter(boolQueryBuilder)
+                            //排序方式匹配
+                            //按照价格排序
+                            .withSort(SortBuilders.fieldSort("price").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
+                            //分页匹配
+                            .withPageable(PageRequest.of(page, pageNum))
+                            .build();
+                    break;
+                case 3:
+                    searchQuery = new NativeSearchQueryBuilder()
+                            .withFilter(boolQueryBuilder)
+                            //排序方式匹配
+                            //按照评分排序
+                            .withSort(SortBuilders.fieldSort("score").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
+                            //分页匹配
+                            .withPageable(PageRequest.of(page, pageNum))
+                            .build();
+                    break;
+                default:
+                    searchQuery = new NativeSearchQueryBuilder()
+                            .withFilter(boolQueryBuilder)
+                            //分页匹配
+                            .withPageable(PageRequest.of(page, pageNum))
+                            .build();
             }
         }
-
         // 2. Execute search
         SearchHits<SearchProduct> productHits =
                 elasticsearchOperations
@@ -153,36 +163,61 @@ public class SearchProductService {
         productHits.forEach(searchHit -> {
             productMatches.add(searchHit.getContent());
         });
+
+        //如果得到的列表为空， 抛出异常
+        if (productMatches.size() == 0)
+            throw new ProductNotExistException(null);
+
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+
+        double maxPrice = GetPrice(productName, 1, upperBound, lowerBound).get(0).getPrice();
+        double minPrice = GetPrice(productName, 2, upperBound, lowerBound).get(0).getPrice();
+        jsonObject.put("searchHit", productHits.getTotalHits());
+        jsonObject.put("maxPrice", maxPrice);
+        jsonObject.put("minPrice", minPrice);
+
+        jsonArray.add(productMatches);
+        jsonArray.add(jsonObject);
+        return ResponseUtils.success("查找成功", jsonArray);
+    }
+
+
+
+    //获取价格极值函数
+    public List<SearchProduct> GetPrice(String productName, int order, int upperBound, int lowerBound) {
+        // 1. Create query on multiple fields enabling fuzzy search
+        Query searchQuery;
+        //否则按照给定顺序排序
+        BoolQueryBuilder boolQueryBuilder =
+                QueryBuilders.boolQuery()
+                        .must(QueryBuilders.termQuery("status", 1))
+                        .must(QueryBuilders.matchPhrasePrefixQuery("name", productName))
+                        //价格区间匹配
+                        .must(QueryBuilders.rangeQuery("price").from(lowerBound).to(upperBound));
+        //排序
+        searchQuery = new NativeSearchQueryBuilder()
+                .withFilter(boolQueryBuilder)
+                //排序方式匹配
+                //按照销量排序
+                .withSort(SortBuilders.fieldSort("salesAmount").order(order == 1 ? SortOrder.DESC : SortOrder.ASC))
+                //分页匹配
+                .withPageable(PageRequest.of(0, 1))
+                .build();
+        // 2. Execute search
+        SearchHits<SearchProduct> productHits =
+                elasticsearchOperations
+                        .search(searchQuery, SearchProduct.class,
+                                IndexCoordinates.of(PRODUCT_INDEX));
+        // 3. Map searchHits to product list
+        List<SearchProduct> productMatches = new ArrayList<SearchProduct>();
+        productHits.forEach(searchHit -> {
+            productMatches.add(searchHit.getContent());
+        });
+
+        //如果得到的列表为空， 抛出异常
         if (productMatches.size() == 0)
             throw new ProductNotExistException(null);
         return productMatches;
     }
 }
-
-    //搜索推荐function
-//    public List<String> fetchSuggestions(String query) {
-//        QueryBuilder queryBuilder = QueryBuilders
-////                .wildcardQuery("name", query+"*");
-//                //由通配符查询改为前缀查询
-////                .prefixQuery()
-//                .matchPhrasePrefixQuery("name",query);
-//
-//        Query searchQuery = new NativeSearchQueryBuilder()
-//                .withFilter(queryBuilder)
-//                //按照销售额降序
-//                .withSort(SortBuilders.fieldSort("salesAmount").order(SortOrder.DESC))
-//                .withPageable(PageRequest.of(0, 7))
-//                .build();
-//
-//        SearchHits<SearchProduct> searchSuggestions =
-//                elasticsearchOperations.search(searchQuery,
-//                        SearchProduct.class,
-//                        IndexCoordinates.of(PRODUCT_INDEX));
-//
-//        List<String> suggestions = new ArrayList<String>();
-//
-//        searchSuggestions.getSearchHits().forEach(searchHit->{
-//            suggestions.add(searchHit.getContent().getName());
-//        });
-//        return suggestions;
-//    }
