@@ -51,8 +51,7 @@ public class AlipayController {
         order.setPaymentType(jsonObject.getString("PaymentType"));
         orderRepository.save(order);
 
-        String paymentMoney = order.getPaymentMoney().toString();
-
+        String paymentMoney = String.format("%.2f", order.getPaymentMoney()).toString();
         return alipayService.toPay(orderId.toString(),paymentMoney);
     }
 
