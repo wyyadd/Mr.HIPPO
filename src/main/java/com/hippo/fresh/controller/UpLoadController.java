@@ -1,4 +1,4 @@
-package com.hippo.fresh.fileUpLoad;
+package com.hippo.fresh.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hippo.fresh.dao.UserRepository;
@@ -9,6 +9,7 @@ import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,10 +42,8 @@ public class UpLoadController {
     @Value("${file.uploadurl}")
     private String uploadPath;
 
-
-
-    @PostMapping("/upload")
-    public ResponseUtils upload(MultipartFile file, HttpServletRequest request){
+    @PostMapping("/api/user/upload")
+    public ResponseUtils upload(@RequestParam("file") MultipartFile file, HttpServletRequest request){
         JSONObject jsonObject = new JSONObject();
 
         //从token中获取id
@@ -85,5 +84,4 @@ public class UpLoadController {
             return ResponseUtils.response(404, "文件上传失败",jsonObject);
         }
     }
-
 }

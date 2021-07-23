@@ -1,16 +1,11 @@
 package com.hippo.fresh;
 
-import com.hippo.fresh.config.ScheduleConfig;
 import com.hippo.fresh.dao.ProductRepository;
-import com.hippo.fresh.search.SearchProduct;
 import com.hippo.fresh.search.SearchProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 /**
  * 启动类
