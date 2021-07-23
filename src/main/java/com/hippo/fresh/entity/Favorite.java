@@ -34,26 +34,47 @@ public class Favorite {
     private String productPicture;//商品图片
 
     @Column
-    private Double productPrice;//商品加入购物车价格
+    private Double oldPrice;//商品加入购物车时价格
 
     @Column
-    private Double currentPrice;//商品当前价格
+    private Double currentPrice;//商品的当前价格
+
+    @Column
+    private Double lowestPrice;//商品加入购物车以后的最低价格
 
     @Column
     private Integer status;//商品状态
 
     @Column
+    private Integer notifyTen;//商品降价10%通知
+
+    @Column
+    private Integer notifyTwenty;//商品降价20%通知
+
+    @Column
+    private Integer notifyThirty;//商品降价30%通知
+
+    @Column
+    private Integer notifyLowest;//商品最低价格通知
+
+
+    @Column
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createTime;//商品创建时间
 
-    public Favorite(Long userId, Long productId, String productName, String productPicture, Double productPrice, Integer status, Timestamp createTime) {
+    public Favorite(Long userId, Long productId, String productName, String productPicture, Double oldPrice, Double currentPrice, Double lowestPrice, Integer status, Integer notifyTen, Integer notifyTwenty, Integer notifyThirty, Integer notifyLowest, Timestamp createTime) {
         this.userId = userId;
         this.productId = productId;
         this.productName = productName;
         this.productPicture = productPicture;
-        this.productPrice = productPrice;
+        this.oldPrice = oldPrice;
+        this.currentPrice = currentPrice;
+        this.lowestPrice = lowestPrice;
         this.status = status;
+        this.notifyTen = notifyTen;
+        this.notifyTwenty = notifyTwenty;
+        this.notifyThirty = notifyThirty;
+        this.notifyLowest = notifyLowest;
         this.createTime = createTime;
     }
-
 }
