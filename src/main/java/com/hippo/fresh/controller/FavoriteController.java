@@ -1,6 +1,10 @@
 package com.hippo.fresh.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hippo.fresh.dao.FavoriteRepository;
+import com.hippo.fresh.dao.NoticeRepository;
+import com.hippo.fresh.entity.Favorite;
+import com.hippo.fresh.entity.Notice;
 import com.hippo.fresh.entity.User;
 import com.hippo.fresh.exception.UserNotExistException;
 import com.hippo.fresh.security.config.JWTConfig;
@@ -9,12 +13,15 @@ import com.hippo.fresh.service.FavoriteService;
 import com.hippo.fresh.service.UserService;
 import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,6 +33,12 @@ public class FavoriteController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FavoriteRepository favoriteRepository;
+
+    @Autowired
+    private NoticeRepository noticeRepository;
 
 
     //收藏夹添加商品接口
@@ -69,4 +82,21 @@ public class FavoriteController {
             throw new UserNotExistException(null);
         }
     }
+
+
+    //商品降价提醒
+    @Scheduled(fixedRate = 1000 * 60 * 30)
+    public void priceDropReminder() {
+        List<Favorite> favorites = favoriteRepository.findAll();
+        for(Favorite favorite:favorites){
+            if(!favoriteService.priceLowestReminder(favorite)){
+                if(!favoriteService.priceDrop30Reminder(favorite)){
+                    if(!favoriteService.priceDrop20Reminder(favorite)){
+                        favoriteService.priceDrop10Reminder(favorite);
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -35,10 +35,13 @@ public class Cart {
     private String productPicture;//商品图片
 
     @Column
-    private Double productPrice;//商品加入购物车价格
+    private Double oldPrice;//商品加入购物车价格
 
     @Column
     private Double currentPrice;//商品当前价格
+
+    @Column
+    private Double lowestPrice;//商品加入购物车以来的最低价格
 
     @Column
     private Long quantity;//商品数量
@@ -55,32 +58,39 @@ public class Cart {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp updateTime;//商品更新时间
 
+    @Column
+    private Integer notifyTen;//商品降价10%通知
+
+    @Column
+    private Integer notifyTwenty;//商品降价20%通知
+
+    @Column
+    private Integer notifyThirty;//商品降价30%通知
+
+    @Column
+    private Integer notifyLowest;//商品最低价格通知
+
     public Cart(Long id, Long productId, Long quantity) {
         this.id = id;
         this.productId = productId;
         this.quantity = quantity;
     }
 
-
-    public Cart(Long userId, Long productId, String productName, String productPicture, Double productPrice, Long quantity, Integer status) {
+    public Cart(Long userId, Long productId, String productName, String productPicture, Double oldPrice, Double currentPrice, Double lowestPrice, Long quantity, Integer status, Timestamp createTime, Timestamp updateTime, Integer notifyTen, Integer notifyTwenty, Integer notifyThirty, Integer notifyLowest) {
         this.userId = userId;
         this.productId = productId;
         this.productName = productName;
         this.productPicture = productPicture;
-        this.productPrice = productPrice;
-        this.quantity = quantity;
-        this.status = status;
-    }
-
-    public Cart(Long userId, Long productId, String productName, String productPicture, Double productPrice, Long quantity, Integer status, Timestamp createTime, Timestamp updateTime) {
-        this.userId = userId;
-        this.productId = productId;
-        this.productName = productName;
-        this.productPicture = productPicture;
-        this.productPrice = productPrice;
+        this.oldPrice = oldPrice;
+        this.currentPrice = currentPrice;
+        this.lowestPrice = lowestPrice;
         this.quantity = quantity;
         this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
+        this.notifyTen = notifyTen;
+        this.notifyTwenty = notifyTwenty;
+        this.notifyThirty = notifyThirty;
+        this.notifyLowest = notifyLowest;
     }
 }
