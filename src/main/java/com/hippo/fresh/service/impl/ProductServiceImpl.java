@@ -123,7 +123,7 @@ public class ProductServiceImpl  implements ProductService  {
         int num = rawData.getTotalPages();
         //get random page
         if(num == 0){
-            log.error("num = 0, error, none");
+//            log.error("num = 0, error, none");
             throw new ProductNotExistException(null);
         }
         if(num == 1)

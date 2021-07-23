@@ -51,6 +51,4 @@ public class SearchProduct{
     @Field(type = FieldType.Double, name = "score")
     private Double score;
 
-    @Field(type = FieldType.Date, name = "updateTime")
-    private Timestamp updateTime;
 }

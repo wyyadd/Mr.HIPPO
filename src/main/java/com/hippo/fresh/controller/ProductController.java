@@ -95,8 +95,8 @@ public class ProductController {
 //            upperBound = jsonObject.getInteger("upper-bound");
 //        if(jsonObject.getInteger("lower-bound") != null)
 //            lowerBound = jsonObject.getInteger("lower-bound");
-        log.info(categoryFirst);
-        log.info(String.valueOf(pageNum));
+//        log.info(categoryFirst);
+//        log.info(String.valueOf(pageNum));
         return productService.GetProductList(pageNum,null,categoryFirst, categorySecond,1,1,-1,-1);
     }
 
@@ -112,8 +112,7 @@ public class ProductController {
         int pageNum = (jsonObject.getInteger("page-num") == null ? 10 : jsonObject.getInteger("page-num"));
         String productName = jsonObject.getString("product-name");
 //        int type = (jsonObject.getInteger("category_id") == null ? 0 : jsonObject.getInteger("category_id"));
-        List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,1,0,Integer.MAX_VALUE,0);
-        return ResponseUtils.success("查找成功",products);
+        return searchProductService.processSearch(page,pageNum,productName,1,0,Integer.MAX_VALUE,0);
     }
 
     //模糊搜索接口
@@ -131,8 +130,7 @@ public class ProductController {
         int order = (jsonObject.getInteger("order") == null ? 1 : jsonObject.getInteger("order"));
         int upperBound = (jsonObject.getInteger("upper-bound") == null ? Integer.MAX_VALUE : jsonObject.getInteger("upper-bound"));
         int lowerBound = (jsonObject.getInteger("lower-bound") == null ? 0 : jsonObject.getInteger("lower-bound"));
-        List<SearchProduct> products = searchProductService.processSearch(page,pageNum,productName,sort,order,upperBound,lowerBound);
-        return ResponseUtils.success("查找成功",products);
+        return searchProductService.processSearch(page,pageNum,productName,sort,order,upperBound,lowerBound);
     }
 
     //通过产品id获得评论接口
