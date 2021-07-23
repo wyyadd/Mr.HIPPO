@@ -1,9 +1,9 @@
 #文件上传地址配置
 file:
   #服务器地址
-  uploadurl: "~/upload/"
+  uploadurl: "/root/upload/"
   #本地地址
-  localurl: "~/upload/"
+  localurl: "/root/upload/"
 
 server:
   port: 8080
@@ -63,7 +63,7 @@ jwt:
   # 过期时间，单位秒, 86400代表一天， 604800七天
   expiration: 604800
   # 配置白名单（不需要认证）注意， 逗号之间不能有空格
-  antMatchers: /api/user/login,/api/user/register/**,/api/product/**,/api/product-list,/api/product-recommend,/api/search,/api/verification/**,/api/alipay/**
+  antMatchers: /api/user/login,/api/user/register/**,/api/product/**,/api/verification/**,/api/alipay/**,/upload/**
 
   #logging setting
 logging:

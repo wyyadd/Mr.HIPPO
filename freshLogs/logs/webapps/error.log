@@ -1,0 +1,10 @@
+2021-07-23 14:54:14.957 [http-nio-8080-exec-1] [ERROR] com.hippo.fresh.controller.UpLoadController - file = null
+2021-07-23 14:54:26.359 [http-nio-8080-exec-3] [ERROR] com.hippo.fresh.controller.UpLoadController - file = null
+2021-07-23 14:54:59.496 [http-nio-8080-exec-2] [ERROR] com.hippo.fresh.controller.UpLoadController - file = null
+2021-07-23 14:57:04.592 [http-nio-8080-exec-4] [ERROR] com.hippo.fresh.controller.UpLoadController - file = null
+2021-07-23 14:57:47.299 [http-nio-8080-exec-1] [ERROR] com.hippo.fresh.controller.UpLoadController - Screenshot from 2021-07-20 10-23-46.png
+2021-07-23 14:58:27.044 [http-nio-8080-exec-1] [ERROR] com.hippo.fresh.controller.UpLoadController - Screenshot from 2021-07-20 10-23-46.png
+2021-07-23 15:02:03.614 [http-nio-8080-exec-2] [ERROR] com.hippo.fresh.controller.UpLoadController - Screenshot from 2021-07-20 10-23-46.png
+2021-07-23 15:02:58.501 [http-nio-8080-exec-2] [ERROR] com.hippo.fresh.controller.UpLoadController - Screenshot from 2021-07-20 10-23-46.png
+2021-07-23 15:05:35.807 [http-nio-8080-exec-2] [ERROR] com.hippo.fresh.controller.UpLoadController - Screenshot from 2021-07-20 10-23-46.png
+2021-07-23 15:11:56.351 [http-nio-8080-exec-2] [ERROR] com.hippo.fresh.controller.UpLoadController - Screenshot from 2021-07-20 10-23-46.png
