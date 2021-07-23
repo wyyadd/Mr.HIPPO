@@ -6,9 +6,12 @@ import com.hippo.fresh.entity.User;
 import com.hippo.fresh.security.config.JWTConfig;
 import com.hippo.fresh.security.utils.JWTTokenUtil;
 import com.hippo.fresh.utils.ResponseUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +25,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@Slf4j
 public class UpLoadController {
 
 
@@ -49,6 +53,7 @@ public class UpLoadController {
         //从token中获取id
         String token = request.getHeader(JWTConfig.tokenHeader);
         Long userId = JWTTokenUtil.parseAccessToken(token).getId();
+
 
         //1.文件保存地址的后半段目录：  2021/07/18/
         String directory = simpleDateFormat.format(new Date());
