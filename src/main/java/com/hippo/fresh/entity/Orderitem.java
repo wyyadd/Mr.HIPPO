@@ -39,8 +39,13 @@ public class Orderitem {
     private String productPictureUrl;//商品图片url
 
     @Column
-    private Double currentPrice;//商品加入订单时价格
+    private String categoryFirst;//商品一级目录
 
+    @Column
+    private String categorySecond;//商品二级目录
+
+    @Column
+    private Double currentPrice;//商品加入订单时价格
 
     @Column
     private Long quantity;//订单中该商品数量
@@ -52,12 +57,14 @@ public class Orderitem {
     private String productDetails;//商品详情
 
     public Orderitem(Long userId,Long orderId, Long productId, String productName, String productPictureUrl,
-                     Double currentPrice, Long quantity, Double totalPrice) {
+                     String categoryFirst,String categorySecond,Double currentPrice, Long quantity, Double totalPrice) {
         this.userId = userId;
         this.orderId = orderId;
         this.productId = productId;
         this.productName = productName;
         this.productPictureUrl = productPictureUrl;
+        this.categoryFirst =categoryFirst;
+        this.categorySecond = categorySecond;
         this.currentPrice = currentPrice;
         this.quantity = quantity;
         this.totalPrice = totalPrice;

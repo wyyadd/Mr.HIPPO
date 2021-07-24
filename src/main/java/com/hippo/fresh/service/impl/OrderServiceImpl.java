@@ -66,7 +66,7 @@ public class OrderServiceImpl  implements OrderService {
 
             //根据用户id、订单id、商品id、商品数量添加订单条目
             orderitemRepository.save(new Orderitem(newOrder.getUserId(), newOrder.getId(),productId,p.getName(),p.getPictureUrl(),
-                    p.getPrice(),productQuantity, p.getPrice()*productQuantity));
+                    p.getCategoryFirst(),p.getCategorySecond(),p.getPrice(),productQuantity, p.getPrice()*productQuantity));
         }
         //设置订单总金额
         newOrder.setPaymentMoney(paymentMoney);
