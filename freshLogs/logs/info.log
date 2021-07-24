@@ -45,3 +45,6 @@
 2021-07-24 23:19:05.044 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Starting FreshApplication using Java 1.8.0_291 on DESKTOP-V9AFCT7 with PID 15820 (D:\Hippo\Mr.HIPPO\target\classes started by Yan'zhi'hao in D:\Hippo\Mr.HIPPO)
 2021-07-24 23:19:05.047 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - No active profile set, falling back to default profiles: default
 2021-07-24 23:19:11.281 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Started FreshApplication in 6.866 seconds (JVM running for 7.931)
+2021-07-24 23:44:19.841 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Starting FreshApplication using Java 1.8.0_291 on DESKTOP-V9AFCT7 with PID 22032 (D:\Hippo\Mr.HIPPO\target\classes started by Yan'zhi'hao in D:\Hippo\Mr.HIPPO)
+2021-07-24 23:44:19.843 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - No active profile set, falling back to default profiles: default
+2021-07-24 23:44:25.542 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Started FreshApplication in 6.175 seconds (JVM running for 7.689)
