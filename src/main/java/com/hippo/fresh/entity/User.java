@@ -1,6 +1,7 @@
 package com.hippo.fresh.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class User<name> {
     @Column
     private String username;// 用户名
 
+    @JsonIgnore  //返回时排除掉这个字段
     @Column
     private String password;// 密码
 
@@ -36,6 +38,26 @@ public class User<name> {
     @Column
     private String avatar;// 用户头像
 
+    @Column
+    private String gender;//用户性别
+
+    @Column
+    private Long age;//用户年龄
+
+    @Column
+    private String foodPreference;//用户食物偏好
+
+    @Column
+    private String signature;// 用户签名
+
+    @Column
+    private String hometown;// 用户籍贯
+
+    @Column
+    private String residentArea;// 用户常住地区
+
+    @Column
+    private String label;// 用户标签
 
     @Column(name = "create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

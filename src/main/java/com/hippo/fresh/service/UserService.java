@@ -38,7 +38,9 @@ public interface UserService {
     public ResponseUtils passwordModify(Long userId,String oldPassword,String newPassword);
 
     /** 修改用户个人信息*/
-    public ResponseUtils informationModify(Long userId,String username,String email,String phone);
+    public ResponseUtils informationModify(Long userId,String email,String phone,String gender,Long age,
+                                           String foodPreference,String signature,String hometown,
+                                           String residentArea,String label);
 
     public ResponseUtils findCommentByUserId(Long userId);
 

@@ -161,4 +161,35 @@ public class OrderController {
         return ResponseUtils.response(200, "订单信息获取成功",jsonObject);
             }
 
+    //不同订单状态返回用户订单总金额
+    @PostMapping("/money")
+    public ResponseUtils money(HttpServletRequest request) {
+
+        JSONObject jsonObject = new JSONObject();
+
+        //从token中获取用户id
+        String token = request.getHeader(JWTConfig.tokenHeader);
+        Long userId = JWTTokenUtil.parseAccessToken(token).getId();
+
+
+        jsonObject.put("待支付",orderRepository.status(userId,1));
+        jsonObject.put("已支付",orderRepository.status(userId,2));
+        return ResponseUtils.response(200, "订单总金额信息获取成功",jsonObject);
+    }
+
+    //根据订单创建时间段返回订单信息
+    @PostMapping("/time")
+    public ResponseUtils time(HttpServletRequest request) {
+
+        JSONObject jsonObject = new JSONObject();
+
+        //从token中获取用户id
+        String token = request.getHeader(JWTConfig.tokenHeader);
+        Long userId = JWTTokenUtil.parseAccessToken(token).getId();
+
+        jsonObject.put("time",orderService.findByTime(userId));
+        return ResponseUtils.response(200, "订单时间段获取成功",jsonObject);
+    }
+
+
 }

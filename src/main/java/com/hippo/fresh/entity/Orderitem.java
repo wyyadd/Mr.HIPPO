@@ -21,6 +21,9 @@ public class Orderitem {
     private Long id;//订单商品id
 
     @Column
+    private Long userId;//用户id
+
+    @Column
     private Long orderId;//订单id
 
     @Column
@@ -48,8 +51,9 @@ public class Orderitem {
     @Column
     private String productDetails;//商品详情
 
-    public Orderitem(Long orderId, Long productId, String productName, String productPictureUrl,
+    public Orderitem(Long userId,Long orderId, Long productId, String productName, String productPictureUrl,
                      Double currentPrice, Long quantity, Double totalPrice) {
+        this.userId = userId;
         this.orderId = orderId;
         this.productId = productId;
         this.productName = productName;
