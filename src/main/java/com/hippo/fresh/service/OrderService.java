@@ -29,4 +29,7 @@ public interface OrderService {
 
     /**根据用户id查找用户订单，并按照创建时间倒叙排序*/
     public List<Order> findAllByUserIdOrderByCreateTimeDesc(Long userId);
+
+    /**根据订单创建时间段返回订单信息*/
+    public Map<String,Object> findByTime(Long userId);
 }

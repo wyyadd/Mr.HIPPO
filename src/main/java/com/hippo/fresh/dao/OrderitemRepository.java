@@ -20,4 +20,14 @@ public interface OrderitemRepository extends JpaRepository<Orderitem, Long> {
 
     List<Orderitem> findByOrderId(Long orderId);
 
+    //根据商品一级目录名称查找该用户一级目录商品个数
+    @Query(value = "select count(category_first) from orderitem x where x.user_id =?1 and x.category_first =?2",nativeQuery = true)
+    int countCategoryFirst(Long userId,String categoryFirst);
+
+
+    //根据商品二级目录名称查找该用户一级目录商品个数
+    @Query(value = "select count(category_second) from orderitem x where x.user_id =?1 and x.category_second =?2",nativeQuery = true)
+    int countCategorySecond(Long userId,String categorySecond);
+
+
 }

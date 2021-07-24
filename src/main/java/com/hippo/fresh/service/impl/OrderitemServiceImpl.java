@@ -42,13 +42,13 @@ public class OrderitemServiceImpl implements OrderitemService {
 
     }
 
-    /** 根据订单id、商品id、商品数量添加订单条目*/
-    public Orderitem saveByProductId(Long orderId, Long productId,Long quantity){
-
-        Product product = productRepository.findById(productId).get();
-        return orderItemRepository.save(new Orderitem(orderId,productId,product.getName(),product.getPictureUrl(),
-                product.getPrice(),quantity, product.getPrice()*quantity));
-    }
+//    /** 根据订单id、商品id、商品数量添加订单条目*/
+//    public Orderitem saveByProductId(Long orderId, Long productId,Long quantity){
+//
+//        Product product = productRepository.findById(productId).get();
+//        return orderItemRepository.save(new Orderitem(orderId,productId,product.getName(),product.getPictureUrl(),
+//                product.getPrice(),quantity, product.getPrice()*quantity));
+//    }
 
 
 }

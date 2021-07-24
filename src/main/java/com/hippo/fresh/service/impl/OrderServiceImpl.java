@@ -14,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Service
@@ -66,8 +64,8 @@ public class OrderServiceImpl  implements OrderService {
             Product p = productRepository.findById(productId).get();
             paymentMoney = paymentMoney + p.getPrice() * productQuantity;
 
-            //根据订单id、商品id、商品数量添加订单条目
-            orderitemRepository.save(new Orderitem(newOrder.getId(),productId,p.getName(),p.getPictureUrl(),
+            //根据用户id、订单id、商品id、商品数量添加订单条目
+            orderitemRepository.save(new Orderitem(newOrder.getUserId(), newOrder.getId(),productId,p.getName(),p.getPictureUrl(),
                     p.getPrice(),productQuantity, p.getPrice()*productQuantity));
         }
         //设置订单总金额
@@ -132,6 +130,31 @@ public class OrderServiceImpl  implements OrderService {
     /**根据用户id查找用户订单，并按照创建时间倒叙排序*/
     public List<Order> findAllByUserIdOrderByCreateTimeDesc(Long userId){
         return  orderRepository.findAllByUserIdOrderByCreateTimeDesc(userId);
+    }
+
+
+    /**根据订单创建时间段返回订单信息*/
+    public Map<String,Object> findByTime(Long userId){
+        Map<String,Object> map = new HashMap<>();
+
+        //times表示各个小时段的订单数目
+        int [] times = new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+        List<Order> orders = orderRepository.findAllByUserId(userId);
+        for(Order order:orders){
+            for(int i =0;i < 24;i++){
+                String timeFormat = String.format("%02d",i);
+                String hour = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getCreateTime()).substring(11,13);
+                if(hour.equals(timeFormat))
+                    times[i]++;
+            }
+        }
+
+        for(int i =0; i <24;i++){
+            String timeFormat = String.format("%02d",i);
+            map.put(timeFormat,times[i]);
+        }
+        return map;
     }
 
 }

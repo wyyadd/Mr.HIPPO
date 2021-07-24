@@ -55,11 +55,8 @@ public class UserController {
     public ResponseUtils information(HttpServletRequest request) {
         //从token中获取id
         String token = request.getHeader(JWTConfig.tokenHeader);
-//        log.info(token);
-//        System.out.println(token==null);
-//        System.out.println(token);
         Long id = JWTTokenUtil.parseAccessToken(token).getId();
-//        System.out.println(id);
+
         return userService.information(id);
     }
 
@@ -91,11 +88,18 @@ public class UserController {
         Long userId = JWTTokenUtil.parseAccessToken(token).getId();
 
         JSONObject jsonObject = JSON.parseObject(jsStr);
-        String username = jsonObject.getString("username");
-        String phone = jsonObject.getString("phone");
         String email = jsonObject.getString("email");
+        String phone = jsonObject.getString("phone");
+        String gender = jsonObject.getString("gender");
+        Long age = jsonObject.getLong("age");
+        String foodPreference = jsonObject.getString("foodPreference");
+        String signature = jsonObject.getString("signature");
+        String hometown = jsonObject.getString("hometown");
+        String residentArea = jsonObject.getString("residentArea");
+        String label = jsonObject.getString("label");
 
-        return userService.informationModify(userId,username,email,phone);
+        return userService.informationModify(userId,email,phone,gender,age,foodPreference,
+                signature,hometown,residentArea,label);
     }
 
     @PostMapping("/comment")

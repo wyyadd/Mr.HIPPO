@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Signature;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -133,15 +134,27 @@ public class UserServiceImpl implements UserService {
     public ResponseUtils information(Long userId){
         jsonObject = new JSONObject();
 
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> u = userRepository.findById(userId);
 
-        if(user.isPresent()) {
-            List<Receiver> allReceiver = receiverRepository.findAllByUserIdOrderByUpdateTimeDesc(user.get().getId());
-            jsonObject.put("id", user.get().getId());
-            jsonObject.put("username", user.get().getUsername());
-            jsonObject.put("email", user.get().getEmail());
-            jsonObject.put("avatar", user.get().getAvatar());
+        if(u.isPresent()) {
+            User user = u.get();
+            List<Receiver> allReceiver = receiverRepository.findAllByUserIdOrderByUpdateTimeDesc(user.getId());
+            jsonObject.put("user",user);
             jsonObject.put("receiver", allReceiver);
+//            jsonObject.put("id", user.getId());
+//            jsonObject.put("username", user.getUsername());
+//            jsonObject.put("email", user.getEmail());
+//            jsonObject.put("phone", user.getPhone());
+//            jsonObject.put("avatar", user.getAvatar());
+//            jsonObject.put("gender", user.getGender());
+//            jsonObject.put("age", user.getAge());
+//            jsonObject.put("foodPreference", user.getFoodPreference());
+//            jsonObject.put("signature", user.getSignature());
+//            jsonObject.put("hometown", user.getHometown());
+//            jsonObject.put("residentArea", user.getResidentArea());
+//            jsonObject.put("label", user.getLabel());
+//            jsonObject.put("createTime", user.getCreateTime());
+
             return ResponseUtils.success("用户信息返回成功",jsonObject);
         }
         else
@@ -178,7 +191,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /** 修改用户个人信息*/
-    public ResponseUtils informationModify(Long userId,String username,String email,String phone){
+    public ResponseUtils informationModify(Long userId,String email,String phone,String gender,Long age,
+                                           String foodPreference,String signature,String hometown,
+                                           String residentArea,String label){
         jsonObject = new JSONObject();
 
         Optional<User> u = userRepository.findById(userId);
@@ -189,19 +204,18 @@ public class UserServiceImpl implements UserService {
         //用户id存在
         else {
             User user = u.get();
-            Optional<User> existsUser = userRepository.findByUsername(username);
-            //新修改的用户名和他人相同
-            if(existsUser.isPresent()){
-                return ResponseUtils.response(404,"用户名已存在", jsonObject);
-            }
-            else{
-                user.setUsername(username);
+
                 user.setEmail(email);
                 user.setPhone(phone);
+                user.setGender(gender);
+                user.setAge(age);
+                user.setFoodPreference(foodPreference);
+                user.setSignature(signature);
+                user.setHometown(hometown);
+                user.setResidentArea(residentArea);
+                user.setLabel(label);
                 userRepository.save(user);
                 return ResponseUtils.response(200,"用户个人信息修改成功", jsonObject);
-            }
-
         }
     }
 
