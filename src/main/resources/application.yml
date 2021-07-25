@@ -55,7 +55,7 @@ jwt:
   # 过期时间，单位秒, 86400代表一天， 604800七天
   expiration: 604800
   # 配置白名单（不需要认证）注意， 逗号之间不能有空格
-  antMatchers: /api/user/login,/api/user/register/**,/api/product/**,/api/verification/**,/api/alipay/**,/upload/**
+  antMatchers: /api/user/login,/api/user/register/**,/api/product/**,/api/verification/**,/api/alipay/**,/upload/**,/api/forum/find
 
   #logging setting
 logging:
