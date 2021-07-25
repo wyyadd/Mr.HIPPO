@@ -1,6 +1,5 @@
 package com.hippo.fresh.controller;
 
-
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hippo.fresh.dao.ForumRepository;
@@ -10,15 +9,16 @@ import com.hippo.fresh.security.config.JWTConfig;
 import com.hippo.fresh.security.utils.JWTTokenUtil;
 import com.hippo.fresh.service.ForumService;
 import com.hippo.fresh.utils.ResponseUtils;
-import com.tdunning.math.stats.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,16 +54,19 @@ public class ForumController {
         int pageIndex = jsonObject.getInteger("pageIndex"); //当前页码（注意：第一页是从0开始）
         int pageSize = jsonObject.getInteger("pageSize"); //分页大小
 
-//      // 按age值降序排序
-//      Sort sort = new Sort(Sort.Direction.DESC, "age");
+
+//        List<String> sortProperties = new ArrayList<>();
+//        sortProperties.add("id");
+//        Sort sort = new Sort(Sort.Direction.DESC,sortProperties);
+        Sort sort = Sort.by(Sort.Order.desc("createTime"));
 
       // 分页排序
-      Pageable pageable = PageRequest.of(pageIndex, pageSize);
+      Pageable pageable = PageRequest.of(pageIndex, pageSize,sort);
 
       Page<Forum> forums= forumRepository.findAll(pageable);
 
         JSONObject res = new JSONObject();
-        res.put("forum",forums);
+        res.put("forum",forums.getContent());
         return ResponseUtils.response(200,"论坛获取成功",res);
 
     }
