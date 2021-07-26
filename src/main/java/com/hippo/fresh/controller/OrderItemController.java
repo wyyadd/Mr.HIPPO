@@ -35,7 +35,7 @@ public class OrderItemController {
         Long userId = JWTTokenUtil.parseAccessToken(token).getId();
 
         String []categoryFirsts = {"新鲜水果","海鲜水产","精选肉类","冷冻即食","蔬菜蛋品","精品生鲜"};
-        String []categorySeconds={"热销水果","时令水果","热带水果","鱼类","虾类","蟹类","贝类","海参","猪肉","牛肉",
+        String []categorySeconds={"水果","鱼类","虾类","蟹类","贝类","海参","猪肉","牛肉",
                 "羊肉","鸡肉","鸭肉","内脏类","面点","方便速食","饮品甜品","火锅丸料","烘焙食材","叶菜类","根茎类",
                 "鲜菌菇","茄果瓜类","葱姜蒜椒","蛋类","河马优选"};
 
