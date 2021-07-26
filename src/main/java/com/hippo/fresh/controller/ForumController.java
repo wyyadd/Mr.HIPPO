@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hippo.fresh.dao.ForumRepository;
 import com.hippo.fresh.entity.Forum;
+import com.hippo.fresh.exception.ForumNotExistException;
 import com.hippo.fresh.exception.UserNotExistException;
 import com.hippo.fresh.security.config.JWTConfig;
 import com.hippo.fresh.security.utils.JWTTokenUtil;
@@ -48,8 +49,8 @@ public class ForumController {
 
 
     //查询所有帖子信息
-    @PostMapping("/find")
-    public ResponseUtils find(@RequestBody JSONObject jsonObject) {
+    @PostMapping("/findall")
+    public ResponseUtils GetAllForum(@RequestBody JSONObject jsonObject) {
 
         int pageIndex = jsonObject.getInteger("pageIndex"); //当前页码（注意：第一页是从0开始）
         int pageSize = jsonObject.getInteger("pageSize"); //分页大小
@@ -71,9 +72,15 @@ public class ForumController {
 
     }
 
-
-
-
-
+    //根据帖子id查询帖信息
+    @PostMapping("/find")
+    public ResponseUtils FindForum(@RequestBody JSONObject jsonObject){
+        Long forumId = jsonObject.getLong("forumId");
+        if(forumRepository.existsById(forumId)){
+            return forumService.GetById(forumId);
+        }else {
+            throw new ForumNotExistException(forumId);
+        }
+    }
 
 }
