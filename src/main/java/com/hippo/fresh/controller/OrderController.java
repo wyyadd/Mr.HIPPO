@@ -171,9 +171,16 @@ public class OrderController {
         String token = request.getHeader(JWTConfig.tokenHeader);
         Long userId = JWTTokenUtil.parseAccessToken(token).getId();
 
+        if(orderRepository.findAllByUserIdAndAndStatus(userId,1).size() == 0 )
+            jsonObject.put("待支付",0);
+        else
+            jsonObject.put("待支付",orderRepository.status(userId,1));
 
-        jsonObject.put("待支付",orderRepository.status(userId,1));
-        jsonObject.put("已支付",orderRepository.status(userId,2));
+        if(orderRepository.findAllByUserIdAndAndStatus(userId,2).size() == 0 )
+            jsonObject.put("已支付",0);
+        else
+            jsonObject.put("已支付",orderRepository.status(userId,2));
+
         return ResponseUtils.response(200, "订单总金额信息获取成功",jsonObject);
     }
 

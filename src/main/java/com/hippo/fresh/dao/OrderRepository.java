@@ -26,4 +26,7 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     //计算用户某一状态订单的总金额
     @Query(value = "select sum(payment_money) from ord x where x.user_id =?1 and x.status =?2",nativeQuery = true)
     double status(Long userId,Integer orderStatus);
+
+    //根据用户id和订单状态查找订单
+    List<Order> findAllByUserIdAndAndStatus(Long userId,Integer orderStatus);
 }
