@@ -32,4 +32,14 @@ public class ForumServiceImpl implements ForumService {
 
     }
 
+    @Override
+    public ResponseUtils GetById(Long id){
+        JSONObject jsonObject = new JSONObject();
+        Forum forum = forumRepository.findById(id).get();
+        jsonObject.put("forumId", id);
+        jsonObject.put("title", forum.getTitle());
+        jsonObject.put("content", forum.getContent());
+        return ResponseUtils.success("查找帖子成功", jsonObject);
+    }
+
 }
