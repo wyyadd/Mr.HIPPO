@@ -13,13 +13,10 @@ import com.hippo.fresh.exception.ServerInternalErrorException;
 import com.hippo.fresh.service.ProductService;
 import com.hippo.fresh.utils.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.tool.schema.spi.CommandAcceptanceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 @Service
@@ -170,6 +167,26 @@ public class ProductServiceImpl  implements ProductService  {
         }catch (Exception e){
             throw new ServerInternalErrorException(null);
         }
+    }
+
+    //获取秒杀商品列表
+    @Override
+    public ResponseUtils GetKillProductList() {
+        List<Product> products = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray();
+        for(long i : new long[]{109770, 108196, 165775, 161655}){
+            JSONObject jsonObject = new JSONObject();
+            Product product = productRepository.getById(i);
+            jsonObject.put("name", product.getName());
+            jsonObject.put("id", product.getId());
+            jsonObject.put("pictureUrl", product.getPictureUrl());
+            jsonObject.put("stock", product.getStock());
+            jsonObject.put("originPrice",product.getPrice());
+            jsonObject.put("currentPrice", product.getPrice()*0.3);
+            jsonObject.put("time", "2021-07-30 20:00:00");
+            jsonArray.add(jsonObject);
+        }
+        return ResponseUtils.success("查找秒杀商品成功", jsonArray);
     }
 
 }

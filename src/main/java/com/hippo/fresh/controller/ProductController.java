@@ -153,4 +153,10 @@ public class ProductController {
         return searchSuggestionService.fetchSuggestions(jsonObject.getString("search"));
     }
 
+    //秒杀接口
+    @PostMapping("/api/product/kill")
+    public ResponseUtils KillProduct(){
+        return productService.GetKillProductList();
+    }
+
 }
