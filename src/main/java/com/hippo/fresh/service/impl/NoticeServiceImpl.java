@@ -30,6 +30,7 @@ public class NoticeServiceImpl implements NoticeService {
             map.put("messageId", notice.getId());
             map.put("message", notice.getMessage());
             map.put("productId", notice.getProductId());
+            map.put("productName", notice.getProductName());
             map.put("productPicture", notice.getProductPicture());
             map.put("oldPrice", notice.getOldPrice());
             map.put("currentPrice", notice.getCurrentPrice());
