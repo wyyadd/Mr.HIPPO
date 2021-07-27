@@ -56,5 +56,4 @@ public class FreshApplication {
 //        searchProductRepository.deleteAll();
 //        searchSuggestionRepository.saveAll(readSearchSuggestion.Read());
 //    }
-
 }
