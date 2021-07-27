@@ -1,8 +1,11 @@
 package com.hippo.fresh.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alipay.easysdk.kernel.util.JsonUtil;
 import com.hippo.fresh.dao.NoticeRepository;
 import com.hippo.fresh.entity.Notice;
 import com.hippo.fresh.service.NoticeService;
+import com.hippo.fresh.utils.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,29 +20,30 @@ public class NoticeServiceImpl implements NoticeService {
     private NoticeRepository noticeRepository;
 
     /**查找用户消息通知*/
-    public Map<String,Object> find(Long userId) {
-        Map<String, Object> map = new HashMap<>();
-        List<Notice> notices = noticeRepository.findAllByUserId(userId);
-        for (Notice notice : notices) {
-            if (notice.getIsread().equals(0)) {
-                map.put("messageId", notice.getId());
-                map.put("message", notice.getMessage());
-                map.put("productId", notice.getProductId());
-                map.put("productPicture", notice.getProductPicture());
-                map.put("oldPrice", notice.getOldPrice());
-                map.put("currentPrice", notice.getCurrentPrice());
-                map.put("percentage", notice.getPercentage());
-
-                String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(notice.getCreateTime());
-                map.put("createTime",createTime);
-
-                //消息发送过一次之后改为已读
-                notice.setIsread(1);
-                noticeRepository.save(notice);
-                return map;
-            }
+    public ResponseUtils find(Long userId) {
+        JSONObject map = new JSONObject();
+        List<Notice> notices = noticeRepository.findAllByUserIdAndIsread(userId, 0);
+        if (notices.isEmpty()) {
+            return ResponseUtils.response(201, "用户暂无通知", map);
         }
-        return map;
+        for (Notice notice : notices) {
+            map.put("messageId", notice.getId());
+            map.put("message", notice.getMessage());
+            map.put("productId", notice.getProductId());
+            map.put("productPicture", notice.getProductPicture());
+            map.put("oldPrice", notice.getOldPrice());
+            map.put("currentPrice", notice.getCurrentPrice());
+            map.put("percentage", notice.getPercentage());
+
+            String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(notice.getCreateTime());
+            map.put("createTime", createTime);
+
+            //消息发送过一次之后改为已读
+            notice.setIsread(1);
+            noticeRepository.save(notice);
+            return ResponseUtils.response(200, "用户通知获取成功", map);
+        }
+        return ResponseUtils.response(200, "用户通知获取成功", map);
     }
 
 
