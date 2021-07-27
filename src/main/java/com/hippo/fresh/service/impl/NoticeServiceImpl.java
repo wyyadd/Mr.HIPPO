@@ -28,6 +28,7 @@ public class NoticeServiceImpl implements NoticeService {
                 map.put("productPicture", notice.getProductPicture());
                 map.put("oldPrice", notice.getOldPrice());
                 map.put("currentPrice", notice.getCurrentPrice());
+                map.put("percentage", notice.getPercentage());
 
                 String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(notice.getCreateTime());
                 map.put("createTime",createTime);

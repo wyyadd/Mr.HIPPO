@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
@@ -39,6 +40,9 @@ public class Notice {
     private Double currentPrice;//商品当前价格
 
     @Column
+    private BigDecimal percentage;//商品降价百分比
+
+    @Column
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createTime;//通知创建时间
 
@@ -52,14 +56,17 @@ public class Notice {
         this.isread = isread;
     }
 
-    public Notice(Long userId, String message, Long productId, String productPicture, Double oldPrice, Double currentPrice, Timestamp createTime, Integer isread) {
+    public Notice(Long userId, String message, Long productId, String productPicture, Double oldPrice,
+                  Double currentPrice,BigDecimal percentage, Timestamp createTime, Integer isread) {
         this.userId = userId;
         this.message = message;
         this.productId = productId;
         this.productPicture = productPicture;
         this.oldPrice = oldPrice;
         this.currentPrice = currentPrice;
+        this.percentage = percentage;
         this.createTime = createTime;
         this.isread = isread;
     }
+
 }
