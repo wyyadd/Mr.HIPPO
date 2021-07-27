@@ -93,7 +93,8 @@ public class CartController {
     }
 
     //商品降价提醒
-    @Scheduled(fixedRate = 1000 * 60 * 30)
+//    @Scheduled(fixedRate = 1000 * 60 * 30)
+    @Scheduled(fixedRate = 5000 )
     public void priceDropReminder() {
         List<Cart> carts = cartRepository.findAll();
         for(Cart cart:carts){
