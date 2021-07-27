@@ -39,6 +39,8 @@ public class ForumServiceImpl implements ForumService {
         jsonObject.put("forumId", id);
         jsonObject.put("title", forum.getTitle());
         jsonObject.put("content", forum.getContent());
+        jsonObject.put("username", forum.getUsername());
+        jsonObject.put("userAvatar", forum.getUserAvatar());
         return ResponseUtils.success("查找帖子成功", jsonObject);
     }
 
