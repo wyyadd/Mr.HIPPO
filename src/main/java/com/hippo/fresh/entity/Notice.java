@@ -31,7 +31,7 @@ public class Notice {
     private Long productId;//商品id
 
     @Column
-    private Long productName;//商品名称
+    private String productName;//商品名称
 
     @Column
     private String productPicture;//商品图片
@@ -64,6 +64,7 @@ public class Notice {
         this.userId = userId;
         this.message = message;
         this.productId = productId;
+        this.productName = productName;
         this.productPicture = productPicture;
         this.oldPrice = oldPrice;
         this.currentPrice = currentPrice;
