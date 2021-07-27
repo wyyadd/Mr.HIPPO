@@ -31,6 +31,9 @@ public class Notice {
     private Long productId;//商品id
 
     @Column
+    private Long productName;//商品名称
+
+    @Column
     private String productPicture;//商品图片
 
     @Column
@@ -56,8 +59,8 @@ public class Notice {
         this.isread = isread;
     }
 
-    public Notice(Long userId, String message, Long productId, String productPicture, Double oldPrice,
-                  Double currentPrice,BigDecimal percentage, Timestamp createTime, Integer isread) {
+    public Notice(Long userId, String message, Long productId,String productName,String productPicture, Double oldPrice,
+                  Double currentPrice,BigDecimal percentage,Timestamp createTime, Integer isread) {
         this.userId = userId;
         this.message = message;
         this.productId = productId;

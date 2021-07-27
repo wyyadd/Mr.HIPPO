@@ -96,7 +96,7 @@ public class CartServiceImpl  implements CartService{
                     //将消息通知保存到数据库
                     String message = "尊敬的用户你好:  你收藏的商品：  " + cart.getProductName() + "  加入收藏夹以来降价幅度超过10%，快来关注一下吧！！";
                     Timestamp createTime = new Timestamp(System.currentTimeMillis());
-                    noticeRepository.save(new Notice(cart.getUserId(), message,cart.getProductId(),cart.getProductPicture(),
+                    noticeRepository.save(new Notice(cart.getUserId(), message,cart.getProductId(),cart.getProductName(),cart.getProductPicture(),
                             cart.getOldPrice(),cart.getCurrentPrice(), BigDecimal.valueOf(priceDifference),createTime,0));
 
                     //更新购物车中该商品降价10%通知状态为：已通知
@@ -126,7 +126,7 @@ public class CartServiceImpl  implements CartService{
                     //将消息通知保存到数据库
                     String message = "尊敬的用户你好:  你收藏的商品：  " + cart.getProductName() + "  加入收藏夹以来降价幅度超过20%，快来关注一下吧！！";
                     Timestamp createTime = new Timestamp(System.currentTimeMillis());
-                    noticeRepository.save(new Notice(cart.getUserId(), message,cart.getProductId(),cart.getProductPicture(),
+                    noticeRepository.save(new Notice(cart.getUserId(), message,cart.getProductId(),cart.getProductName(),cart.getProductPicture(),
                             cart.getOldPrice(),cart.getCurrentPrice(), BigDecimal.valueOf(priceDifference),createTime,0));
 
                     //更新购物车中该商品降价20%通知状态为：已通知
@@ -157,7 +157,7 @@ public class CartServiceImpl  implements CartService{
                     //将消息通知保存到数据库
                     String message = "尊敬的用户你好:  你收藏的商品：  " + cart.getProductName() + "  加入收藏夹以来降价幅度超过30%，快来关注一下吧！！";
                     Timestamp createTime = new Timestamp(System.currentTimeMillis());
-                    noticeRepository.save(new Notice(cart.getUserId(), message,cart.getProductId(),cart.getProductPicture(),
+                    noticeRepository.save(new Notice(cart.getUserId(), message,cart.getProductId(),cart.getProductName(),cart.getProductPicture(),
                             cart.getOldPrice(),cart.getCurrentPrice(), BigDecimal.valueOf(priceDifference),createTime,0));
 
                     //更新购物车中该商品降价30%通知状态为：已通知
@@ -191,7 +191,7 @@ public class CartServiceImpl  implements CartService{
                     //将消息通知保存到数据库
                     String message = "尊敬的用户你好:  你收藏的商品：  " + cart.getProductName() + "  目前达到加入收藏夹以来最低价格，快来关注一下吧！！";
                     Timestamp createTime = new Timestamp(System.currentTimeMillis());
-                    noticeRepository.save(new Notice(cart.getUserId(), message,cart.getProductId(),cart.getProductPicture(),
+                    noticeRepository.save(new Notice(cart.getUserId(), message,cart.getProductId(),cart.getProductName(),cart.getProductPicture(),
                             cart.getOldPrice(),cart.getCurrentPrice(), BigDecimal.valueOf(priceDifference),createTime,0));
 
                     //更新购物车中该商品最低价格通知状态为：已通知
