@@ -180,12 +180,19 @@ public class ProductServiceImpl  implements ProductService  {
             jsonObject.put("name", product.getName());
             jsonObject.put("id", product.getId());
             jsonObject.put("pictureUrl", product.getPictureUrl());
-            jsonObject.put("stock", product.getStock());
             jsonObject.put("originPrice",product.getPrice());
             jsonObject.put("currentPrice", product.getPrice()*0.3);
             jsonObject.put("time", "2021-07-30 20:00:00");
             jsonArray.add(jsonObject);
         }
+        jsonArray.getJSONObject(0).put("days", 45);
+        jsonArray.getJSONObject(1).put("days", 63);
+        jsonArray.getJSONObject(2).put("days", 32);
+        jsonArray.getJSONObject(3).put("days", 93);
+        jsonArray.getJSONObject(0).put("percentage", 45);
+        jsonArray.getJSONObject(1).put("percentage", 25);
+        jsonArray.getJSONObject(2).put("percentage", 98);
+        jsonArray.getJSONObject(3).put("percentage", 85);
         return ResponseUtils.success("查找秒杀商品成功", jsonArray);
     }
 

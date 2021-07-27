@@ -29,3 +29,18 @@
 2021-07-27 19:12:29.467 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Starting FreshApplication using Java 1.8.0_292 on wyyadd with PID 25274 (/home/wyyadd/IdeaProjects/fresh/target/classes started by wyyadd in /home/wyyadd/IdeaProjects/fresh)
 2021-07-27 19:12:29.471 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - No active profile set, falling back to default profiles: default
 2021-07-27 19:12:35.093 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Started FreshApplication in 6.265 seconds (JVM running for 6.934)
+2021-07-27 19:23:18.079 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Starting FreshApplication using Java 1.8.0_292 on wyyadd with PID 28595 (/home/wyyadd/IdeaProjects/fresh/target/classes started by wyyadd in /home/wyyadd/IdeaProjects/fresh)
+2021-07-27 19:23:18.084 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - No active profile set, falling back to default profiles: default
+2021-07-27 19:23:23.424 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Started FreshApplication in 6.34 seconds (JVM running for 7.135)
+2021-07-27 22:53:27.762 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Starting FreshApplication using Java 1.8.0_292 on wyyadd with PID 40833 (/home/wyyadd/IdeaProjects/fresh/target/classes started by wyyadd in /home/wyyadd/IdeaProjects/fresh)
+2021-07-27 22:53:27.765 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - No active profile set, falling back to default profiles: default
+2021-07-27 22:53:33.079 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Started FreshApplication in 5.761 seconds (JVM running for 6.477)
+2021-07-27 22:55:08.410 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Starting FreshApplication using Java 1.8.0_292 on wyyadd with PID 40833 (/home/wyyadd/IdeaProjects/fresh/target/classes started by wyyadd in /home/wyyadd/IdeaProjects/fresh)
+2021-07-27 22:55:08.411 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - No active profile set, falling back to default profiles: default
+2021-07-27 22:55:10.341 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Started FreshApplication in 1.975 seconds (JVM running for 103.739)
+2021-07-27 22:55:12.175 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Starting FreshApplication using Java 1.8.0_292 on wyyadd with PID 40833 (/home/wyyadd/IdeaProjects/fresh/target/classes started by wyyadd in /home/wyyadd/IdeaProjects/fresh)
+2021-07-27 22:55:12.175 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - No active profile set, falling back to default profiles: default
+2021-07-27 22:55:13.798 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Started FreshApplication in 1.651 seconds (JVM running for 107.196)
+2021-07-27 22:57:54.780 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Starting FreshApplication using Java 1.8.0_292 on wyyadd with PID 41356 (/home/wyyadd/IdeaProjects/fresh/target/classes started by wyyadd in /home/wyyadd/IdeaProjects/fresh)
+2021-07-27 22:57:54.782 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - No active profile set, falling back to default profiles: default
+2021-07-27 22:57:59.548 [restartedMain] [INFO ] com.hippo.fresh.FreshApplication - Started FreshApplication in 5.209 seconds (JVM running for 5.918)
