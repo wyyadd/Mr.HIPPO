@@ -38,9 +38,7 @@ public class NoticeController {
         Long userId = JWTTokenUtil.parseAccessToken(token).getId();
 
         if(userService.findById(userId).isPresent()) {
-            Map<String, Object> messages = noticeService.find(userId);
-            jsonObject.put("messages", messages);
-            return ResponseUtils.response(200, "用户通知获取成功", jsonObject);
+            return noticeService.find(userId);
         }
         else{
             throw new UserNotExistException(jsonObject);
