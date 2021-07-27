@@ -27,6 +27,18 @@ public class Notice {
     private String message;//通知消息
 
     @Column
+    private Long productId;//商品id
+
+    @Column
+    private String productPicture;//商品图片
+
+    @Column
+    private Double oldPrice;//商品加入购物车价格
+
+    @Column
+    private Double currentPrice;//商品当前价格
+
+    @Column
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp createTime;//通知创建时间
 
@@ -36,6 +48,17 @@ public class Notice {
     public Notice(Long userId, String message, Timestamp createTime, Integer isread) {
         this.userId = userId;
         this.message = message;
+        this.createTime = createTime;
+        this.isread = isread;
+    }
+
+    public Notice(Long userId, String message, Long productId, String productPicture, Double oldPrice, Double currentPrice, Timestamp createTime, Integer isread) {
+        this.userId = userId;
+        this.message = message;
+        this.productId = productId;
+        this.productPicture = productPicture;
+        this.oldPrice = oldPrice;
+        this.currentPrice = currentPrice;
         this.createTime = createTime;
         this.isread = isread;
     }

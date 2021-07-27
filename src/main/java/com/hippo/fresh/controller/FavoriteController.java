@@ -84,19 +84,19 @@ public class FavoriteController {
     }
 
 
-    //商品降价提醒
-    @Scheduled(fixedRate = 1000 * 60 * 30)
-    public void priceDropReminder() {
-        List<Favorite> favorites = favoriteRepository.findAll();
-        for(Favorite favorite:favorites){
-            if(!favoriteService.priceLowestReminder(favorite)){
-                if(!favoriteService.priceDrop30Reminder(favorite)){
-                    if(!favoriteService.priceDrop20Reminder(favorite)){
-                        favoriteService.priceDrop10Reminder(favorite);
-                    }
-                }
-            }
-        }
-    }
+//    //商品降价提醒
+//    @Scheduled(fixedRate = 1000 * 60 * 30)
+//    public void priceDropReminder() {
+//        List<Favorite> favorites = favoriteRepository.findAll();
+//        for(Favorite favorite:favorites){
+//            if(!favoriteService.priceLowestReminder(favorite)){
+//                if(!favoriteService.priceDrop30Reminder(favorite)){
+//                    if(!favoriteService.priceDrop20Reminder(favorite)){
+//                        favoriteService.priceDrop10Reminder(favorite);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 }

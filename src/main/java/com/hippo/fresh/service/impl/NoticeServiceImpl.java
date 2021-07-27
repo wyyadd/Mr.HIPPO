@@ -6,6 +6,7 @@ import com.hippo.fresh.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -16,19 +17,28 @@ public class NoticeServiceImpl implements NoticeService {
     private NoticeRepository noticeRepository;
 
     /**查找用户消息通知*/
-    public List<Map<String,Object>> find(Long userId){
-        List<Map<String,Object>> res = new ArrayList<>();
+    public Map<String,Object> find(Long userId) {
+        Map<String, Object> map = new HashMap<>();
         List<Notice> notices = noticeRepository.findAllByUserId(userId);
-        for(Notice notice:notices){
-            Map<String,Object> map = new HashMap<>();
-            map.put("messageId",notice.getId());
-            map.put("message",notice.getMessage());
-            map.put("createTime",notice.getCreateTime());
-            map.put("read",notice.getIsread());
-            if(notice.getIsread() == 0)
-                res.add(map);
+        for (Notice notice : notices) {
+            if (notice.getIsread().equals(0)) {
+                map.put("messageId", notice.getId());
+                map.put("message", notice.getMessage());
+                map.put("productId", notice.getProductId());
+                map.put("productPicture", notice.getProductPicture());
+                map.put("oldPrice", notice.getOldPrice());
+                map.put("currentPrice", notice.getCurrentPrice());
+
+                String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(notice.getCreateTime());
+                map.put("createTime",createTime);
+
+                //消息发送过一次之后改为已读
+                notice.setIsread(1);
+                noticeRepository.save(notice);
+                return map;
+            }
         }
-        return res;
+        return map;
     }
 
 
