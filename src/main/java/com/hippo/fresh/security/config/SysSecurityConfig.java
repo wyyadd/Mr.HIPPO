@@ -117,7 +117,7 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().formLogin().loginProcessingUrl("/api/user/login")
 				.successHandler(userLoginSuccessHandler) // 配置登录成功处理类
 				.failureHandler(userLoginFailureHandler) // 配置登录失败处理类
-				.and().logout().logoutUrl("/")// 配置登出地址
+				.and().logout()// 配置登出地址
 				.logoutSuccessHandler(userLogoutSuccessHandler) // 配置用户登出处理类
 				.and().exceptionHandling().accessDeniedHandler(userAccessDeniedHandler)// 配置没有权限处理类
 				.and().cors() // 开启跨域

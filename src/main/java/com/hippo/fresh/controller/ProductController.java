@@ -150,6 +150,7 @@ public class ProductController {
     @PostMapping("/api/product/suggestion")
     public ResponseUtils Suggestion(@RequestBody String jsonStr){
         jsonObject = JSON.parseObject(jsonStr);
+        log.warn("123");
         return searchSuggestionService.fetchSuggestions(jsonObject.getString("search"));
     }
 

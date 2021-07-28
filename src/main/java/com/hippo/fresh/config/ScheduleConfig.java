@@ -23,8 +23,7 @@ public class ScheduleConfig {
     ProductRepository productRepository;
 
     //every two hour to update index
-    @Scheduled(cron = "0 0 0/2 * * *")
-//    @Scheduled(cron = "0 0/10 * * * *")
+    @Scheduled(cron = "0 0 0/12 * * *")
     public void ElasticSearchSchedule(){
         searchProductRepository.deleteAll();
         searchProductRepository.saveAll(ConvertProduct(productRepository.findAll()));
@@ -34,7 +33,6 @@ public class ScheduleConfig {
     public static List<SearchProduct> ConvertProduct(List<Product> products){
         List<SearchProduct> searchProducts = new ArrayList<>();
         for(Product p : products){
-
             searchProducts.add(SearchProduct.builder()
                     .id(String.valueOf(p.getId()))
                     .productId(p.getId())
