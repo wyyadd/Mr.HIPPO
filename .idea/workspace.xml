@@ -4,29 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="000fe045-a760-489d-99b9-b4298ff2fad4" name="Default Changelist" comment="test">
+    <list default="true" id="000fe045-a760-489d-99b9-b4298ff2fad4" name="Default Changelist" comment="[1.3.4] improve kill api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/freshLogs/logs/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/freshLogs/logs/debug.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/freshLogs/logs/info.log" beforeDir="false" afterPath="$PROJECT_DIR$/freshLogs/logs/info.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hippo/fresh/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hippo/fresh/service/impl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/FreshApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/FreshApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/dao/ReceiverRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/dao/ReceiverRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/dao/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/dao/UserRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/entity/Cart.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/entity/Cart.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/entity/Order.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/entity/Order.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/entity/Product.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/entity/Product.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/entity/Receiver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/entity/Receiver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/entity/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/handler/UserHasExistHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/handler/UserHasExistHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/handler/UserLoginSuccessHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/handler/UserLoginSuccessHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/security/config/SysSecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/security/config/SysSecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/security/entity/SysUserDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/security/entity/SysUserDetails.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/security/utils/JWTTokenUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/security/utils/JWTTokenUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/service/UserService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/service/impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/service/impl/UserServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hippo/fresh/utils/ResponseUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hippo/fresh/utils/ResponseUtils.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +113,9 @@
       <workItem from="1626242897964" duration="18359000" />
       <workItem from="1626267860405" duration="6256000" />
       <workItem from="1626277312863" duration="4378000" />
-      <workItem from="1627384302600" duration="3894000" />
+      <workItem from="1627384302600" duration="4310000" />
+      <workItem from="1627435705810" duration="120000" />
+      <workItem from="1627472578850" duration="660000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <created>1627384427488</created>
@@ -140,7 +124,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627384427488</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="[1.3.4] improve kill api">
+      <created>1627398198711</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1627398198711</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -160,7 +151,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="[1.3.4] improve kill api" />
+    <option name="LAST_COMMIT_MESSAGE" value="[1.3.4] improve kill api" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

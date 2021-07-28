@@ -34,7 +34,6 @@ public class ProductServiceImpl  implements ProductService  {
     //根据商品id返回商品的需要信息
     public ResponseUtils findSomeInformationById(Long id){
         jsonObject = new JSONObject();
-        System.out.println(id);
         //判断商品是否存在
         if(productRepository.findById(id).isPresent()) {
             Product product = productRepository.findById(id).get();
@@ -195,5 +194,4 @@ public class ProductServiceImpl  implements ProductService  {
         jsonArray.getJSONObject(3).put("percentage", 85);
         return ResponseUtils.success("查找秒杀商品成功", jsonArray);
     }
-
 }

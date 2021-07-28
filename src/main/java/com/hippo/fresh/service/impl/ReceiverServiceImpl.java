@@ -39,7 +39,6 @@ public class ReceiverServiceImpl  implements ReceiverService {
 
         Timestamp createTime = new Timestamp(System.currentTimeMillis());
         Timestamp updateTime = new Timestamp(System.currentTimeMillis());
-        System.out.println(createTime);
 
         Receiver  receiver = receiverRepository.save(new Receiver(userId,name,phone,province,city,district,address,
                 createTime,updateTime));

@@ -91,7 +91,7 @@ public class CartServiceImpl  implements CartService{
                 int days = timeDifference(cart.getCreateTime(), new Timestamp(System.currentTimeMillis()));
                 //用户购物车中加入该商品时间小于10天
                 if (days < 10) {
-                    System.out.println("用户id：" + cart.getUserId() + " 商品id： " + cart.getProductId() + "降价10%提醒！");
+//                    System.out.println("用户id：" + cart.getUserId() + " 商品id： " + cart.getProductId() + "降价10%提醒！");
 
                     //将消息通知保存到数据库
                     String message = "尊敬的用户你好:  你收藏的商品：  " + cart.getProductName() + "  加入收藏夹以来降价幅度超过10%，快来关注一下吧！！";
@@ -121,7 +121,7 @@ public class CartServiceImpl  implements CartService{
                 int days = timeDifference(cart.getCreateTime(), new Timestamp(System.currentTimeMillis()));
                 //用户购物车中加入该商品时间小于20天
                 if (days < 20) {
-                    System.out.println("用户id：" + cart.getUserId() + " 商品id： " + cart.getProductId() + "降价20%提醒！");
+//                    System.out.println("用户id：" + cart.getUserId() + " 商品id： " + cart.getProductId() + "降价20%提醒！");
 
                     //将消息通知保存到数据库
                     String message = "尊敬的用户你好:  你收藏的商品：  " + cart.getProductName() + "  加入收藏夹以来降价幅度超过20%，快来关注一下吧！！";
@@ -152,7 +152,7 @@ public class CartServiceImpl  implements CartService{
                 int days = timeDifference(cart.getCreateTime(), new Timestamp(System.currentTimeMillis()));
                 //用户购物车中加入该商品时间小于30天
                 if (days < 30) {
-                    System.out.println("用户id：" + cart.getUserId() + " 商品id： " + cart.getProductId() + "降价30%提醒！");
+//                    System.out.println("用户id：" + cart.getUserId() + " 商品id： " + cart.getProductId() + "降价30%提醒！");
 
                     //将消息通知保存到数据库
                     String message = "尊敬的用户你好:  你收藏的商品：  " + cart.getProductName() + "  加入收藏夹以来降价幅度超过30%，快来关注一下吧！！";
@@ -186,7 +186,7 @@ public class CartServiceImpl  implements CartService{
                 int days = timeDifference(cart.getCreateTime(), new Timestamp(System.currentTimeMillis()));
                 //用户将该商品加入购物车时间小于30天
                 if (days < 30) {
-                    System.out.println("用户id：" + cart.getUserId() + " 商品id： " + cart.getProductId() + "最低价格提醒！");
+//                    System.out.println("用户id：" + cart.getUserId() + " 商品id： " + cart.getProductId() + "最低价格提醒！");
 
                     //将消息通知保存到数据库
                     String message = "尊敬的用户你好:  你收藏的商品：  " + cart.getProductName() + "  目前达到加入收藏夹以来最低价格，快来关注一下吧！！";
