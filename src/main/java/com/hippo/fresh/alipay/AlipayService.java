@@ -25,15 +25,15 @@ public class AlipayService {
 
     public String toPay(String orderId,String paymentMoney) throws Exception {
 
-        System.out.println("到这里啦111");
+//        System.out.println("到这里啦111");
         AlipayTradePagePayResponse pay = Factory.Payment.Page().pay("河马生鲜购物平台订单",orderId,
                 paymentMoney,"http://39.101.199.242/finalhome");
 
-        System.out.println("到这里啦222");
+//        System.out.println("到这里啦222");
         String payForm = null;
         if (ResponseChecker.success(pay)) {
             payForm = pay.getBody();
-            System.out.println("到这里啦333");
+//            System.out.println("到这里啦333");
         }
         return payForm;
     }

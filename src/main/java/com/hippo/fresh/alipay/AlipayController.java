@@ -58,7 +58,7 @@ public class AlipayController {
     @PostMapping("/callback")
     @ResponseBody
     public String notifyCallback(HttpServletRequest request) throws Exception {
-        System.out.println("进入异步");
+//        System.out.println("进入异步");
         String success = "success";
         String failure = "failure";
 
@@ -79,7 +79,7 @@ public class AlipayController {
             params.put(name, valueStr);
         }
 
-        System.out.println(params);
+//        System.out.println(params);
 
         Order order = orderRepository.findById(Long.valueOf(params.get("out_trade_no"))).get();
         Timestamp  PaymentTime= new Timestamp(System.currentTimeMillis());
@@ -94,7 +94,7 @@ public class AlipayController {
         boolean signVerified = Factory.Payment.Common().verifyNotify(params);
 
         if(signVerified){ // 验签通过
-            System.out.println("通过验签");
+//            System.out.println("通过验签");
             return success;
         }else{ // 验签失败
             return failure;
