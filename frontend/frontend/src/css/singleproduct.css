@@ -1,0 +1,206 @@
+
+
+
+#商品抬头{
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url("../assets/img/inner-bg.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+}
+#商品抬头 h1{
+    color: white;
+    font-size: 40px;
+}
+#头部{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#商品详情{
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+}
+#商品详情容器{
+    width: 1200px;
+    display: flex;
+    flex-direction: row;
+    padding-top: 70px;
+
+}
+#图片展示区{
+    height: 570px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#商品详情栏{
+    width: 580px;
+    height: 570px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-left: 20px;
+}
+#商品名称{
+    width: 290px;
+    height: 100px;
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#商品名称 p{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 15px;
+}
+#商品价格{
+    width: 290px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#商品价格 p{
+    text-align: right;
+    color: orange;
+    margin-right: 15px;
+    font-size: 25px;
+}
+#商品详情栏上部{
+    display: flex;
+    flex-direction: row;
+}
+#商品介绍{
+    height: 100px;
+}
+#商品详情栏下部容器{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 580px;
+}
+#购买数量{
+    margin-left: 30px;
+}
+#计数器{
+    width: 150px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10px;
+}
+#加入购物车{
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.el-card__body{
+    padding: 0px!important;
+    display: flex;
+    flex-direction: row;
+}
+#商品详情栏下部{
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+}
+#缩略图片1, #缩略图片2, #缩略图片3, #缩略图片4{
+    width: 142px;
+    padding-left: 2px;
+    padding-right: 2px;
+    height: 105px;
+}
+#缩略图片区{
+    display: flex;
+    flex-direction: row;
+    padding-top: 5px;
+}
+#大图1, #大图2, #大图3, #大图4{
+    display: none;
+}
+#大图1 {
+    display: block;
+}
+
+#缩略图片区 button{
+    opacity: 0;
+}
+
+#其他信息
+{
+    width: 1200px;
+    padding-top: 20px;
+    border-style: solid;
+    border-color: rgb(223, 220, 220);
+    margin-top: 70px;
+    border-width: 1px;
+}
+#其他信息容器{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+#标题栏{
+    background: url('https://static.360buyimg.com/mtd/pc/fresh_v3/1.0.0/home/images/fresh_mod_head_bg.png');
+      height:200px;
+      background-repeat: no-repeat;
+      background-position:50% 50% ;
+      text-align: center; 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 1200px;
+}
+#标题栏 p{
+    margin-bottom: 30px;
+}
+#相关商品展示区{
+    height: 380px;
+    width: 1200px;
+    border-style: solid;
+    margin-bottom: 100px;
+}
+#相关商品{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#底部{
+    background-color: rgba(5, 184, 44, 0.815);
+    margin-top: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#块{
+    display: flex;
+    flex-direction: row;
+}
+#块 #文字{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: gray;
+    padding-left: 5px;
+}
+#三图标{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 35px;
+}
+#其他信息{
+    padding-left: 30px;
+}
+img{
+    object-fit: cover;
+}
