@@ -1,0 +1,5 @@
+com/hippo/fresh/controller/NoticeController.class
+com/hippo/fresh/service/impl/NoticeServiceImpl.class
+com/hippo/fresh/service/NoticeService.class
+com/hippo/fresh/dao/NoticeRepository.class
+com/hippo/fresh/entity/Notice.class
