@@ -1,12 +1,6 @@
 **《河马生鲜后端技术开发文档》**
 
-![](media/image1.png)
-
-指导老师：孙威
-
-小组组长：卢昊飞
-
-小组成员：卢昊飞 朱世成 秦培元 闫志豪 汪跃阳
+![image](https://user-images.githubusercontent.com/67038748/128480962-c8f8faf0-3af7-44cc-a290-d90ac32b997c.png)
 
 第一部分 引言
 
