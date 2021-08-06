@@ -1,3 +1,5 @@
+这是一个后端基于spring boot， 前端基于vue开发的购物网站
+
 **《河马生鲜后端技术开发文档》**
 
 ![image](https://user-images.githubusercontent.com/67038748/128480962-c8f8faf0-3af7-44cc-a290-d90ac32b997c.png)
