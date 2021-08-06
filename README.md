@@ -1,4 +1,4 @@
-这是一个后端基于spring boot， 前端基于vue开发的购物网站
+这是一个后端基于spring boot， 前端基于vue开发的购物网站, 前端仓库：https://github.com/Josh00-Lu/MrHippoFront
 
 **《河马生鲜后端技术开发文档》**
 
