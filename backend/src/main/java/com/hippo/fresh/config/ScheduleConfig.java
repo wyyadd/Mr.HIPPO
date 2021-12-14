@@ -1,6 +1,5 @@
 package com.hippo.fresh.config;
 
-import com.hippo.fresh.FreshApplication;
 import com.hippo.fresh.dao.ProductRepository;
 import com.hippo.fresh.entity.Product;
 import com.hippo.fresh.search.SearchProduct;
@@ -8,7 +7,6 @@ import com.hippo.fresh.search.SearchProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ public class ScheduleConfig {
     ProductRepository productRepository;
 
     //every two hour to update index
-    @Scheduled(cron = "0 0 0/12 * * *")
+//    @Scheduled(cron = "0 0 0/12 * * *")
     public void ElasticSearchSchedule(){
         searchProductRepository.deleteAll();
         searchProductRepository.saveAll(ConvertProduct(productRepository.findAll()));

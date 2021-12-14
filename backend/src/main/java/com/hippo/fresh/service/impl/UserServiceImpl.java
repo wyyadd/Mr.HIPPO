@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Signature;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -27,8 +26,7 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Autowired
     private UserRepository userRepository;
@@ -119,6 +117,7 @@ public class UserServiceImpl implements UserService {
                     }
                     //验证码正确，用户名不存在，成功注册用户
                     else {
+                        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
                         Timestamp createTime = new Timestamp(System.currentTimeMillis());
                         User newUser = userRepository.save(new User(username,bCryptPasswordEncoder.encode(password),email,createTime));
                         jsonObject = new JSONObject();
@@ -178,6 +177,7 @@ public class UserServiceImpl implements UserService {
         else {
             User user = u.get();
             String password = user.getPassword();
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
             //用户输入原始密码与数据库保持一致
             if(bCryptPasswordEncoder.matches(oldPassword,password)){
                 user.setPassword(bCryptPasswordEncoder.encode(newPassword));

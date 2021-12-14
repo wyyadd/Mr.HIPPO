@@ -21,9 +21,9 @@ import java.util.List;
 public class SearchSuggestionService {
     static final String SUGGESTION_INDEX = "suggestion";
 
-    private ElasticsearchOperations elasticsearchOperations;
+    private final ElasticsearchOperations elasticsearchOperations;
 
-    private SearchProductRepository searchProductRepository;
+    private final SearchProductRepository searchProductRepository;
 
     @Autowired
     public SearchSuggestionService(final ElasticsearchOperations elasticsearchOperations, final SearchProductRepository searchProductRepository) {
