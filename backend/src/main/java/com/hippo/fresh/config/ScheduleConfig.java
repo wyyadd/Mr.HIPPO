@@ -22,9 +22,12 @@ public class ScheduleConfig {
 
     //every two hour to update index
 //    @Scheduled(cron = "0 0 0/12 * * *")
+//    @Scheduled(cron = "0 0/2 * * * *")
     public void ElasticSearchSchedule(){
+        System.out.println("start");
         searchProductRepository.deleteAll();
         searchProductRepository.saveAll(ConvertProduct(productRepository.findAll()));
+        System.out.println("end");
     }
 
     //将商品类转换成搜索商品类（放在ES中）

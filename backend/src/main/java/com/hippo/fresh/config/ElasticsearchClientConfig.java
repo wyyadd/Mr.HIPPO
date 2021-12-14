@@ -23,8 +23,9 @@ public class ElasticsearchClientConfig extends AbstractElasticsearchConfiguratio
         final ClientConfiguration clientConfiguration =
                 ClientConfiguration
                         .builder()
-                        .connectedTo("103.104.104.149:9200")
-                        .withBasicAuth("elastic", "mkYDMvWuwj9X12viQyho")
+                        .connectedTo("localhost:9200")
+                        .withBasicAuth("elastic", "" +
+                                "Y0UxFa4B396Ixk6hn1Ho")
                         .build();
 
         return RestClients
